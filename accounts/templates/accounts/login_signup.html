@@ -1,0 +1,80 @@
+{% extends 'accounts/layout.html' %}
+
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block title %}Login/Sign Up{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Left side with logo and intro text -->
+    <div class="col-md-6 d-flex align-items-center">
+        <div>
+            <img src="{% static 'accounts/images/Logo.jpg' %}" alt="Logo" class="img-fluid mb-3" style="height: 300px;">
+            <h1>Welcome to My Site</h1>
+            <p class="lead">Join us and experience the best service.</p>
+        </div>
+    </div>
+    <!-- Right side with login form -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Login</h2>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ login_form.username.label_tag }}
+                        {{ login_form.username|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        {{ login_form.password.label_tag }}
+                        {{ login_form.password|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
+                    </div>
+                </form>
+                <button id="show-signup" class="btn btn-secondary btn-block mt-3">Sign Up</button>
+            </div>
+        </div>
+        <div class="card hidden mt-3" id="signup-card">
+            <div class="card-body">
+                <h2 class="card-title">Sign Up</h2>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ signup_form.username.label_tag }}
+                        {{ signup_form.username|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        {{ signup_form.password1.label_tag }}
+                        {{ signup_form.password1|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        {{ signup_form.password2.label_tag }}
+                        {{ signup_form.password2|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" name="signup" class="btn btn-success btn-block">Sign Up</button>
+                    </div>
+                </form>
+                <button id="show-login" class="btn btn-secondary btn-block mt-3">Back to Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    document.getElementById('show-signup').addEventListener('click', function() {
+        document.getElementById('login-card').classList.add('hidden');
+        document.getElementById('signup-card').classList.remove('hidden');
+    });
+
+    document.getElementById('show-login').addEventListener('click', function() {
+        document.getElementById('signup-card').classList.add('hidden');
+        document.getElementById('login-card').classList.remove('hidden');
+    });
+</script>
+{% endblock %}
