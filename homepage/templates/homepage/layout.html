@@ -20,8 +20,12 @@
         }
         .content {
             flex: 1;
-            margin-left: 250px;
+            transition: margin-left 0.3s;
             padding: 20px;
+            margin-left:0px;
+        }
+        .sidebar.active ~ .content{
+            margin-left:250px;
         }
         .footer {
             flex-shrink: 0;
@@ -31,7 +35,7 @@
             width: 250px;
             background-color: #f8f9fa;
             position: fixed;
-            top: 0;
+            top: 50px;
             bottom: 0;
             left: -250px;
             transition: left 0.3s;
@@ -53,6 +57,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index:1000;
         }
         .topbar .btn {
             color: white;
@@ -61,11 +67,13 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="topbar">
+        <div class="topbar" id="topbar">
             <button class="btn btn-link" id="sidebarToggle"><span>&#9776;</span></button>
             <img src="{% static 'homepage/images/Logo.jpg' %}" alt="Logo" class="img-fluid" style="height:40px;">
             <div>
-                <span>{{ user.username }}</span>
+                <span>
+                    <span>{{ username }}</span>
+                </span>
             </div>
         </div>
         <nav class="sidebar" id="sidebar">
@@ -78,7 +86,7 @@
                 </li>
             </ul>
         </nav>
-        <div class="content">
+        <div class="content" id="content">
             <div class="container mt-4">
                 {% block content %}{% endblock %}
             </div>
@@ -99,10 +107,23 @@
     <!-- jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
+    document.addEventListener("DOMContentLoaded", function() {
+            function adjustSidebarTop() {
+                var topbarHeight = document.getElementById('topbar').offsetHeight;
+                document.getElementById('sidebar').style.top = topbarHeight + 'px';
+            }
+
+            function toggleSidebar() {
+                var sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('active');
+            }
+
+            adjustSidebarTop();
+            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+
+            window.onresize = adjustSidebarTop;
         });
     </script>
 </body>
