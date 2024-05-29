@@ -1,25 +1,29 @@
 {% extends 'homepage/layout.html' %}
 
-{% load static %}
-
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div>
-    <div>
-        <button>Create Project</button>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col text-right">
+            <a href="" class="btn btn-primary">Create Project</a>
+        </div>
     </div>
-    <div>
-        <span>Recent Project</span>
-        <div>
-            <div>
-                <span>Language</span>
+    <div class="row">
+        <div class="col">
+            <h2>Recent Projects</h2>
+            <div class="list-group">
+                {% for project in projects %}
+                <div class="list-group-item">
+                    <h5>{{ project.title }}</h5>
+                    <p>{{ project.description }}</p>
+                    <small>Created at: {{ project.created_at }}</small>
+                    <div class="text-right">
+                        <a href="" class="btn btn-sm btn-secondary">Assign</a>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div>
-                <span>Title name</span>
-                <span>Username</span>
-            </div>
-            <div>Time</div>
         </div>
     </div>
 </div>

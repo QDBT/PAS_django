@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,36 +13,78 @@
             height: 100%;
             margin: 0;
         }
-        .hidden {
-            display: none;
-        }
         .wrapper {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
         }
         .content {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            margin-left: 250px;
+            padding: 20px;
         }
         .footer {
             flex-shrink: 0;
             height: 100px;
         }
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: -250px;
+            transition: left 0.3s;
+            z-index: 1000;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar .nav-link {
+            color: #333;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #ddd;
+        }
+        .topbar {
+            background-color: grey;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topbar .btn {
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="wrapper">
+        <div class="topbar">
+            <button class="btn btn-link" id="sidebarToggle"><span>&#9776;</span></button>
+            <img src="{% static 'homepage/images/Logo.jpg' %}" alt="Logo" class="img-fluid" style="height:40px;">
+            <div>
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+        <nav class="sidebar" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Projects</a>
+                </li>
+            </ul>
+        </nav>
         <div class="content">
-            <div class="container text-center">
+            <div class="container mt-4">
                 {% block content %}{% endblock %}
             </div>
         </div>
-        <footer class="footer bg-light">
-            <div class="container text-center">
+        <footer class="footer bg-light text-center py-3">
+            <div class="container">
                 <span class="text-muted">卒研：2025</span>
                 <span class="text-muted mx-2">|</span>
                 <span>Created by</span>
@@ -57,6 +99,11 @@
     <!-- jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
