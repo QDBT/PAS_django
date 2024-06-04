@@ -88,9 +88,6 @@ if JAWSDB_URL:
         'default': dj_database_url.config(
             default=os.getenv('JAWSDB_URL'),
             conn_max_age=600,  # Adjust as needed
-            options={
-                'connect_timeout': 10,  # Timeout in seconds
-            }
         )
     }
 else:
