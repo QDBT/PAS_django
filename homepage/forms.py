@@ -6,5 +6,6 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = ['title', 'language', 'description']
         widgets = { 
-             'language': forms.Select(attrs={'class': 'language-select'})
-        }   
+             'language': forms.Select(attrs={'class': 'language-select'}),
+             'title':forms.TextInput(attrs={'placeholder':'Name of your project'}),
+        }

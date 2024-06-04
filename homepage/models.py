@@ -11,7 +11,7 @@ class Project(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     start_at = models.DateTimeField(default=timezone.now)
     language = models.CharField(max_length=50, choices=LANGUAGE_CHOICES)
     last_modified = models.DateTimeField(auto_now=True)
