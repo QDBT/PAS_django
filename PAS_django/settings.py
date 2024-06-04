@@ -85,7 +85,13 @@ JAWSDB_URL = os.getenv('JAWSDB_URL', default=None)
 
 if JAWSDB_URL:
     DATABASES = {
-        'default': dj_database_url.config(default=JAWSDB_URL)
+        'default': dj_database_url.config(
+            default=os.getenv('JAWSDB_URL'),
+            conn_max_age=600,  # Adjust as needed
+            options={
+                'connect_timeout': 10,  # Timeout in seconds
+            }
+        )
     }
 else:
     DATABASES = {
