@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Project
 from .forms import ProjectForm
+from django.views.decorators.http import require_POST
 
 @login_required(login_url='/accounts/login-signup/')
 def home(request,username):
@@ -17,7 +18,7 @@ def home(request,username):
             project.user = request.user
             project.start_at = timezone.now() 
             project.save()
-            return redirect('home', username=request.user.username)
+            return redirect('home', username)
     else:
         form = ProjectForm()
     params={
@@ -26,3 +27,8 @@ def home(request,username):
         'form': form,
     }
     return render(request, 'homepage/home.html',params)
+
+def delete_project(request,username,project_id):
+    project = get_object_or_404(Project, id=project_id)
+    project.delete()
+    return redirect('home',username)
