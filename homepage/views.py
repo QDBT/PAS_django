@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Project
 from .forms import ProjectForm
-from django.views.decorators.http import require_POST
+
 
 @login_required(login_url='/accounts/login-signup/')
 def home(request,username):
