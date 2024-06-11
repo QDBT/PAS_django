@@ -40,7 +40,7 @@
                 <div class="list-group">
                     {% for project in projects %}
                     <div class="list-group-item">
-                        <a href="" class="btn btn-link">
+                        <a href="{% url 'system_main' username project.title %}" class="btn btn-link">
                             <div>    
                                 {{ project.title }} by {{ project.user.username }} (Last modified: {{ project.last_modified }})
                             </div>

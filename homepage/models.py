@@ -18,3 +18,12 @@ class Project(models.Model):
 
     def __str__(self):
         return f'{self.title} by {self.user.username} (Last modified: {self.last_modified})'
+    
+    def save(self, *args, **kwargs):
+        if not self.id:  
+            base_title = self.title
+            counter = 1
+            while Project.objects.filter(title=self.title).exists():
+                self.title = f"{base_title}({counter})"
+                counter += 1
+        super(Project, self).save(*args, **kwargs)

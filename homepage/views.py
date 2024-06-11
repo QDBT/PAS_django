@@ -18,7 +18,7 @@ def home(request,username):
             project.user = request.user
             project.start_at = timezone.now() 
             project.save()
-            return redirect('home', username)
+            return redirect(f'/{username}/{project.title}/', {username,project.title})
     else:
         form = ProjectForm()
     params={

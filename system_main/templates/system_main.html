@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block title %}Main System View{% endblock %}
+
+
+{% block content %}
+<div class="CNR mt-4">
+    <div class="CodingBox mb-4">
+        <h2>Coding Box</h2>
+        <div class="CodeEditor border p-3">
+            <div class="LineNumberArea"></div>
+            <textarea class="CodeInput form-control" placeholder="Enter your code..."></textarea>
+        </div>
+    </div>
+    <button id="CheckAndRepair" class="btn btn-success mb-4">Check and Repair</button>
+    <div class="RepairBox">
+        <h2>Repair Box</h2>
+        <div class="RepairEditor border p-3">
+            <div class="LineNumberArea"></div>
+            <textarea class="CodeOutput form-control" placeholder="Output here"></textarea>
+        </div>
+    </div>
+</div>
+
+<style>
+    .CNR {
+        padding: 20px;
+    }
+
+    .CodingBox, .RepairBox {
+        margin-bottom: 20px;
+    }
+
+    .CodeEditor, .RepairEditor {
+        position: relative;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 10px;
+    }
+
+    .CodeInput, .CodeOutput {
+        width: 100%;
+        height: 200px;
+        border: none;
+        resize: none;
+        outline: none;
+        font-family: monospace;
+        font-size: 1rem;
+    }
+
+    .LineNumberArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        background-color: #e9ecef;
+        border-right: 1px solid #ced4da;
+        text-align: right;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+    }
+
+    .CodeInput {
+        padding-left: 50px; /* Space for line numbers */
+    }
+
+    .CodeOutput {
+        padding-left: 50px; /* Space for line numbers */
+    }
+
+    #CheckAndRepair {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
