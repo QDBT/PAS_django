@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Application{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/9cd06d1369.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 topbar d-flex justify-content-start align-items-center">
+                <button id="SideBarButton" class="btn btn-primary mr-2">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="logo mr-2" id="logo">
+                    <img src="{% static 'images/Logo.jpg' %}" height="30px" width="80px">
+                </div>
+                <div class="project-title">
+                    <h1 class="h5">{{ project.title }}</h1> <!-- Smaller title size -->
+                </div>
+                <button id="Debug" class="btn btn-success mb-4">
+                    <i class="fa-solid fa-play"></i>
+                    <span>Run</span>
+                </button>
+            </div>
+        </div>
+        <div class="">
+            <div class="">
+                <div class="SideBar bg-light p-3">
+                    <h1>Files</h1> 
+                    <button id="createSnippetButton" class="btn btn-success">New Snippet</button>
+                    <!--form for new Snippet-->
+                    <form id="create_new_snippet_form" action="% url 'main_system' username project %" method="post" style="display:none;">
+                        {% csrf_token %}
+                        {{ create_snippet_form.as_p }}
+                        <input type="hidden" name="create_snippet" value="1">
+                        <button type="submit" class="btn btn-primary">Create Snippet</button>
+                    </form>
+                    <!--Snippet List-->
+                    {% for snippet in snippets %}
+                        <div>
+                            name:{{ snippet.title }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="content-area">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //Sidebar open/close
+        document.getElementById('SideBarButton').addEventListener('click', function() {
+            const sidebar = document.querySelector('.SideBar');
+            const contentArea = document.querySelector('.content-area');
+            sidebar.classList.toggle('closed');
+            contentArea.classList.toggle('full-width');
+        });
+
+        //CreateSnippetForm appear when click Create
+        document.getElementById('createSnippetButton').addEventListener('click', function() {
+        document.getElementById('create_new_snippet_form').style.display = 'block';
+    });
+    </script>
+   
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    .topbar {
+            height: 50px; /* Reduce the height of the top bar */
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+    }
+
+    .SideBar {
+            height: calc(100vh - 50px); /* Full viewport height minus the top bar */
+            overflow-y: auto; /* Enable vertical scrolling */
+            transition: transform 0.3s ease, width 0.3s ease; /* Smooth slide effect */
+            position: fixed;
+            top: 50px; /* Start below the top bar */
+            left: 0;
+            width: 200px; /* Adjust the width as needed */
+            z-index: 1040;
+    }
+
+    .SideBar.closed {
+            transform: translateX(-100%); /* Slide out of view */
+    }
+
+    #SideBarButton {
+            margin-left: 10px; /* Adjust margin as needed */
+    }
+
+    #Debug {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #046c00;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        width:100px;
+    }
+
+    .content-area {
+        transition: margin-left 0.3s ease, width 0.3s ease;;
+        margin-left: 200px; /* Adjust this value to match the sidebar width */
+    }
+
+    .content-area.full-width {
+        margin-left: 0px;
+    }
+</style>
+</body>
+</html>

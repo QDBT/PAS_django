@@ -1,0 +1,23 @@
+{% extends 'system_main/layout.html' %}
+
+{% block title %}Main System View{% endblock %}
+
+
+{% block content %}
+<div>
+    <h2>Snippets</h2>
+    <ul>
+        {% for snippet in snippets %}
+            <li>
+                <h3>{{ snippet.title }}</h3>
+                <p><strong>Project:</strong> {{ snippet.project.name }}</p>
+                <form method="post" class="code-form">
+                    {% csrf_token %}
+                    {{ code_snippet_form.as_p }}
+                    <button type="submit">Save Code</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

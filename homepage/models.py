@@ -4,9 +4,8 @@ from django.utils import timezone
 
 class Project(models.Model):
     LANGUAGE_CHOICES = [
-        ('Python', 'Python'),
-        ('C', 'C'),
-        ('HTML/CSS/JavaScript', 'HTML + CSS + JavaScript'),
+        ('Python', 'py'),
+        ('C', 'c'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
