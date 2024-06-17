@@ -6,7 +6,7 @@ from homepage.models import Project
 class CodeSnippet(models.Model):
     project =models.ForeignKey(Project,on_delete=models.CASCADE)
     title =models.CharField(max_length=255,blank=True)
-    code= models.TextField()
+    code= models.TextField(blank=True)
     
     def __str__(self):
         return f'{self.title}.{self.project.language}'
@@ -23,3 +23,7 @@ class CodeSnippet(models.Model):
         if not self.title:
             self.title = self.project.title
         super().save(*args, **kwargs)
+
+# Import the signals module to connect the signals
+# the signals that automatically create a first snippet when the project is created
+import homepage.signals
