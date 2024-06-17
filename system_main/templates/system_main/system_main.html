@@ -7,19 +7,103 @@
 <div>
     <h2>Snippets</h2>
     <ul>
-        ul
         {% for snippet in snippets %}
-        snipet
-            <li>
-                <h3>{{ snippet.title }}</h3>
-                <p><strong>Project:</strong> {{ snippet.project.name }}</p>
-                <form method="post" class="code-form">
-                    {% csrf_token %}
-                    {{ code_snippet_form.as_p }}
-                    <button type="submit">Save Code</button>
-                </form>
-            </li>
-        {% endfor %}
+        <li>
+            <h3>{{ snippet.title }}</h3>
+            {{ snippet.project.name }}</p>
+            <form method="post" class="code-form">
+                {% csrf_token %}
+                <div>
+                    <label for="id_code">Code:</label>
+                    <div class="editor-container">
+                        <textarea id="code-{{ snippet.id }}" name="code" rows="10">{{ snippet.code }}</textarea>
+                        <div class="resizer" id="resizer-{{ snippet.id }}"></div>
+                    </div>
+                </div>
+            </form>
+        </li>
+    {% endfor %}
     </ul>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var snippetTextareas = document.querySelectorAll('textarea[id^="code-"]');
+        snippetTextareas.forEach(function(textarea) {
+            var editor = CodeMirror.fromTextArea(textarea, {
+                lineNumbers: true,
+                mode: "python",  // Change to your desired language
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                theme: "dracula"  // Set the theme to dracula for a dark background
+            });
+
+            var resizer = document.getElementById('resizer-' + textarea.id.split('-')[1]);
+            resizer.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                window.addEventListener('mousemove', resize);
+                window.addEventListener('mouseup', stopResize);
+                
+                function resize(e) {
+                    editor.setSize(null, e.clientY - editor.getWrapperElement().getBoundingClientRect().top + 'px');
+                }
+
+                function stopResize() {
+                    window.removeEventListener('mousemove', resize);
+                    window.removeEventListener('mouseup', stopResize);
+                }
+            });
+
+            // Enable real-time resizing
+            editor.on("change", function() {
+                textarea.value = editor.getValue();
+            });
+
+            window.addEventListener('resize', function() {
+                editor.setSize("100%", "auto");
+            });
+
+            editor.setSize("100%", "auto");
+        });
+
+        var newCodeTextarea = document.getElementById('newCodeInput');
+        var newEditor = CodeMirror.fromTextArea(newCodeTextarea, {
+            lineNumbers: true,
+            mode: "python",  // Change to your desired language
+            matchBrackets: true,
+            autoCloseBrackets: true
+        });
+
+        newEditor.on("change", function() {
+            newCodeTextarea.value = newEditor.getValue();
+        });
+
+        window.addEventListener('resize', function() {
+            newEditor.setSize("100%", "auto");
+        });
+
+        newEditor.setSize("100%", "auto");
+    });
+
+</script>
+
+<style>
+    .editor-container {
+        position: relative;
+        border: 1px solid #ccc;
+    }
+    .resizer {
+        width: 100%;
+        height: 10px;
+        background: #333;
+        cursor: row-resize;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    .CodeMirror {
+        background: #282a36; /* Dracula theme background */
+        color: #f8f8f2; /* Dracula theme text color */
+    }
+</style>
 {% endblock %}

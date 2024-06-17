@@ -42,7 +42,7 @@ def system_main(request,username,project_title):
         'project': project,
         'writting_code_snippet':writting_code_snippet,
         'create_new_snippet_form':create_new_snippet_form,
-        'snippet':snippets,
+        'snippets':snippets,
         'username':username
     }
     return render (request,'system_main/system_main.html',params)
