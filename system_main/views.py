@@ -3,6 +3,7 @@ from homepage.models import Project
 from .models import CodeSnippet
 from django.contrib.auth.models import User
 from .forms import CodeSnippetForm,CreateSnippetForm
+from django.views.decorators.http import require_POST
 
 
 def system_main(request,username,project_title):
@@ -25,14 +26,14 @@ def system_main(request,username,project_title):
                 else:
                     new_snippet.title=project.title
                     new_snippet.save()
-                    return redirect('main_system', username, project_title)
+                    return redirect('system_main', username, project_title)
             
         ##Save the code after writting    
         elif 'writting_code_snippet' in request.POST:
             writting_code_snippet = CodeSnippetForm(request.post)
             if writting_code_snippet.is_valid():
                 writting_code_snippet.save()
-                return redirect('main_system', username, project_title)
+                return redirect('system_main', username, project_title)
     else:
         writting_code_snippet = CodeSnippetForm()
         create_new_snippet_form = CreateSnippetForm()
@@ -46,3 +47,12 @@ def system_main(request,username,project_title):
         'username':username
     }
     return render (request,'system_main/system_main.html',params)
+
+@require_POST
+def save_snippet(request, username, project_title, snippet_id):
+   snippet = get_object_or_404(CodeSnippet, id=snippet_id)
+   if request.method == 'POST':
+        snippet.code = request.POST.get('code', '')
+        snippet.save()
+        return redirect('system_main', username, project_title)
+

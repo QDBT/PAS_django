@@ -11,7 +11,7 @@
         <li>
             <h3>{{ snippet.title }}</h3>
             {{ snippet.project.name }}</p>
-            <form method="post" class="code-form">
+            <form method="post" action="{% url 'save_snippet' username project.title snippet.id %}" class="code-form">
                 {% csrf_token %}
                 <div>
                     <label for="id_code">Code:</label>
@@ -65,24 +65,6 @@
 
             editor.setSize("100%", "auto");
         });
-
-        var newCodeTextarea = document.getElementById('newCodeInput');
-        var newEditor = CodeMirror.fromTextArea(newCodeTextarea, {
-            lineNumbers: true,
-            mode: "python",  // Change to your desired language
-            matchBrackets: true,
-            autoCloseBrackets: true
-        });
-
-        newEditor.on("change", function() {
-            newCodeTextarea.value = newEditor.getValue();
-        });
-
-        window.addEventListener('resize', function() {
-            newEditor.setSize("100%", "auto");
-        });
-
-        newEditor.setSize("100%", "auto");
     });
 
 </script>

@@ -34,18 +34,11 @@
                     <h1>Files</h1> 
                     <button id="createSnippetButton" class="btn btn-success">New Snippet</button>
                     <!--form for new Snippet-->
-                    <form id="createSnippetForm" method="post" style="display:none;">
+                    <form id="create_new_snippet_form" method="post" style="display:none;">
                         {% csrf_token %}
                         <div>
-                            <label for="id_title">Title:</label>
                             {{ create_new_snippet_form.as_p }}
                         </div>
-                        <div>
-                            <label for="id_code">Code:</label>
-                            <textarea id="newCodeInput" name="code" class="codemirror" rows="10"></textarea>
-                        </div>
-                        <input type="hidden" name="create_snippet" value="1">
-                        <button type="submit" class="btn btn-primary">Create Snippet</button>
                     </form>
                     <!--Snippet List-->
                     {% for snippet in snippets %}
@@ -74,6 +67,35 @@
         document.getElementById('createSnippetButton').addEventListener('click', function() {
         document.getElementById('create_new_snippet_form').style.display = 'block';
     });
+
+    // Debug button functionality
+    document.getElementById('Debug').addEventListener('click', function() {
+            const activeEditor = document.querySelector('.CodeMirror');
+            if (activeEditor) {
+                const textarea = activeEditor.CodeMirror.getTextArea();
+                textarea.value = activeEditor.CodeMirror.getValue(); // Ensure textarea value is updated
+                console.log('Textarea value before submission:', textarea.value); 
+                const form = textarea.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            } else {
+                checkCodeMirrorValue();
+            }
+        });
+
+        function checkCodeMirrorValue() {
+        // Ensure CodeMirror instance is available
+        var codeMirrorInstance = document.querySelector('.CodeMirror');
+        if (codeMirrorInstance) {
+            var editor = codeMirrorInstance.CodeMirror;
+            console.log('CodeMirror Value:', editor.getValue());
+        } else {
+            console.log('No CodeMirror instance found');
+        }
+    }
+
+    // Call this function in the console to check values
     </script>
    
     <!-- Bootstrap JS and dependencies -->
