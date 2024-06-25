@@ -74,13 +74,40 @@
             if (activeEditor) {
                 const textarea = activeEditor.CodeMirror.getTextArea();
                 textarea.value = activeEditor.CodeMirror.getValue(); // Ensure textarea value is updated
-                console.log('Textarea value before submission:', textarea.value); 
                 const form = textarea.closest('form');
                 if (form) {
-                    form.submit();
+                    const snippetId = textarea.id.split('-')[1];
+                    console.log("Snippet ID:", snippetId); // Log the snippet ID
+                    const code = textarea.value;
+                    const url = `/'{{username}}'/'{{project.title}}'/save_snippet/${snippetId}/`;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ code: code })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log("data:",'{{data}}')
+                            return response.text().then(text => { throw new Error(text) });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Snippet saved successfully:', data);
+                        document.getElementById('output').innerText = data.output;
+                        document.getElementById('error').innerText = data.error;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred: ' + error.message);
+                    });
                 }
             } else {
                 checkCodeMirrorValue();
+                alert('No active editor to save.');
             }
         });
 

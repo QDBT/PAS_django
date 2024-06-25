@@ -1,10 +1,15 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from homepage.models import Project
-from .models import CodeSnippet
+from .models import CodeSnippet,CodeRecord
 from django.contrib.auth.models import User
 from .forms import CodeSnippetForm,CreateSnippetForm
 from django.views.decorators.http import require_POST
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .runcode import run_code
+import subprocess
+import sys
+import json
 
 def system_main(request,username,project_title):
     project = get_object_or_404(Project, title=project_title)
@@ -50,9 +55,18 @@ def system_main(request,username,project_title):
 
 @require_POST
 def save_snippet(request, username, project_title, snippet_id):
-   snippet = get_object_or_404(CodeSnippet, id=snippet_id)
-   if request.method == 'POST':
-        snippet.code = request.POST.get('code', '')
-        snippet.save()
-        return redirect('system_main', username, project_title)
+    snippet = get_object_or_404(CodeSnippet, id=snippet_id)
+    data = json.loads(request.body)
+    original_code = data.get('code', '')
+
+    # Create a CodeRecord entry
+    code_record = CodeRecord.objects.create(CodeSnippet=snippet, original_code=original_code)
+
+    # Run the code and get the output and error
+    output, error = run_code(original_code)
+    code_record.fixed_code = output  # Store the output as fixed code for simplicity
+    code_record.save()
+
+    # Return the output and error to the frontend
+    return JsonResponse({'output': output, 'error': error})
 
