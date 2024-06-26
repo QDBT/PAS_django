@@ -11,6 +11,8 @@ import subprocess
 import sys
 import json
 
+# Require username, project_title to connect to this views
+
 def system_main(request,username,project_title):
     project = get_object_or_404(Project, title=project_title)
     snippets = CodeSnippet.objects.filter(project=project)
@@ -56,17 +58,47 @@ def system_main(request,username,project_title):
 @require_POST
 def save_snippet(request, username, project_title, snippet_id):
     snippet = get_object_or_404(CodeSnippet, id=snippet_id)
+
+    # Get the Code from the frontend
     data = json.loads(request.body)
-    original_code = data.get('code', '')
 
-    # Create a CodeRecord entry
-    code_record = CodeRecord.objects.create(CodeSnippet=snippet, original_code=original_code)
+    # Update the Snippet for backend so it can show for the next time 
+    snippet.code = data.get('code', '')
+    snippet.save()
 
-    # Run the code and get the output and error
-    output, error = run_code(original_code)
-    code_record.fixed_code = output  # Store the output as fixed code for simplicity
-    code_record.save()
+    # CodeRecord if it exists(if the code debuged before),
+    if CodeRecord.objects.filter(CodeSnippet=snippet).exists():
+        latest_code_record = CodeRecord.objects.filter(CodeSnippet=snippet).order_by('-created_at').first()
+        
+        #If the CodeRecord is exits ,checked the code is the same with the CodeRecord
+        if latest_code_record and snippet.code == latest_code_record.original_code:
 
+            #if the the code is the same, only show the lasted without create or debug anything
+            output = latest_code_record.output
+            error = latest_code_record.error
+            print("the same with lastest")
+
+        #if the code is different, create new record and debug it
+        else:
+            # Create a CodeRecord entry
+            code_record = CodeRecord.objects.create(CodeSnippet=snippet, original_code=snippet.code)
+
+            # Run the code and get the output and error
+            output, error = run_code(snippet.code)
+            code_record.output = output  # Store the output as fixed code for simplicity
+            code_record.error = error
+            code_record.save()
+
+    #if the Code never debuged before, save and debug it    
+    else:
+        # Create a CodeRecord entry
+        code_record = CodeRecord.objects.create(CodeSnippet=snippet, original_code=snippet.code)
+
+        # Run the code and get the output and error
+        output, error = run_code(snippet.code)
+        code_record.output = output  # Store the output as fixed code for simplicity
+        code_record.error = error
+        code_record.save()
     # Return the output and error to the frontend
     return JsonResponse({'output': output, 'error': error})
 

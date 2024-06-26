@@ -17,7 +17,9 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="logo mr-2" id="logo">
-                    <img src="{% static 'images/Logo.jpg' %}" height="30px" width="80px">
+                    <a href="{% url 'home' username %}">
+                        <img src="{% static 'images/Logo.jpg' %}" height="30px" width="80px">
+                    </a>
                 </div>
                 <div class="project-title">
                     <h1 class="h5">{{ project.title }}</h1> <!-- Smaller title size -->
@@ -43,7 +45,7 @@
                     <!--Snippet List-->
                     {% for snippet in snippets %}
                         <div>
-                            {{ snippet.title }}
+                            
                         </div>
                     {% endfor %}
                 </div>

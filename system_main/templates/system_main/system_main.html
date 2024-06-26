@@ -35,6 +35,10 @@
                 <pre id="output"></pre>
                 <pre id="error"></pre>
             </div>
+            <div id="feedback-container">
+                <h3>Feedback</h3>
+                <div id="feedback"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -115,6 +119,25 @@
         padding: 10px;
         background: #f8f8f8;
         min-height: 300px;
+    }
+
+    #feedback-container {
+        display:block;
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+    }
+
+    #feedback-container h3 {
+        margin-top: 0;
+    }
+
+    #feedback {
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        min-height: 100px;
     }
 </style>
 {% endblock %}
