@@ -24,8 +24,16 @@ class CodeRecord(models.Model):
     original_code=models.TextField()
     output=models.TextField(null=True,blank=True)
     error=models.TextField(null=True,blank=True)
+    feedback_only_word=models.TextField(null=True,blank=True)
+    feedback_only_code=models.TextField(null=True,blank=True)
+    feedback_all=models.TextField(null=True,blank=True)
+    token_input=models.SmallIntegerField(null=True,blank=True)
+    token_respawn=models.SmallIntegerField(null=True,blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
 
+    def tokens(self):
+        return (self.token_input or 0) + (self.token_respawn or 0)
+    
     def __str__(self):
         return f'Record for {self.CodeSnippet.title} at {self.created_at}'
 # Import the signals module to connect the signals
