@@ -28,6 +28,7 @@
                     <i class="fa-solid fa-play"></i>
                     <span>Run</span>
                 </button>
+                <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
             </div>
         </div>
         <div class="">
@@ -79,7 +80,8 @@
                 const form = textarea.closest('form');
                 if (form) {
                     const snippetId = textarea.id.split('-')[1];
-                    console.log("Snippet ID:", snippetId); // Log the snippet ID
+                    console.log("Snippet ID:", snippetId);
+                    document.getElementById('current-snippet-id').value = snippetId; // Log the snippet ID
                     const code = textarea.value;
                     const url = `/'{{username}}'/'{{project.title}}'/save_snippet/${snippetId}/`;
                     fetch(url, {
@@ -111,6 +113,9 @@
                 checkCodeMirrorValue();
                 alert('No active editor to save.');
             }
+
+            // Display the help option after running the code
+            document.getElementById('help-option').style.display = 'block';
         });
 
         function checkCodeMirrorValue() {

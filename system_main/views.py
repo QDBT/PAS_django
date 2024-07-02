@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .runcode import run_code
+from .API_OpenAI import OpenAI_API
 import subprocess
 import sys
 import json
@@ -102,3 +103,22 @@ def save_snippet(request, username, project_title, snippet_id):
     # Return the output and error to the frontend
     return JsonResponse({'output': output, 'error': error})
 
+def feedback(request,username,project_title,snippet_id):
+    snippet = get_object_or_404(CodeSnippet, id=snippet_id)
+    latest_code_record = CodeRecord.objects.filter(CodeSnippet=snippet).order_by('-created_at').first()
+
+    data = json.loads(request.body)
+    feedback_option = data.get('feedback_option')
+
+    content=[]
+
+    if latest_code_record.output:
+        content.append(latest_code_record.output)
+    if latest_code_record.error:
+        content.append(latest_code_record.error)
+    content.extend(latest_code_record.original_code)
+    content_string = "".join(content)
+    system_message=f"Fixed it and show me {feedback_option}"
+
+    API_respawn = OpenAI_API(content_string,system_message)
+    return JsonResponse({'output':API_respawn})

@@ -24,7 +24,7 @@ class CodeRecord(models.Model):
     original_code=models.TextField()
     output=models.TextField(null=True,blank=True)
     error=models.TextField(null=True,blank=True)
-    feedback_only_word=models.TextField(null=True,blank=True)
+    feedback_without_code=models.TextField(null=True,blank=True)
     feedback_only_code=models.TextField(null=True,blank=True)
     feedback_all=models.TextField(null=True,blank=True)
     token_input=models.SmallIntegerField(null=True,blank=True)
