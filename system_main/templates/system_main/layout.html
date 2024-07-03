@@ -58,6 +58,10 @@
     </div>
 
     <script>
+
+        
+        let CanActiveDisplay = true;
+
         //Sidebar open/close
         document.getElementById('SideBarButton').addEventListener('click', function() {
             const sidebar = document.querySelector('.SideBar');
@@ -115,7 +119,9 @@
             }
 
             // Display the help option after running the code
-            document.getElementById('help-option').style.display = 'block';
+            if (CanActiveDisplay){
+                document.getElementById('help-option').style.display = 'block';
+            }
         });
 
         function checkCodeMirrorValue() {

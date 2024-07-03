@@ -46,7 +46,7 @@
                 <div>
                     <h3>Feedback</h3>
                     <div class="feedback-options">
-                        <a id="without-code" class="feedback-option active">Without Code</a>
+                        <a id="without-code" class="feedback-option">Without Code</a>
                         <a id="only-code" class="feedback-option">Only Code</a>
                     </div>
                 </div>
@@ -109,6 +109,12 @@
          document.getElementById('please-help').addEventListener('click', function() {
             document.getElementById('feedback-container').style.display = 'block';
             document.getElementById('help-option').style.display = 'none';
+            CanActiveDisplay = false;
+        });
+        
+        // Handle the do it myself click
+        document.getElementById('do-it-myself').addEventListener('click', function() {
+            document.getElementById('help-option').style.display = 'none';
         });
 
         // Function to send the selected feedback option to the backend
@@ -146,14 +152,14 @@
         onlyCodeOption.addEventListener("click", function() {
             onlyCodeOption.classList.add("active");
             withoutCodeOption.classList.remove("active");
-            feedback.textContent = "Displaying only code feedback.";
+            feedback.textContent = "Wait for FeedBack Only Code";
             sendFeedback('only_code');
         });
 
         withoutCodeOption.addEventListener("click", function() {
             withoutCodeOption.classList.add("active");
             onlyCodeOption.classList.remove("active");
-            feedback.textContent = "Displaying feedback without code.";
+            feedback.textContent = "Wait for FeedBack Without Code";
             sendFeedback('without_code');
         });
     });
