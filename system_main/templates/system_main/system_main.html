@@ -5,20 +5,15 @@
 
 {% block content %}
 <div class="container">
-    <div class="row"></div>
+    <div class="row"></div>   
         <div class="col-md-6">
             <h2>Snippets</h2>
             <ul>
                 {% for snippet in snippets %}
                 <li>
-                    <h3>{{ snippet.title }}</h3>
-                    {{ snippet.project.name }}</p>
                     <form method="post" action="{% url 'save_snippet' username project.title snippet.id %}" class="code-form">
                         {% csrf_token %}
                         <div>
-                            <label for="id_code">Code:</label>
-                            <span>Snippet_id={{ snippet.id}} </span>
-                            <span>Language={{ project.language }} </span>
                             <div class="editor-container">
                                 <textarea id="code-{{ snippet.id }}" name="code" rows="10">{{ snippet.code }}</textarea>
                                 <div class="resizer" id="resizer-{{ snippet.id }}"></div>
@@ -30,11 +25,6 @@
             </ul>
         </div>
         <div class="col-md-6">
-            <h2>Output</h2>
-            <div id="output-container">
-                <pre id="output"></pre>
-                <pre id="error"></pre>
-            </div>
             <div id="help-option">
                 Do you need help?
                 <div id="help-options">
@@ -50,7 +40,14 @@
                         <a id="only-code" class="feedback-option">Only Code</a>
                     </div>
                 </div>
-                <div id="feedback"></div>
+                <div>
+                    <pre id="feedback"></pre>
+                </div>
+            </div>
+            <h2>Output</h2>
+            <div id="output-container">
+                <pre id="output"></pre>
+                <pre id="error"></pre>
             </div>
         </div>
     </div>

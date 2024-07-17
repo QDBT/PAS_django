@@ -38,16 +38,16 @@ def OpenAI_API(contextx,system_message=None):
     )
 
     respawn_message= completion.choices[0].message.content
-    respawn_tokens = enc.encode(respawn_message)
+    respawn_tokens = len(enc.encode(respawn_message))
 
     print(f"System Tokens: {system_tokens}")
     print(f"User Tokens: {user_tokens}")
     print(f"Total Input Tokens: {total_input_tokens}")
     print(f"\n{respawn_message}")
-    print(f"respawn_tokens={len(respawn_tokens)}\n")
+    print(f"respawn_tokens={respawn_tokens}\n")
 
     #for token in respawn_tokens:
     #    token_text = enc.decode([token])
     #    print(f"Token: {token}, Text: '{token_text}'")
 
-    return(respawn_message)
+    return([respawn_message,total_input_tokens,respawn_tokens])
