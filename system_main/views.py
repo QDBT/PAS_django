@@ -6,7 +6,7 @@ from .forms import CodeSnippetForm,CreateSnippetForm
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .self_library import run_code,IsSameCode
+from .self_library import run_code,IsSameCode,compare_code,CanAskAI
 from .API_OpenAI import OpenAI_API
 import subprocess
 import sys
@@ -88,6 +88,7 @@ def save_snippet(request, username, project_title, snippet_id):
         code_record.output = output  # Store the output as fixed code for simplicity
         code_record.error = error
         code_record.save()
+        print("code_record.save successful")
 
 
 
@@ -99,25 +100,22 @@ def feedback(request,username,project_title,snippet_id):
     
     snippet = get_object_or_404(CodeSnippet, id=snippet_id)
     lastest_code_record = CodeRecord.objects.filter(CodeSnippet=snippet).order_by('-created_at').first()
+    feedback_only_code = lastest_code_record.feedback_only_code
+    feedback_without_code = lastest_code_record.feedback_without_code 
     data = json.loads(request.body)
     feedback_option = data.get('feedback_option')
     output=None
+    diff = None
 
     #CanAskAI is the permission to run the API
     #CanAskAI always actives and only deactives when both options (without_code and only_code) are choosen before
     #It is for block multiple same feedback if the originalCode is unchanged or the same option
     #So it can reduced input token
-    if lastest_code_record.feedback_without_code and lastest_code_record.feedback_only_code:
-        CanAskAI = False
-    else:
-        CanAskAI = True
-
-    #check if CanAskAI was actived when debug
-    #If Actived, run OpenAI_API
-    if CanAskAI:
+    if CanAskAI(feedback_only_code,feedback_without_code,feedback_option):
         #Send to system what should it respawn depend feedback_option(without_code or only_code)
         system_message=f"Fixed it and show me {feedback_option}"
-
+        if feedback_option =="only_code":
+            system_message = system_message.__add__(" and don't put```")
         #init what we send to API
         content=[]
 
@@ -133,38 +131,41 @@ def feedback(request,username,project_title,snippet_id):
 
         output=None
         print(f"before API{lastest_code_record.feedback_only_code}")
+        #Run OpenAI_API
+        API_respawn = OpenAI_API(content_string,system_message)
 
+        lastest_code_record.token_input += API_respawn[1]
+        lastest_code_record.token_respawn += API_respawn[2]
         #Check the feedback_option and the permission to ask AI
-        if not lastest_code_record.feedback_without_code and feedback_option =="without_code":
-            #Run OpenAI_API
-            API_respawn = OpenAI_API(content_string,system_message)
+
+        if feedback_option =="without_code":
 
             #The variable that returned from API will be input to the lastest_code_record
-            lastest_code_record.feedback_without_code=API_respawn[0]
-            lastest_code_record.token_input += API_respawn[1]
-            lastest_code_record.token_respawn += API_respawn[2]
-            output = lastest_code_record.feedback_without_code
+            feedback_without_code=API_respawn[0]
+            output = feedback_without_code
+
+
             
-        elif not lastest_code_record.feedback_only_code and feedback_option =="only_code":
-            #Run OpenAI_API
-            API_respawn = OpenAI_API(content_string,system_message)
-
-            #The variable that returned from API will be input to the lastest_code_record
-            lastest_code_record.feedback_only_code = API_respawn[0]
-            lastest_code_record.token_input += API_respawn[1]
-            lastest_code_record.token_respawn += API_respawn[2]
-            output = lastest_code_record.feedback_only_code
+        elif feedback_option =="only_code":
         
+            #The variable that returned from API will be input to the lastest_code_record
+            feedback_only_code = API_respawn[0]
+            output = feedback_only_code
+
+            diff = compare_code(lastest_code_record.original_code,feedback_only_code)
+
         #Save it to send frontend next time if the feedback is the same
+        print(diff)
         lastest_code_record.save()
-        return JsonResponse({'output':output})
+        return JsonResponse({'output':output, 'diff':diff})
     
     #This would happen if (debug the same code or had used all of first time feedback_option in the same code)
     else:
         print(f"Block Feedback because had used {feedback_option}")
         if feedback_option =="without_code":
-            output = lastest_code_record.feedback_without_code
+            output = feedback_without_code
         elif feedback_option =="only_code":
-            output = lastest_code_record.feedback_only_code
-        return JsonResponse({'output':output})
+            output = feedback_only_code
+            diff = compare_code(lastest_code_record.original_code,feedback_only_code)
+        return JsonResponse({'output':output, 'diff':diff})
 

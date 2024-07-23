@@ -1,5 +1,6 @@
 from .models import CodeSnippet,CodeRecord
 import subprocess
+import difflib
 
 def run_code(code):
     try:
@@ -41,3 +42,25 @@ def IsSameCode(snippet):
     else:
         #print("The First code")
         return False
+    
+
+# Compare the code by User with the code by ChatGPT
+def compare_code(original_code,compare_code):
+    original_code_lines = original_code.strip().split('\n')
+    compare_code_line = compare_code.strip().split('\n')
+    diff = list(difflib.unified_diff(original_code_lines, compare_code_line, lineterm=''))
+    print(f'original={original_code_lines}')
+    print(f'feedback={compare_code_line}')
+    print (diff)
+    return diff
+
+#CanAskAI is the permission to run the API
+def CanAskAI(only_code,without_code,option):
+    if option == "only_code":
+        return not only_code
+    elif option == "without_code":
+        return not without_code
+    else :
+        return True
+
+        

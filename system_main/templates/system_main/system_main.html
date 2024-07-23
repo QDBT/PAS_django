@@ -136,14 +136,46 @@
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(data=> {
                 console.log('Feedback option sent successfully:', data);
-                document.getElementById('feedback').innerText = data.output;
+                if (option == "only_code"){
+                    displayFeedbackOnlyCode(data.output,data.diff);
+                }
+                else {
+                    displayFeedbackWithoutCode(data.output)
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('An error occurred: ' + error.message);
             });
+        }
+
+        function displayFeedbackOnlyCode(output,diff) {
+            feedback.innerHTML = '<div id="feedback-code"></div>';
+            var feedbackCodeDiv = document.getElementById("feedback-code");
+            
+            diff.forEach(line => {
+                var lineElement = document.createElement('div');
+                lineElement.textContent = line;
+                
+                if (line.startsWith('+')) {
+                    lineElement.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';  // Green background for additions
+                } else if (line.startsWith('-')) {
+                    lineElement.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';  // Red background for deletions
+                } else if (line.startsWith('@')) {
+                    lineElement.style.backgroundColor = 'rgba(0, 0, 255, 0.2)';  // Blue background for line info
+                }
+
+                feedbackCodeDiv.appendChild(lineElement);
+            });
+
+            feedback.innerHTML += `<p>${output}</p>`;
+        }
+        
+
+        function displayFeedbackWithoutCode(output){
+            document.getElementById("feedback").innerText = output;
         }
 
         onlyCodeOption.addEventListener("click", function() {

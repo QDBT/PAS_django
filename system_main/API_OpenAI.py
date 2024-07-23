@@ -14,7 +14,6 @@ def OpenAI_API(contextx,system_message=None):
 
     messages.append({"role":"system","content":system_message})
 
-
     # Join the content into one sentence to avoid redundancy
     combined_content = "".join(contextx)
     messages.append({"role": "user", "content": combined_content})
