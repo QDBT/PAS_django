@@ -10,9 +10,9 @@
     <script src="https://kit.fontawesome.com/9cd06d1369.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 topbar d-flex justify-content-start align-items-center">
+    <div class="AllContainer">
+        <header class="topbar">
+            <div class="topbar-left">
                 <button id="SideBarButton" class="btn btn-primary mr-2">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -24,57 +24,41 @@
                 <div class="project-title">
                     <h1 class="h5">{{ project.title }}</h1> <!-- Smaller title size -->
                 </div>
+            </div>
+            <div class="topbar-middle">
                 <button id="Debug" class="btn btn-success mb-4">
                     <i class="fa-solid fa-play"></i>
                     <span>Run</span>
                 </button>
-                <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
             </div>
-        </div>
-        <div class="">
-            <div class="">
-                <div class="SideBar bg-light p-3">
-                    <h1>Files</h1> 
-                    <button id="createSnippetButton" class="btn btn-success">New Snippet</button>
-                    <!--form for new Snippet-->
-                    <form id="create_new_snippet_form" method="post" style="display:none;">
-                        {% csrf_token %}
-                        <div>
-                            {{ create_new_snippet_form.as_p }}
+            <div class="topbar-right">
+                {{ project.user }}
+            </div>
+            <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
+        </header>
+        <div class="SideBarMain-container" >
+            <div class="SideBarContainer-1 bg-light">
+                <div class="SideBarContainer-2">
+                    <div class="SearchContainer-1">
+                        <div class="SearchContainer-2">
+                            <div class="Search-final">
+                                <input type="text" placeholder="Search" id="Search">
+                            </div>
                         </div>
-                    </form>
-                    <!--Snippet List-->
-                    {% for snippet in snippets %}
-                        <div>
-                            
-                        </div>
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
-            <div class="content-area">
-                {% block content %}{% endblock %}
+            <div class="divider">
+                <div class="blanket"></div>
+                <div class="grip"></div>
             </div>
+            <main id="main-content" class="MainContainer">
+                {% block content %}{% endblock %}
+            </main>
         </div>
     </div>
 
     <script>
-
-        
-        let CanActiveDisplay = true;
-
-        //Sidebar open/close
-        document.getElementById('SideBarButton').addEventListener('click', function() {
-            const sidebar = document.querySelector('.SideBar');
-            const contentArea = document.querySelector('.content-area');
-            sidebar.classList.toggle('closed');
-            contentArea.classList.toggle('full-width');
-        });
-
-        //CreateSnippetForm appear when click Create
-        document.getElementById('createSnippetButton').addEventListener('click', function() {
-        document.getElementById('create_new_snippet_form').style.display = 'block';
-    });
-
     // Debug button functionality
     document.getElementById('Debug').addEventListener('click', function() {
             const activeEditor = document.querySelector('.CodeMirror');
@@ -134,8 +118,58 @@
             console.log('No CodeMirror instance found');
         }
     }
+//----------------------------------------------------------------
+    //  libraries
+    function compareDividers(div1, div2) {
+        // Collect differences
+        const differences = [];
 
-    // Call this function in the console to check values
+        // Check attributes (for simplicity, we only check 'data-transformx' here, but you can add more attributes)
+        const attributes = ['data-transformx'];
+        attributes.forEach(attr => {
+            const val1 = div1.getAttribute(attr);
+            const val2 = div2.getAttribute(attr);
+            if (val1 !== val2) {
+                differences.push(`Difference in attribute '${attr}': ${val1} vs ${val2}`);
+            }
+        });
+
+        // Check class names
+        if (div1.className !== div2.className) {
+            differences.push(`Difference in class names: '${div1.className}' vs '${div2.className}'`);
+        }
+
+        // Check CSS custom properties
+        const cssProperties = ['--transformX', '--height', '--width'];
+        cssProperties.forEach(cssProp => {
+            const val1 = getComputedStyle(div1).getPropertyValue(cssProp);
+            const val2 = getComputedStyle(div2).getPropertyValue(cssProp);
+            if (val1 !== val2) {
+                differences.push(`Difference in CSS variable '${cssProp}': ${val1} vs ${val2}`);
+            }
+        });
+
+        // Check bounding box positions (top, left, width, height)
+        const rect1 = div1.getBoundingClientRect();
+        const rect2 = div2.getBoundingClientRect();
+        if (rect1.left !== rect2.left || rect1.top !== rect2.top || rect1.width !== rect2.width || rect1.height !== rect2.height) {
+            differences.push(`Difference in position: left=${rect1.left}, top=${rect1.top}, width=${rect1.width}, height=${rect1.height} vs left=${rect2.left}, top=${rect2.top}, width=${rect2.width}, height=${rect2.height}`);
+        }
+
+        // Check inner HTML content
+        if (div1.innerHTML !== div2.innerHTML) {
+            differences.push('Difference in inner HTML content');
+        }
+
+        // Output all differences or confirm equality
+        if (differences.length > 0) {
+            //console.log('Differences found:', differences);
+            return false;
+        } else {
+           // console.log('No differences found between the two dividers.');
+            return true;
+        }
+    }
     </script>
    
     <!-- Bootstrap JS and dependencies -->
@@ -151,27 +185,392 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/addon/edit/matchbrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/addon/edit/closebrackets.min.js"></script>
 
+    <!--Interact.js for Drag and Resize-->
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            //Initial CSS style
+            const root = document.getElement;
+            const Topbar=document.querySelector(".topbar");
+            const SidebarMain = document.querySelector('.SideBarMain-container');
+            let TopbarHeight = '50px';
+            Topbar.style.setProperty('height', TopbarHeight);
+            SidebarMain.style.setProperty('top', TopbarHeight);
+            SidebarMain.style.setProperty('height', `calc(100% - ${TopbarHeight})`);
+
+            //Initial CSS style for sidebar
+            const sidebar = document.querySelector('.SideBarContainer-1');
+            let sidebarWidth = 250;
+            let CurrentSidebarWidth =sidebarWidth;
+            sidebar.style.setProperty('--width', `${CurrentSidebarWidth}px`);
+            let sidebarWidthBeforeClosed = 0;
+
+            const sidebarNextElement = sidebar.nextElementSibling;
+            let dividerNextToSidebar; // Find the divider next to sidebar
+            // Loop to find the closest sibling with the class 'divider'
+            while (sidebarNextElement) {
+                if (sidebarNextElement.classList.contains('divider')) {
+                    dividerNextToSidebar = sidebarNextElement;// define the divider next to sidebar
+                    break; // Stop the loop once the .divider element is found
+                }
+                sidebarNextElement = sidebarNextElement.nextElementSibling; // Move to the next sibling
+            }
+
+            //Sidebar open/close
+            document.getElementById('SideBarButton').addEventListener('click', function() {
+                if (CurrentSidebarWidth >0) {
+                    //Collapse sidebar
+                    sidebarWidthBeforeClosed = CurrentSidebarWidth;
+                    CurrentSidebarWidth = 0;
+                } else{
+                    //Expand sidebar
+                    CurrentSidebarWidth = sidebarWidthBeforeClosed;
+                }
+                console.log(CurrentSidebarWidth);
+                sidebar.style.setProperty('--width', `${CurrentSidebarWidth}px`);// set the width
+                dividerNextToSidebar.style.setProperty('--transformX', `${CurrentSidebarWidth}px`);// set the divider
+            });
+
+            //Initial CSS style for divider
+            const dividers=document.querySelectorAll(".divider");//Select all the divider elements
+            let isDragging = false;
+            let startX = 0;
+            let currentX = 0;
+            let InitialTransformX=0;//The initial position of the divider being dragged
+            let CurrentDivider = null;//Track which divider is being dragged
+            let transformVariable = '';//Track the CSS variable name for each divider
+            let DividerHeight='910px';
+            let DividerWidth='6px';
+            let gripWidth ='2px';
+            let gripHeight ='20px';
+            let cursor='col-resize';
+
+            //Initial each divider with its own --transformX Variable
+            dividers.forEach((divider,index)=>{
+                const TransformXVar = `--transformX-divider${index+1}`;//Unique Name for each divide
+                divider.style.setProperty('--height',DividerHeight);
+                divider.style.setProperty('--width',DividerWidth);
+                divider.style.setProperty('--gripWidth',gripWidth);
+                divider.style.setProperty('--gripHeight',gripHeight);
+                divider.style.setProperty('--cursor',cursor);
+                //Initialize each divider's transformX variable
+                if (index == 0) {
+                    divider.style.setProperty('--transformX', `${CurrentSidebarWidth}px`);//--transformX Value is the same with sidebarWidth
+                } else {
+                    divider.style.setProperty('--transformX', '0px');
+                }//Initialize each divider's transformX variable
+                divider.setAttribute('data-transformX',TransformXVar);//Store the transformX variable
+            });
+            
+            //Set the function to move divider
+            dividers.forEach(divider=>{
+                //Mousedown events to start dragging a specific divider
+                divider.addEventListener('mousedown',function(e) {
+                    isDragging =true;
+                    startX=e.clientX;//get the intialX position of the mouse
+                    currentDivider = divider;// Track the current divider being dragged
+                    InitialTransformX=parseFloat(getComputedStyle(divider).getPropertyValue('--transformX')); //Get the current --transformX value
+                    console.log('transformX=',InitialTransformX);
+                    console.log('currentDivider',currentDivider);
+                });
+
+                //Mouse move event to handle dragging
+                document.addEventListener('mousemove',function(e){
+                    if (!isDragging || !currentDivider){
+                        return;
+                    }
+                    // Calculate the new transformX based on mouse movement
+                    currentX = e.clientX - startX;
+                    const newTransformX = InitialTransformX + currentX;
+                    
+                    CurrentSidebarWidth=newTransformX; //Set the current sidebar width for sidebar Open/close buttons 
+                    if (CurrentSidebarWidth<30){
+                        CurrentSidebarWidth=0; //Set the current to easy to close sidebar
+                    }
+                    currentDivider.style.setProperty('--transformX', `${newTransformX}px`);// set the divider
+                    // Because Some reasons {if (CurrentDivider == dividerNextToSidebar)} always false so I use libaries function) {
+                        if (compareDividers(currentDivider, dividerNextToSidebar)){ //Can use this to compare between two elements, true if no difference
+                        sidebar.style.setProperty('--width', `${CurrentSidebarWidth}px`);// if no different, set the sidebar width
+                    }
+                });
+
+                // Mouse up event to stop dragging 
+                document.addEventListener('mouseup', function() {
+                    if (isDragging) {
+                        console.log('mouseup');
+                        isDragging = false;
+                        currentDivider = null; // Reset the current divider
+                    }
+                });
+            });
+//-----------------------------------------------------------------------------------------------
+            var snippetTextareas = document.querySelectorAll('textarea[id^="code-"]');
+            var snippetId = null;
+            snippetTextareas.forEach(function(textarea) {
+                var editor = CodeMirror.fromTextArea(textarea, {
+                    lineNumbers: true,
+                    mode: "python",  // Change to your desired language
+                    matchBrackets: true,
+                    autoCloseBrackets: true,
+                    theme: "dracula"  // Set the theme to dracula for a dark background
+                });
+    
+                // Enable real-time resizing
+                editor.on("change", function() {
+                    textarea.value = editor.getValue();
+                });
+    
+                window.addEventListener('resize', function() {
+                    editor.setSize("100%", "auto");
+                });
+    
+                editor.setSize("100%", "auto");
+    
+            });
+//----------------------------------------------------------------    
+            //FeedBack
+            var onlyCodeOption = document.getElementById("only-code");
+            var withoutCodeOption = document.getElementById("without-code");
+            var feedback = document.getElementById("feedback");
+            
+            //The Option will appear after debug
+            //FeedBack will appear if the option been clicked
+             // Handle the help option click
+             document.getElementById('please-help').addEventListener('click', function() {
+                document.getElementById('feedback-container').style.display = 'block';
+                document.getElementById('help-option').style.display = 'none';
+                CanActiveDisplay = false;
+            });
+            
+            // Handle the do it myself click
+            document.getElementById('do-it-myself').addEventListener('click', function() {
+                document.getElementById('help-option').style.display = 'none';
+            });
+    
+            // Function to send the selected feedback option to the backend
+            function sendFeedback(option) {
+                var snippetId = document.getElementById('current-snippet-id').value; // Get snippet ID from hidden input
+                console.log(snippetId)
+                if (!snippetId) {
+                    alert("No snippet selected");
+                    return;
+                }
+                fetch(`/'{{username}}'/'{{project.title}}'/feedback/50/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ feedback_option: option })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data=> {
+                    console.log('Feedback option sent successfully:', data);
+                    if (option == "only_code"){
+                        displayFeedbackOnlyCode(data.output,data.diff);
+                    }
+                    else {
+                        displayFeedbackWithoutCode(data.output)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred: ' + error.message);
+                });
+            }
+    
+            function displayFeedbackOnlyCode(output,diff) {
+                feedback.innerHTML = '<div id="feedback-code"></div>';
+                var feedbackCodeDiv = document.getElementById("feedback-code");
+                
+                diff.forEach(line => {
+                    var lineElement = document.createElement('div');
+                    lineElement.textContent = line;
+                    
+                    if (line.startsWith('+')) {
+                        lineElement.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';  // Green background for additions
+                    } else if (line.startsWith('-')) {
+                        lineElement.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';  // Red background for deletions
+                    } else if (line.startsWith('@')) {
+                        lineElement.style.backgroundColor = 'rgba(0, 0, 255, 0.2)';  // Blue background for line info
+                    }
+    
+                    feedbackCodeDiv.appendChild(lineElement);
+                });
+    
+                feedback.innerHTML += `<p>${output}</p>`;
+            }
+            
+    
+            function displayFeedbackWithoutCode(output){
+                document.getElementById("feedback").innerText = output;
+            }
+    
+            onlyCodeOption.addEventListener("click", function() {
+                onlyCodeOption.classList.add("active");
+                withoutCodeOption.classList.remove("active");
+                feedback.textContent = "Wait for FeedBack Only Code";
+                sendFeedback('only_code');
+            });
+    
+            withoutCodeOption.addEventListener("click", function() {
+                withoutCodeOption.classList.add("active");
+                onlyCodeOption.classList.remove("active");
+                feedback.textContent = "Wait for FeedBack Without Code";
+                sendFeedback('without_code');
+            });
+        });
+    
+    </script>
 <style>
+    .AllContainer {
+        align-items: stretch;
+        border-width:0px;
+        border-style:solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis:auto;
+        flex-direction:column;
+        flex-shrink: 0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        position:fixed;
+        top:0px;
+        left:0px;
+        height:100%;
+        width:100%;
+    }
+
     .topbar {
-            height: 50px; /* Reduce the height of the top bar */
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6;
+        position: absolute;
+        display:grid;
+        grid-template-columns: 1fr max-content 1fr;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing:border-box;
+        flex-basis:auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline:none;
+        min-height:0px;
+        min-width: 0px;
+        width:100%;
+        top:0px;
+        left:0px;
+        background-color: #f8f9fa;
+        padding: 8px 12px;
+        border-bottom: 1px solid #dee2e6;
+        align-items: center;
+        -webkit-box-align:center;
     }
 
-    .SideBar {
-            height: calc(100vh - 50px); /* Full viewport height minus the top bar */
-            overflow-y: auto; /* Enable vertical scrolling */
-            transition: transform 0.3s ease, width 0.3s ease; /* Smooth slide effect */
-            position: fixed;
-            top: 50px; /* Start below the top bar */
-            left: 0;
-            width: 200px; /* Adjust the width as needed */
-            z-index: 1040;
+    .topbar-left {
+        border-width: 0px;
+        border-style:solid;
+        box-sizing:border-box;
+        flex-basis:auto;
+        flex-shrink: 0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align:center;
+        align-items: center;
+        -webkit-box-pack:start;
+        justify-content: flex-start;
     }
 
-    .SideBar.closed {
-            transform: translateX(-100%); /* Slide out of view */
+    .topbar-middle {
+        display:flex;
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        flex-basis:auto;
+        flex-shrink: 0;
+        min-height:0px;
+        min-width:0px;
+        position:relative;
+        flex-direction:row;
+        gap:8px;
+        align-items:center;
+    }
+
+    .topbar-right {
+        display:flex;
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        flex-basis:auto;
+        flex-shrink: 0;
+        min-height:0px;
+        min-width:0px;
+        flex-direction:row;
+        gap:6px;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .SideBarMain-container {
+        display:flex;
+        position:absolute;
+        flex-direction: column;
+        flex-basis:auto;
+        flex-shrink: 0;
+        align-items: stretch;
+        min-height:0;
+        min-width:0;
+        width:100%;
+        left:0px;
+    }
+    
+    .SideBarContainer-1 {
+        display:flex;
+        align-items: stretch;
+        border-width: 0;
+        border-style:solid;
+        box-sizing: border-box;
+        flex:1 1 auto;
+        height: calc(100vh - 50px); /* Full viewport height minus the top bar */
+        overflow-y: auto; /* Enable vertical scrolling */
+        transition: transform 0.3s ease, width 0.3s ease; /* Smooth slide effect */
+        position: absolute;
+        top: 0px; /* Start below the top bar */
+        left: 0;
+        width:var(--width,250px);
+        z-index: 1040;
+        align-items:stretch;
+        min-height:0px;
+        min-width: 0px;         
+    }
+
+    .SideBarContainer-2 {
+        display:flex;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline:none;
+        min-height: 0px;
+        position: absolute;
+        flex-direction: column;
+        gap: 4px;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+        min-width:180px;
+        animation:0.2s ease-in-out 0s 1 normal none running;
     }
 
     #SideBarButton {
@@ -189,14 +588,118 @@
         width:100px;
     }
 
-    .content-area {
-        transition: margin-left 0.3s ease, width 0.3s ease;;
-        margin-left: 200px; /* Adjust this value to match the sidebar width */
+    .SearchContainer-1{
+        display: flex;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing  : border-box;
+        flex-basis  :auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        min-height: 0px;
+        min-width: 0px;
+        padding-left:8px;
+        width:var(--width);
     }
 
-    .content-area.full-width {
-        margin-left: 0px;
+    /* Watch more in replit */
+    .SearchContainer-2{
+        display: flex;
+        align-items: stretch;
+        flex: 1 1 auto;
+        outline:none ;
+        min-height: 0px;
+        min-width: 0px;
+        width: 100%;
+        height:100%;
+        flex-direction: row;
+        justify-content:center;
+        border-width: 0px;
+        border-style: solid;
+        border-radius:4px;
     }
+
+    .Search-final{
+        display:flex;
+    }
+
+    /*Divider*/
+    .divider{
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        display:flex;
+        flex-basis:auto;
+        flex-direction:auto;
+        flex-shrink: 0;
+        outline:none;
+        -webkit-box-align:center;
+        align-items: center;
+        -webkit-box-pack:center;
+        justify-content: center;
+        position:absolute;
+        top:0px;
+        left:0px;
+        opacity:1;
+        transition:opacity 0.2s 200ms;
+        transform:translate(var(--transformX,0px), var(--transformY,0px));
+        width:var(--width);
+        height:var(--height);
+        cursor:var(--cursor);
+        background-color: grey;
+    }
+
+    .blanket{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        display: flex;
+        flex-basis:auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        position:absolute;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+    }
+
+    .grip{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        display: flex;
+        flex-basis:auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        border-radius:4px;
+        visibility:var(--gripVisibility);
+        background:var(--gripColor,#2B3245);
+        height:var(--gripHeight);
+        width: var(--gripWidth);
+        transition-property: opacity, width, height, background-color;
+        transition-timing-function:ease-out;
+    }
+    main{
+        display:block;
+    }
+
+    .MainContainer {
+        animation:0.2s ease-in-out 0s 1 normal none;
+        transition:opacity 0.2s 200ms;
+    }
+
 </style>
 </body>
 </html>

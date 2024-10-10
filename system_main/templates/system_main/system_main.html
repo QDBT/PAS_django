@@ -5,11 +5,11 @@
 
 {% block content %}
 <div class="container">
-    <div class="row"></div>   
-        <div class="col-md-6">
-            <h2>Snippets</h2>
-            <ul>
-                {% for snippet in snippets %}
+    <!-- Panel 1 (Snippets) -->   
+    <div id ="panel-1" class="panel resizable">
+        <h2>Snippets</h2>
+        <ul>
+            {% for snippet in snippets %}
                 <li>
                     <form method="post" action="{% url 'save_snippet' username project.title snippet.id %}" class="code-form">
                         {% csrf_token %}
@@ -22,178 +22,45 @@
                     </form>
                 </li>
             {% endfor %}
-            </ul>
+        </ul>
+    </div>
+    <!-- Divider for resizing -->
+
+    <!--Help option-->
+    <div id="help-option">
+        Do you need help?
+        <div id="help-options">
+            <button id="please-help" class="btn btn-primary">Please help me</button>
+            <button id="do-it-myself" class="btn btn-secondary">I will do it myself</button>
         </div>
-        <div class="col-md-6">
-            <div id="help-option">
-                Do you need help?
-                <div id="help-options">
-                    <button id="please-help" class="btn btn-primary">Please help me</button>
-                    <button id="do-it-myself" class="btn btn-secondary">I will do it myself</button>
+    </div>
+
+    <!-- Panel 2 (FeedBack) -->
+    <div id="panel-2" class="panel resizable">
+        <div id="feedback-container">
+            <div>
+                <h3>Feedback</h3>
+                <div class="feedback-options">
+                    <a id="without-code" class="feedback-option">Without Code</a>
+                    <a id="only-code" class="feedback-option">Only Code</a>
                 </div>
             </div>
-            <div id="feedback-container">
-                <div>
-                    <h3>Feedback</h3>
-                    <div class="feedback-options">
-                        <a id="without-code" class="feedback-option">Without Code</a>
-                        <a id="only-code" class="feedback-option">Only Code</a>
-                    </div>
-                </div>
-                <div>
-                    <pre id="feedback"></pre>
-                </div>
-            </div>
-            <h2>Output</h2>
-            <div id="output-container">
-                <pre id="output"></pre>
-                <pre id="error"></pre>
+            <div>
+                <pre id="feedback"></pre>
             </div>
         </div>
     </div>
+    <!-- Divider for resizing -->
+
+    <!-- Panel 3 (Output)-->
+    <div id ="panel-3" class="panel resizable">
+        <h2>Output</h2>
+        <div id="output-container">
+            <pre id="output"></pre>
+            <pre id="error"></pre>
+        </div>
+    </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var snippetTextareas = document.querySelectorAll('textarea[id^="code-"]');
-        var snippetId = null;
-        snippetTextareas.forEach(function(textarea) {
-            var editor = CodeMirror.fromTextArea(textarea, {
-                lineNumbers: true,
-                mode: "python",  // Change to your desired language
-                matchBrackets: true,
-                autoCloseBrackets: true,
-                theme: "dracula"  // Set the theme to dracula for a dark background
-            });
-
-            var resizer = document.getElementById('resizer-' + textarea.id.split('-')[1]);
-            resizer.addEventListener('mousedown', function(e) {
-                e.preventDefault();
-                window.addEventListener('mousemove', resize);
-                window.addEventListener('mouseup', stopResize);
-                
-                function resize(e) {
-                    editor.setSize(null, e.clientY - editor.getWrapperElement().getBoundingClientRect().top + 'px');
-                }
-
-                function stopResize() {
-                    window.removeEventListener('mousemove', resize);
-                    window.removeEventListener('mouseup', stopResize);
-                }
-            });
-
-            // Enable real-time resizing
-            editor.on("change", function() {
-                textarea.value = editor.getValue();
-            });
-
-            window.addEventListener('resize', function() {
-                editor.setSize("100%", "auto");
-            });
-
-            editor.setSize("100%", "auto");
-
-        });
-
-        //FeedBack
-        var onlyCodeOption = document.getElementById("only-code");
-        var withoutCodeOption = document.getElementById("without-code");
-        var feedback = document.getElementById("feedback");
-        
-        //The Option will appear after debug
-        //FeedBack will appear if the option been clicked
-         // Handle the help option click
-         document.getElementById('please-help').addEventListener('click', function() {
-            document.getElementById('feedback-container').style.display = 'block';
-            document.getElementById('help-option').style.display = 'none';
-            CanActiveDisplay = false;
-        });
-        
-        // Handle the do it myself click
-        document.getElementById('do-it-myself').addEventListener('click', function() {
-            document.getElementById('help-option').style.display = 'none';
-        });
-
-        // Function to send the selected feedback option to the backend
-        function sendFeedback(option) {
-            var snippetId = document.getElementById('current-snippet-id').value; // Get snippet ID from hidden input
-            console.log(snippetId)
-            if (!snippetId) {
-                alert("No snippet selected");
-                return;
-            }
-            fetch(`/'{{username}}'/'{{project.title}}'/feedback/50/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ feedback_option: option })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text) });
-                }
-                return response.json();
-            })
-            .then(data=> {
-                console.log('Feedback option sent successfully:', data);
-                if (option == "only_code"){
-                    displayFeedbackOnlyCode(data.output,data.diff);
-                }
-                else {
-                    displayFeedbackWithoutCode(data.output)
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred: ' + error.message);
-            });
-        }
-
-        function displayFeedbackOnlyCode(output,diff) {
-            feedback.innerHTML = '<div id="feedback-code"></div>';
-            var feedbackCodeDiv = document.getElementById("feedback-code");
-            
-            diff.forEach(line => {
-                var lineElement = document.createElement('div');
-                lineElement.textContent = line;
-                
-                if (line.startsWith('+')) {
-                    lineElement.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';  // Green background for additions
-                } else if (line.startsWith('-')) {
-                    lineElement.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';  // Red background for deletions
-                } else if (line.startsWith('@')) {
-                    lineElement.style.backgroundColor = 'rgba(0, 0, 255, 0.2)';  // Blue background for line info
-                }
-
-                feedbackCodeDiv.appendChild(lineElement);
-            });
-
-            feedback.innerHTML += `<p>${output}</p>`;
-        }
-        
-
-        function displayFeedbackWithoutCode(output){
-            document.getElementById("feedback").innerText = output;
-        }
-
-        onlyCodeOption.addEventListener("click", function() {
-            onlyCodeOption.classList.add("active");
-            withoutCodeOption.classList.remove("active");
-            feedback.textContent = "Wait for FeedBack Only Code";
-            sendFeedback('only_code');
-        });
-
-        withoutCodeOption.addEventListener("click", function() {
-            withoutCodeOption.classList.add("active");
-            onlyCodeOption.classList.remove("active");
-            feedback.textContent = "Wait for FeedBack Without Code";
-            sendFeedback('without_code');
-        });
-    });
-
-</script>
 
 <style>
     .editor-container {
@@ -217,10 +84,18 @@
 
     .container {
         display: flex;
+        height:100vh; 
+        width:100vw;
     }
-    .col-md-6 {
-        flex: 1;
-        padding: 10px;
+    
+    /* Each Panel */
+    .panel {
+        flex:1;
+        padding:10px;
+        background-color:#282a36;
+        overflow:auto;
+        min-width: 150px;
+        transition: width 0.2s, height 0.2s;
     }
     
     #output-container {
@@ -292,5 +167,64 @@
         text-decoration:none;
     }
 
+    /* Panel Style and Position */
+    .container {
+        position: relative;
+    }
+
+    .panel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #282a36;
+        color: #f8f8f2;
+        position: absolute;
+        overflow: auto;
+        box-sizing: border-box; /* Ensure padding is included in the size */
+    }
+
+    .panel.resizable {
+        min-width: 100%;
+        min-height: 100%;
+    }
+
+    .panel:hover {
+     outline: 3px solid rgba(0, 0, 0, 0); /* Makes the edge easier to catch on hover */
+    }
+
+    .panel.resizable::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border: 10px solid transparent; /* Expands the hit area by 10px */
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .panel.dragging {
+      cursor: move;
+    }
+
+    #panel-1 {
+        top: 0px;
+        left: 10px;
+    }
+
+    #panel-2 {
+        top: 0px;
+        left: 350px;
+    }
+
+    #panel-3 {
+        top: 0px;
+        left: 690px;
+    }
 </style>
 {% endblock %}
