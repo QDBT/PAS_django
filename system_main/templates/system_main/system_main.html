@@ -5,8 +5,35 @@
 
 {% block content %}
 <div class="container">
+
+    <div role="tabpanel" class="panelAll">
+        <div class="panel1">
+            <div tabindex="-1" class ="resizer">
+            </div>
+            <div class="panel2">
+                <div class="panelName">
+                    <div class="panelNameLeft">
+                        <div class="panelNameLeft1">
+                            <button class="panelNameButton">
+                                <img class="panelLanguageLogo"></img>
+                                <div class="panelNameWord"></div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panelNameRight">
+                        <div class="panelNameRight1">
+                            <button class ="panelFormatButton">
+                                <img class="panelFormatLogo"></img>
+                                <div class="panelFormatWord"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Panel 1 (Snippets) -->   
-    <div id ="panel-1" class="panel resizable">
+    <div role="tabpanel" id ="panel-1" class="panel resizable">
         <h2>Snippets</h2>
         <ul>
             {% for snippet in snippets %}
@@ -67,15 +94,7 @@
         position: relative;
         border: 1px solid #ccc;
     }
-    .resizer {
-        width: 100%;
-        height: 10px;
-        background: #333;
-        cursor: row-resize;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-    }
+
     .CodeMirror {
         background: #282a36; /* Dracula theme background */
         color: #f8f8f2; /* Dracula theme text color */
@@ -89,14 +108,6 @@
     }
     
     /* Each Panel */
-    .panel {
-        flex:1;
-        padding:10px;
-        background-color:#282a36;
-        overflow:auto;
-        min-width: 150px;
-        transition: width 0.2s, height 0.2s;
-    }
     
     #output-container {
         border: 1px solid #ccc;
@@ -172,57 +183,330 @@
         position: relative;
     }
 
-    .panel {
+    .panelAll {
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display:flex;
+        flex-basis:auto;
+        flex-direction: column;
+        flex-shrink:0;
+        outline:none;
+        min-height:0px;
+        min-width: 0px;
+        background-color: var(--background-default,#1C2333);
+        --surface-background:var(--background-default,#1C2333);
+        --interactive-background:var(--background-higher,#2B3245);
+        --interactive-background--active:var(--background-highest,#3C445C);
+        --interactive-border:var(--outline-dimmer,#3C445C);
+        --interactive-border--hover:var(--outline-stronger,#5F677A);
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+        top:0px;
+        left:0px;
+        container: pane/ inline-size;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        transition-property: transform;
+        transition-timing-function: ease-out;
+        transform: translate(var(--tranformX),var(--tranformY)) scale(var(--scale));
+        transform-origin: var(--transformOriginX),top;
+        width:var(--width);
+        height:var(--height);
+        transition-duration: var(--transitionDuration);
+        --fixed-position-offset-x:var(--fixedPositionOffsetX);
+        --fixed-position-offset-y:var(--fixedPositionOffsetY);
+    }
+    
+    .panel1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width:0px;
+        border-style: solid;
+        box-sizing:border-box;
+        display: flex;
+        flex-direction:column;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        position: relative;
+        width:100%;
+        -webkit-box-flex:1;
+        overflow:auto;
+        z-index:1;
+        user-select:var(--userSelect);
+    }
+    
+    .resizer{
+        -webkit-align-items:stretch;
+        -webkit-box-align:stretch;
+        -ms-flex-align:stretch;
+        align-items: stretch;
+        border-width:0;
+        border-style:solid;
+        box-sizing:border-box;
+        display:flex;
+        -webkit-flex-basis:auto;
+        -ms-flex-preferred-size:auto;
+        flex-basis:auto;
+        -webkit-flex-direction: column;
+        flex-direction:column;
+        -webkit-flex-shrink:0;
+        -ms-flex-negative:0;
+        flex-shrink: 0;
+        outline:none;
+        min-height:0px;
+        min-width: 0px;
+    }
+
+    .panel2{
+        -webkit-box-align:stretch;
+        align-items:stretch;
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        flex-basis:auto;
+        flex-shrink:0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        flex-direction:column;
+        overflow-y:auto;
+        width:100%;
+        height:100%;
+    }
+
+    .panelName{
+        border-top-width:0px;
+        border-right-width:0px;
+        border-left-width: 0px;
+        border-top-style:solid;
+        border-right-style:solid;
+        border-left-style:solid;
+        box-sizing: border-box;
+        flex-basis:auto;
+        flex-shrink:0;
+        outline:none;
+        min-height: 0px;
+        min-width: 0px;
+        height:28px;
+        display:flex;
+        flex-direction: row;
+        -webkit-box-align:center;
+        align-items:center;
+        border-bottom:1px solid var(--background-higher,#2B3245);
+        opacity:0.8;
+    }
+    .panelNameLeft{
+        border-width:0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline:none;
+        min-height: 0px;
+        min-width:0px;
+        display: flex;
+        flex-direction:row;
+        -webkit-box-align:center;
+        align-items: center;
+        -webkit-box-flex:1;
+        overflow-x: auto;
         height: 100%;
-        border: 1px solid #ccc;
-        padding: 10px;
-        background-color: #282a36;
-        color: #f8f8f2;
-        position: absolute;
-        overflow: auto;
-        box-sizing: border-box; /* Ensure padding is included in the size */
+        scrollbar-width: none;
     }
-
-    .panel.resizable {
-        min-width: 100%;
-        min-height: 100%;
+    .panelNameLeft1{
+        border-width:0px;
+        border-style:solid;
+        flex-basis:auto;
+        flex-shrink:0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        display:flex;
+        flex-direction: row;
+        -webkit-box-align:center;
+        align-items: center;
+        height:100%;
+        padding-left:2px;
+        padding-right:2px;
     }
-
-    .panel:hover {
-     outline: 3px solid rgba(0, 0, 0, 0); /* Makes the edge easier to catch on hover */
+    .panelNameButton{
+        box-sizing:border-box;
+        display:flex;
+        flex-basis:auto;
+        flex-shrink:0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: inherit;
+        font-style:inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size:inherit;
+        font-family:inherit;
+        font-optical-sizing:inherit;
+        font-size-adjust:inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height:normal;
+        app-region:no-drag;
+        user-select:none;
+        padding:2px;
+        flex-direction:row;
+        gap:4px;
+        -webkit-box-align:center;
+        align-items: center;
+        transition-duration: 120ms;
+        transition-timing-function:ease-out;
+        border-radius:4px;
+        transition-property:background-color,box-shadow,opacity;
+        opacity:0.8;
     }
-
-    .panel.resizable::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
-        border: 10px solid transparent; /* Expands the hit area by 10px */
-        z-index: 2;
-        pointer-events: none;
+    .panelNameButton:hover{
+        cursor:pointer;
     }
-
+    .panelLanguageLogo{
+        min-width:6px;
+        min-height:6px;
+        -webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -ms-transform:rotate(0deg);
+        transform:rotate(0deg);
+        vertical-align:middle;
+    }
+    .panelNameWord{
+        -webkit-box-align: stretch;
+        align-items: stretch;   
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        display:flex;
+        flex-basis:auto;
+        flex-direction:column;
+        flex-shrink:0;
+        outline:none;
+        min-height: 0px;
+        min-width:0px;
+        font-size:var(--font-size-small,12px);
+    }
+    .panelNameRight{
+        border-width:0px;
+        border-style: solid;
+        box-sizing: border-box;
+        outline:none;
+        flex-shrink: 0;
+        min-height: 0px;
+        min-width:0px;
+        display: flex;
+        flex-direction:row;
+        -webkit-box-align:center;
+        align-items: center;
+        height: 100%;
+    }
+    .panelNameRight1{
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        flex-basis:auto;
+        flex-shrink:0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        display:flex;
+        flex-direction:row;
+        -webkit-box-align:center;
+        align-items:center;
+        height:100%;
+        padding-left:2px;
+        padding-right:2px;
+    }
+    .panelFormatButton{
+        box-sizing:border-box;
+        display:flex;
+        flex-basis:auto;
+        flex-shrink:0;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: inherit;
+        font-style:inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size:inherit;
+        font-family:inherit;
+        font-optical-sizing:inherit;
+        font-size-adjust:inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height:normal;
+        app-region:no-drag;
+        user-select:none;
+        padding:2px;
+        height:22px;
+        flex-direction:row;
+        gap:4px;
+        -webkit-box-align:center;
+        align-items: center;
+        transition-duration: 120ms;
+        transition-timing-function:ease-out;
+        border-radius:4px;
+        transition-property:background-color,box-shadow,opacity;
+        opacity:0.8;
+    }
+    .panelFormatButton:hover{
+        cursor:pointer;
+    }
+    .panelFormatLogo{
+        min-width:6px;
+        min-height:6px;
+        -webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -ms-transform:rotate(0deg);
+        transform:rotate(0deg);
+        vertical-align:middle;
+    }
+    .panelFormatWord{
+        -webkit-box-align: stretch;
+        align-items: stretch;   
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        display:flex;
+        flex-basis:auto;
+        flex-direction:column;
+        flex-shrink:0;
+        outline:none;
+        min-height: 0px;
+        min-width:0px;
+        font-size:var(--font-size-small,12px);
+    }
     .panel.dragging {
       cursor: move;
     }
 
     #panel-1 {
+        display: flex;
         top: 0px;
         left: 10px;
     }
 
     #panel-2 {
+        display: none;
         top: 0px;
         left: 350px;
     }
 
     #panel-3 {
+        display: none;
         top: 0px;
         left: 690px;
     }
