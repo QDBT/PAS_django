@@ -12,7 +12,19 @@
                     <div style="min-width: 100%; display: table">
                         <div class="snippetBarLeftName2">
                             <div class="snippetBarUnit">
-                                <div class="snippetBarUnit1"></div>
+                                <div class="snippetBarUnit1">
+                                    <span class="resizer">
+                                        <button class="snippetBarButton">
+                                            <div class="snippetBarButton1">
+                                                <img class="Icon"></img>
+                                            </div>
+                                            <div class="snippetBarUnitButtonName">
+                                                <span class="snippetBarButtonName1">HTML</span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                    <div class="snippetBarCloseButton"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -32,7 +44,7 @@
                     <div class="panelNameLeft">
                         <div class="panelNameLeft1">
                             <button class="panelNameButton">
-                                <img class="panelLanguageLogo"></img>
+                                <img class="Icon"></img>
                                 <div class="panelNameWord"></div>
                             </button>
                         </div>
@@ -40,7 +52,7 @@
                     <div class="panelNameRight">
                         <div class="panelNameRight1">
                             <button class ="panelFormatButton">
-                                <img class="panelFormatLogo"></img>
+                                <img class="Icon"></img>
                                 <div class="panelFormatWord"></div>
                             </button>
                         </div>
@@ -57,13 +69,13 @@
                     <div class="panelBottom">
                         <div class="resizer">
                             <button type="button" class="panelBottomButton">
-                                <img class="panelBottomIcon"></img>
+                                <img class="Icon"></img>
                             </button>
                         </div>
                         <div class="resizer">
                             <div class="resizer">
                                 <button type="button" class="panelBottomButton">
-                                    <img class="panelBottomIcon"></img>
+                                    <img class="Icon"></img>
                                 </button>
                             </div>
                         </div>
@@ -420,15 +432,6 @@
     .panelNameButton:hover{
         cursor:pointer;
     }
-    .panelLanguageLogo{
-        min-width:6px;
-        min-height:6px;
-        -webkit-transform:rotate(0deg);
-        -moz-transform:rotate(0deg);
-        -ms-transform:rotate(0deg);
-        transform:rotate(0deg);
-        vertical-align:middle;
-    }
     .panelNameWord{
         -webkit-box-align: stretch;
         align-items: stretch;   
@@ -515,7 +518,7 @@
     .panelFormatButton:hover{
         cursor:pointer;
     }
-    .panelFormatLogo{
+    .Icon{
         min-width:6px;
         min-height:6px;
         -webkit-transform:rotate(0deg);
@@ -666,16 +669,6 @@
         cursor:pointer;
         background-color:var(--interactive-background,#2B3245);
     }
-    .panelBottomIcon{
-        min-width: var(--size,12px);
-        min-height: var(--size,12px);
-        -webkit-transform: rotate(var(--rotate,0deg));
-        -moz-transform: rotate(var(--rotate,0deg));
-        -ms-transform: rotate(var(--rotate,0deg));
-        transform: rotate(var(--rotate,0deg));
-        vertical-align: middle;
-        }
-
     .blankbrick{
         -webkit-box-align:stretch;
         align-items:stretch;
@@ -798,6 +791,9 @@
         border-right-width: 1px;
         border-right-style: solid;
     }
+    .snippetBarUnit:first-of-type >div{
+        border-top-left-radius:4px;
+    }
     .snippetBarUnit1{
         border-width: 0px;
         border-style: solid;
@@ -821,6 +817,133 @@
         user-select: none;
         color: var(--foreground-dimmer,#C2C8CC);
         background-color: transparent;
+    }
+
+    .snippetBarUnit1 >span{
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 100%;
+    }
+    .snippetBarUnit1 > span > *{
+        height:100%;
+    }
+    .snippetBarButton{
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        transition-property: box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        position: relative;
+        cursor: pointer;
+        -webkit-box-align: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 6px;
+        padding-left: 6px;
+        padding-right: 6px;
+        -webkit-box-flex: 1;
+        background-color: transparent;
+        border: none;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        color: inherit;
+    }
+    .snippetBarButton:hover{
+        cursor:pointer;
+    }
+    .snippetBarButton1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        width: 16px;
+        height: 16px;
+        position: relative;
+        opacity: var(--iconOpacity,0.6);
+    }
+    .snippetBarUnitButtonName{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: var(--space-8);
+        -webkit-box-align: baseline;
+        align-items: baseline;
+        position: relative;
+        padding-right: var(--tabTitleContainerPaddingRight,0px);
+    }
+    .snippetBarUnitButtonName1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        overflow-wrap: break-word;
+        line-height: var(--lineHeight,1.6);
+        font-weight: var(--fontWeight);
+        color: var(--color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 180px;
+        display: inline-block;
+        font-size: 13px;
+        font-style: var(--fontStyle,inherit);
+    }
+
+    .snippetBarCloseButton{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 100%;
+        opacity:var(--closeButtonOpacity);
     }
     .snippetBarRight{
         -webkit-box-align: stretch;
