@@ -5,7 +5,24 @@
 
 {% block content %}
 <div class="container">
+    <div class="snippetBar">
+        <div class="snippetBarLeft">
+            <div class="snippetBarLeftName">
+                <div class="snippetBarLeftName1">
+                    <div style="min-width: 100%; display: table">
+                        <div class="snippetBarLeftName2">
+                            <div class="snippetBarUnit">
+                                <div class="snippetBarUnit1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="snippetBarRight">
 
+        </div>
+    </div>
     <div role="tabpanel" class="panelAll">
         <div class="panel1">
             <div tabindex="-1" class ="resizer">
@@ -25,6 +42,38 @@
                             <button class ="panelFormatButton">
                                 <img class="panelFormatLogo"></img>
                                 <div class="panelFormatWord"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class ="panelContent">
+                    <div class="panelContent1">
+                        <div class="panelContent2">
+                            <!-- Use Codemirror insideContent-->
+                        </div>
+                    </div>
+                </div>
+                <div style="display:block;">
+                    <div class="panelBottom">
+                        <div class="resizer">
+                            <button type="button" class="panelBottomButton">
+                                <img class="panelBottomIcon"></img>
+                            </button>
+                        </div>
+                        <div class="resizer">
+                            <div class="resizer">
+                                <button type="button" class="panelBottomButton">
+                                    <img class="panelBottomIcon"></img>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="resizer">
+                            <button type="button" disabled class="panelBottomButton"></button>
+                        </div>
+                        <div class="blankbrick"></div>
+                        <div class="resizer">
+                            <button type="button" class="panelBottomButton">
+                                <span>ln,col</span>
                             </button>
                         </div>
                     </div>
@@ -182,7 +231,7 @@
     .container {
         position: relative;
     }
-
+    /*^^^^^^^^^^^^^^ panelALL Style ^^^^^^^^^^^^^^^^^^^^^^^^^^*/
     .panelAll {
         -webkit-box-align: stretch;
         align-items: stretch;
@@ -277,6 +326,7 @@
         height:100%;
     }
 
+    /*====================================================================*/
     .panelName{
         border-top-width:0px;
         border-right-width:0px;
@@ -489,6 +539,305 @@
         min-width:0px;
         font-size:var(--font-size-small,12px);
     }
+    /*===================================================================*/
+    .panelContent{
+        position:relative;
+        overflow-y:auto;
+        width:100px;
+        z-index:3;
+    }
+    .panelContent1{
+        position:relative;
+        overflow-y:auto;
+        width:100%;
+        height:100%;
+        font-size:14px;
+        background-color:var(--background-default,#1C2333);
+    }
+    .panelContent2{
+        display:flex;
+        -webkit-box-align:stretch;
+        align-items:stretch;
+        width:100%;
+        height:100%;
+    }
+    .panelContent3Style{
+        flex:1 1 auto;
+        width:100%;
+        height:100%;
+        overflow-y:auto;
+        contain:size;
+        color: var(--foreground-default,#F5F9FC);
+        font-size:14px;
+        --indent-marker-bg-color: var(--background-higher,#2B3245);
+        --indent-marker-active-bg-color: var(--background-highest,#3C445C);
+        position:relative !important;
+        box-sizing:border-box;
+        display:flex !important;
+        flex-direction:column;
+    }
+    .panelAnnounced{
+        position:fixed;
+        top:-10000px;
+    }
+    .panelContentScroller{
+        display:flex !important;
+        align-items:flex-start !important;
+        font-family:var(--font-family-code,monospace);
+        line-height:1.4;
+        height:100%;
+        overflow-x:auto;
+        position:relative;
+        z-index:0;
+        overflow-anchor:none;
+        font-size:14px;
+        overflow:auto;
+        contain:strict;
+        scrollbar-width:none;
+    }
+
+    .panelBottom{
+        -webkit-box-align:stretch;
+        align-items:stretch;
+        border-right-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-style:solid;
+        border-bottom-style:solid;
+        border-left-style:solid;
+        box-sizing: border-box;
+        flex:1 1 auto;
+        outline:none;
+        min-height: 0px;
+        min-width: 0px;
+        display:flex;
+        flex-direction:row;
+        -webkit-box-flex:1;
+        position:relative;
+        border-top:1px solid var(--background-higher,#2B3245);
+        height:29px;
+        contain:strict;
+    }
+
+    .panelBottomButton{
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border: none;
+        background: transparent;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        color: var(--foreground-dimmest);
+        height: 100%;
+        font-size: 11px;
+        padding-left: 4px;
+        padding-right: 4px;
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        background-color: transparent;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        border-radius: 0px;
+    }
+    .panelBottomButton:hover{
+        cursor:pointer;
+        background-color:var(--interactive-background,#2B3245);
+    }
+    .panelBottomIcon{
+        min-width: var(--size,12px);
+        min-height: var(--size,12px);
+        -webkit-transform: rotate(var(--rotate,0deg));
+        -moz-transform: rotate(var(--rotate,0deg));
+        -ms-transform: rotate(var(--rotate,0deg));
+        transform: rotate(var(--rotate,0deg));
+        vertical-align: middle;
+        }
+
+    .blankbrick{
+        -webkit-box-align:stretch;
+        align-items:stretch;
+        border-width:0px;
+        border-style:solid;
+        box-sizing:border-box;
+        display:flex;
+        flex:1 1 auto;
+        flex-direction:column;
+        outline:none;
+        min-height:0px;
+        min-width:0px;
+        -webkit-box-flex:1;
+    }
+    /*vvvvvvvvvvvvvv panelALL Style vvvvvvvvvvvvvvvvvvvvvvvvvv*/
+
+    /*^^^^^^^^^^^^^^ snippetsBar Style ^^^^^^^^^^^^^^^^^^^^^^^*/
+
+    .snippetBar{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        --surface-background: var(--background-root,#0E1525);
+        --interactive-background: var(--background-default,#1C2333);
+        --interactive-background--active: var(--background-higher,#2B3245);
+        --interactive-border: var(--outline-dimmest,#2B3245);
+        --interactive-border--hover: var(--outline-default,#4E5569);
+        border-radius: 4px 4px 0 0;
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        transform-origin: var(--transformOriginX,0px) bottom;
+        top: var(--top,0px);
+        left: var(--left,360px);
+        width: var(--width,400px);
+        height: var(--height,32px);
+        transform: scale(var(--scale,1));
+        transition-duration: var(--transitionDuration,0ms);
+        transition-property: top, left, width, height;
+        transition-timing-function: ease-out;
+        background-color: 
+        color-mix(in srgb, var(--interactive-background,#1C2333) 60%, var(--surface-background,#0E1525));
+        overflow-x: hidden;
+    }
+    .snippetBarLeft{
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-flex: 1;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 100%;
+        border: none;
+    }
+    .snippetBarLeftName{
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 100%;
+        overflow: hidden;
+        --scrollbar-size: 6px;
+        position:relative;
+    }
+    .snippetBarLeftName1{
+        height:100%;
+        overflow:scroll hidden;
+    }
+    .snippetBarLeftName1 >div{
+        height:100%;
+        width:max-content;
+        display:block !important;
+    }
+    .snippetBarLeftName2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+    .snippetBarUnit{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px 0px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border-bottom-color: var(--outline-dimmest,#2B3245);
+    }
+    .snippetBarUnit:hover{
+        --closeButtonOpacity:0;
+    }
+    .snippetBarUnit:not(:last-of-type){
+        border-right-color: var(--outline-dimmest,#2B3245);
+        border-right-width: 1px;
+        border-right-style: solid;
+    }
+    .snippetBarUnit1{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        --surface-background: var(--background-root,#0E1525);
+        --interactive-background: var(--background-default,#1C2333);
+        --interactive-background--active: var(--background-higher,#2B3245);
+        --interactive-border: var(--outline-dimmest,#2B3245);
+        --interactive-border--hover: var(--outline-default,#4E5569);
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        position: relative;
+        min-width: 96px;
+        user-select: none;
+        color: var(--foreground-dimmer,#C2C8CC);
+        background-color: transparent;
+    }
+    .snippetBarRight{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px 0px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        border-bottom-color: var(--outline-dimmest,#2B3245);
+    }
+    /*vvvvvvvvvvvvvv snippetBar Style vvvvvvvvvvvvvvvvvvvvvvvv*/
     .panel.dragging {
       cursor: move;
     }
