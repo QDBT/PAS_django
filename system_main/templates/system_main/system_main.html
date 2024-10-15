@@ -7,32 +7,60 @@
 <div class="container">
     <div class="snippetBar">
         <div class="snippetBarLeft">
-            <div class="snippetBarLeftName">
-                <div class="snippetBarLeftName1">
-                    <div style="min-width: 100%; display: table">
-                        <div class="snippetBarLeftName2">
-                            <div class="snippetBarUnit">
-                                <div class="snippetBarUnit1">
-                                    <span class="resizer">
-                                        <button class="snippetBarButton">
-                                            <div class="snippetBarButton1">
-                                                <img class="Icon"></img>
-                                            </div>
-                                            <div class="snippetBarUnitButtonName">
-                                                <span class="snippetBarButtonName1">HTML</span>
-                                            </div>
-                                        </button>
-                                    </span>
-                                    <div class="snippetBarCloseButton"></div>
+            <div class="snippetBarLeft1" role="tablist">
+                <div class="snippetBarLeftName">
+                    <div class="snippetBarLeftName1">
+                        <div style="min-width: 100%; display: table">
+                            <div class="snippetBarLeftName2">
+                                <div class="snippetBarUnit">
+                                    <div class="snippetBarUnit1">
+                                        <span class="resizer">
+                                            <button class="snippetBarButton">
+                                                <div class="snippetBarButton1">
+                                                    <img class="Icon"></img>
+                                                </div>
+                                                <div class="snippetBarUnitButtonName">
+                                                    <span class="snippetBarButtonName1">HTML</span>
+                                                </div>
+                                            </button>
+                                        </span>
+                                        <div class="snippetBarCloseButton">
+                                            <button class="OptionButton">
+                                                <div class="OptionButton1">
+                                                    <div class="OptionButton2"></div>
+                                                </div>
+                                                <div class="snippetBarCloseButtonIcon">
+                                                    <img class="Icon"></img>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="snippetBarLeftCreateButton">
+                    <button class="OptionButton">
+                        <img class="Icon"></img>
+                    </button>
+                </div>
+                <div class="snippetBarLeftBlankBrick">
+                </div>
             </div>
         </div>
         <div class="snippetBarRight">
-
+            <div class="snippetBarRight1">
+                <button class="OptionButton">
+                    <img class="Icon"></img>
+                </button>
+                <button class="OptionButton">
+                    <img class="Icon"></img>
+                </button>
+                <button class="OptionButton">
+                    <img class="Icon"></img>
+                </button>
+            </div>
         </div>
     </div>
     <div role="tabpanel" class="panelAll">
@@ -734,6 +762,22 @@
         height: 100%;
         border: none;
     }
+    .snippetBarLeft1{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
     .snippetBarLeftName{
         display: flex;
         flex-direction: row;
@@ -945,6 +989,144 @@
         height: 100%;
         opacity:var(--closeButtonOpacity);
     }
+    .snippetBarCloseButton .OptionButton {
+        width: 20px;
+        height: 100%;
+        border-radius: 0px;
+        color: var(--foreground-dimmer);
+        padding-bottom: 3px;    
+    }
+    .snippetBarCloseButton .OptionButton:hover{
+        --unsavedChanges: block;
+        --closeIconDisplay: none;
+    }
+    .OptionButton{
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        transition-property: box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        border-radius: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        width: var(--width,12px);
+        height: var(--height,12px);
+    }
+    .OptionButton:hover{
+        cursor: pointer;
+    }
+    .OptionButton1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: none;
+    }
+    .OptionButton2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        width: 8px;
+        height: 8px;
+        background-color: var(--foreground-dimmer,#C2C8CC);
+        border-radius: 50%;
+    }
+    .snippetBarCloseButtonIcon{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: block;
+    }
+    .snippetBarLeftCreateButton{
+        border-width: 0px 0px 1px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 100%;
+        padding-left:4px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        border-bottom-color: var(--outline-dimmest,#2B3245);
+        border-left-color: var(--outline-dimmest,#2B3245);
+    }
+    .snippetBarLeftCreateButton button{
+        height: 24px;
+        width: 24px;
+    }
+    .snippetBarLeftBlankBrick{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px 0px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        -webkit-box-flex: 1;
+        min-width: 16px;
+        height: 100%;
+        border-bottom-color: var(--outline-dimmest,#2B3245);
+    }
+
     .snippetBarRight{
         -webkit-box-align: stretch;
         align-items: stretch;
@@ -960,6 +1142,24 @@
         flex-direction: row;
         border-bottom-color: var(--outline-dimmest,#2B3245);
     }
+    .snippetBarRight1{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        padding-right: 4px;
+        height: 31px;
+    }
+
     /*vvvvvvvvvvvvvv snippetBar Style vvvvvvvvvvvvvvvvvvvvvvvv*/
     .panel.dragging {
       cursor: move;
