@@ -4,177 +4,168 @@
 
 
 {% block content %}
-<div class="container">
-    <div class="snippetBar">
-        <div class="snippetBarLeft">
-            <div class="snippetBarLeft1" role="tablist">
-                <div class="snippetBarLeftName">
-                    <div class="snippetBarLeftName1">
-                        <div style="min-width: 100%; display: table">
-                            <div class="snippetBarLeftName2">
-                                <div class="snippetBarUnit">
-                                    <div class="snippetBarUnit1">
-                                        <span class="resizer">
-                                            <button class="snippetBarButton">
-                                                <div class="snippetBarButton1">
-                                                    <img class="Icon"></img>
-                                                </div>
-                                                <div class="snippetBarUnitButtonName">
-                                                    <span class="snippetBarButtonName1">HTML</span>
-                                                </div>
-                                            </button>
-                                        </span>
-                                        <div class="snippetBarCloseButton">
-                                            <button class="OptionButton">
-                                                <div class="OptionButton1">
-                                                    <div class="OptionButton2"></div>
-                                                </div>
-                                                <div class="snippetBarCloseButtonIcon">
-                                                    <img class="Icon"></img>
-                                                </div>
-                                            </button>
-                                        </div>
+<div class="snippetBar">
+    <div class="snippetBarLeft">
+        <div class="snippetBarLeft1" role="tablist">
+            <div class="snippetBarLeftName">
+                <div class="snippetBarLeftName1">
+                    <div style="min-width: 100%; display: table">
+                        <div class="snippetBarLeftName2">
+                            <div class="snippetBarUnit">
+                                <div class="snippetBarUnit1">
+                                    <span class="resizer">
+                                        <button class="snippetBarButton">
+                                            <div class="snippetBarButton1">
+                                                <img class="Icon"></img>
+                                            </div>
+                                            <div class="snippetBarUnitButtonName">
+                                                <span class="snippetBarButtonName1">HTML</span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                    <div class="snippetBarCloseButton">
+                                        <button class="OptionButton">
+                                            <div class="OptionButton1">
+                                                <div class="OptionButton2"></div>
+                                            </div>
+                                            <div class="snippetBarCloseButtonIcon">
+                                                <img class="Icon"></img>
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="snippetBarLeftCreateButton">
-                    <button class="OptionButton">
-                        <img class="Icon"></img>
-                    </button>
-                </div>
-                <div class="snippetBarLeftBlankBrick">
-                </div>
             </div>
-        </div>
-        <div class="snippetBarRight">
-            <div class="snippetBarRight1">
+            <div class="snippetBarLeftCreateButton">
                 <button class="OptionButton">
                     <img class="Icon"></img>
                 </button>
-                <button class="OptionButton">
-                    <img class="Icon"></img>
-                </button>
-                <button class="OptionButton">
-                    <img class="Icon"></img>
-                </button>
+            </div>
+            <div class="snippetBarLeftBlankBrick">
             </div>
         </div>
     </div>
-    <div role="tabpanel" class="panelAll">
-        <div class="panel1">
-            <div tabindex="-1" class ="resizer">
+    <div class="snippetBarRight">
+        <div class="snippetBarRight1">
+            <button class="OptionButton">
+                <img class="Icon"></img>
+            </button>
+            <button class="OptionButton">
+                <img class="Icon"></img>
+            </button>
+            <button class="OptionButton">
+                <img class="Icon"></img>
+            </button>
+        </div>
+    </div>
+</div>
+<div role="tabpanel" class="panelAll">
+    <div class="panel1"> AA
+        <div tabindex="-1" class ="resizer">
+        </div>
+        <div class="panel2">
+            <div class="panelName">
+                <div class="panelNameLeft">
+                    <div class="panelNameLeft1">
+                        <button class="panelNameButton">
+                            <img class="Icon"></img>
+                            <div class="panelNameWord"></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="panelNameRight">
+                    <div class="panelNameRight1">
+                        <button class ="panelFormatButton">
+                            <img class="Icon"></img>
+                            <div class="panelFormatWord"></div>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="panel2">
-                <div class="panelName">
-                    <div class="panelNameLeft">
-                        <div class="panelNameLeft1">
-                            <button class="panelNameButton">
-                                <img class="Icon"></img>
-                                <div class="panelNameWord"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="panelNameRight">
-                        <div class="panelNameRight1">
-                            <button class ="panelFormatButton">
-                                <img class="Icon"></img>
-                                <div class="panelFormatWord"></div>
-                            </button>
-                        </div>
+            <div class ="panelContent">
+                <div class="panelContent1">
+                    <div class="panelContent2">
+                        {% for snippet in snippets %}
+                                <form method="post" action="{% url 'save_snippet' username project.title snippet.id %}" class="code-form">
+                                    {% csrf_token %}
+                                    <div>
+                                        <div class="editor-container">
+                                            <textarea id="code-{{ snippet.id }}" name="code" rows="10">{{ snippet.code }}</textarea>
+                                            <div class="resizer" id="resizer-{{ snippet.id }}"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                        {% endfor %}
                     </div>
                 </div>
-                <div class ="panelContent">
-                    <div class="panelContent1">
-                        <div class="panelContent2">
-                            <!-- Use Codemirror insideContent-->
-                        </div>
+            </div>
+            <div style="display:block;">
+                <div class="panelBottom">
+                    <div class="resizer">
+                        <button type="button" class="panelBottomButton">
+                            <img class="Icon"></img>
+                        </button>
                     </div>
-                </div>
-                <div style="display:block;">
-                    <div class="panelBottom">
+                    <div class="resizer">
                         <div class="resizer">
                             <button type="button" class="panelBottomButton">
                                 <img class="Icon"></img>
                             </button>
                         </div>
-                        <div class="resizer">
-                            <div class="resizer">
-                                <button type="button" class="panelBottomButton">
-                                    <img class="Icon"></img>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="resizer">
-                            <button type="button" disabled class="panelBottomButton"></button>
-                        </div>
-                        <div class="blankbrick"></div>
-                        <div class="resizer">
-                            <button type="button" class="panelBottomButton">
-                                <span>ln,col</span>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="resizer">
+                        <button type="button" disabled class="panelBottomButton"></button>
+                    </div>
+                    <div class="blankbrick"></div>
+                    <div class="resizer">
+                        <button type="button" class="panelBottomButton">
+                            <span>ln,col</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Panel 1 (Snippets) -->   
-    <div role="tabpanel" id ="panel-1" class="panel resizable">
-        <h2>Snippets</h2>
-        <ul>
-            {% for snippet in snippets %}
-                <li>
-                    <form method="post" action="{% url 'save_snippet' username project.title snippet.id %}" class="code-form">
-                        {% csrf_token %}
-                        <div>
-                            <div class="editor-container">
-                                <textarea id="code-{{ snippet.id }}" name="code" rows="10">{{ snippet.code }}</textarea>
-                                <div class="resizer" id="resizer-{{ snippet.id }}"></div>
-                            </div>
-                        </div>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <!-- Divider for resizing -->
+</div>
+<!-- Panel 1 (Snippets) -->   
 
-    <!--Help option-->
-    <div id="help-option">
-        Do you need help?
-        <div id="help-options">
-            <button id="please-help" class="btn btn-primary">Please help me</button>
-            <button id="do-it-myself" class="btn btn-secondary">I will do it myself</button>
-        </div>
-    </div>
+<!-- Divider for resizing -->
 
-    <!-- Panel 2 (FeedBack) -->
-    <div id="panel-2" class="panel resizable">
-        <div id="feedback-container">
-            <div>
-                <h3>Feedback</h3>
-                <div class="feedback-options">
-                    <a id="without-code" class="feedback-option">Without Code</a>
-                    <a id="only-code" class="feedback-option">Only Code</a>
-                </div>
-            </div>
-            <div>
-                <pre id="feedback"></pre>
+<!--Help option-->
+<div id="help-option">
+    Do you need help?
+    <div id="help-options">
+        <button id="please-help" class="btn btn-primary">Please help me</button>
+        <button id="do-it-myself" class="btn btn-secondary">I will do it myself</button>
+    </div>
+</div>
+
+<!-- Panel 2 (FeedBack) -->
+<div id="panel-2" class="panel resizable">
+    <div id="feedback-container">
+        <div>
+            <h3>Feedback</h3>
+            <div class="feedback-options">
+                <a id="without-code" class="feedback-option">Without Code</a>
+                <a id="only-code" class="feedback-option">Only Code</a>
             </div>
         </div>
-    </div>
-    <!-- Divider for resizing -->
-
-    <!-- Panel 3 (Output)-->
-    <div id ="panel-3" class="panel resizable">
-        <h2>Output</h2>
-        <div id="output-container">
-            <pre id="output"></pre>
-            <pre id="error"></pre>
+        <div>
+            <pre id="feedback"></pre>
         </div>
+    </div>
+</div>
+<!-- Divider for resizing -->
+
+<!-- Panel 3 (Output)-->
+<div id ="panel-3" class="panel resizable">
+    <h2>Output</h2>
+    <div id="output-container">
+        <pre id="output"></pre>
+        <pre id="error"></pre>
     </div>
 </div>
 
@@ -299,10 +290,10 @@
         border-bottom-right-radius: 4px;
         transition-property: transform;
         transition-timing-function: ease-out;
-        transform: translate(var(--tranformX),var(--tranformY)) scale(var(--scale));
+        transform: translate(var(--transformX),var(--transformY)) scale(var(--scale));
         transform-origin: var(--transformOriginX),top;
-        width:var(--width);
-        height:var(--height);
+        width:var(--width,100%);
+        height:var(--height,100%);
         transition-duration: var(--transitionDuration);
         --fixed-position-offset-x:var(--fixedPositionOffsetX);
         --fixed-position-offset-y:var(--fixedPositionOffsetY);
@@ -574,7 +565,7 @@
     .panelContent{
         position:relative;
         overflow-y:auto;
-        width:100px;
+        width:100%;
         z-index:3;
     }
     .panelContent1{
