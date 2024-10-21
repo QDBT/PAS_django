@@ -10,54 +10,120 @@
     <script src="https://kit.fontawesome.com/9cd06d1369.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="AllContainer">
-        <header class="topbar">
-            <div class="topbar-left">
-                <button id="SideBarButton" class="btn btn-primary mr-2">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="logo mr-2" id="logo">
-                    <a href="{% url 'home' username %}">
-                        <img src="{% static 'images/Logo.jpg' %}" height="30px" width="80px">
-                    </a>
-                </div>
-                <div class="project-title">
-                    <h1 class="h5">{{ project.title }}</h1> <!-- Smaller title size -->
-                </div>
-            </div>
-            <div class="topbar-middle">
-                <button id="Debug" class="btn btn-success mb-4">
-                    <i class="fa-solid fa-play"></i>
-                    <span>Run</span>
-                </button>
-            </div>
-            <div class="topbar-right">
-                {{ project.user }}
-            </div>
-            <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
-        </header>
-        <div class="SideBarMain-container" >
-            <div class="SideBarContainer-1 bg-light">
-                <div class="SideBarContainer-2">
-                    <div class="SearchContainer-1">
-                        <div class="SearchContainer-2">
-                            <div class="Search-final">
-                                <input type="text" placeholder="Search" id="Search">
+    <div class="AllContainer1">
+        <div class="AllContainer2">
+            <div class="AllContainer3">
+                <div class="AllContainer4">
+                    <header class="topbar">
+                        <div class="topbar-left">
+                            <button id="SideBarButton" class="btn btn-primary mr-2">
+                                <i class="fa-solid fa-bars"></i>
+                            </button>
+                            <div class="logo mr-2" id="logo">
+                                <a href="{% url 'home' username %}">
+                                    <img src="{% static 'images/Logo.jpg' %}" height="30px" width="80px">
+                                </a>
+                            </div>
+                            <div class="project-title">
+                                <h1 class="h5">{{ project.title }}</h1> <!-- Smaller title size -->
                             </div>
                         </div>
+                        <div class="topbar-middle">
+                            <button id="Debug" class="btn btn-success mb-4">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Run</span>
+                            </button>
+                        </div>
+                        <div class="topbar-right">
+                            {{ project.user }}
+                        </div>
+                        <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
+                    </header>
+                    <div class="SideBarMain-container" >
+                        <div class="SideBarContainer-1">
+                            <div class="SideBarContainer-2">
+                                <div class="SideBarContainer-3">
+                                    <div class="SideBarSearch-1">
+                                        <div class="SideBarSearch-2">
+                                            <div class="SideBarSearch-3">
+                                                <div class="SideBarSearch-4">
+                                                    <div class="SideBarSearch-5">
+                                                        <div class="SideBarSearch-6">
+                                                            <input type="text" placeholder="Search" id="Search" class="SideBarSearch-Input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="SideBarFilesHistory">
+                                        <div class="resizer" style="position: relative; transition: height 120ms ease-out; height: 492px;">
+                                            <div class="SideBarFilesOptions">
+                                                <button class="SideBarFilesOptionsLeft">
+                                                    <i class="fa-solid fa-angle-down Icon"></i>
+                                                    <div class="ButtonExplain">
+                                                        <span class="ButtonExplainSpan">Files</span>
+                                                    </div>
+                                                </button>
+                                                <div class="SideBarFilesOptionsRight">
+                                                    <button class="OptionButton">
+                                                        <i class="fa-solid fa-file-circle-plus Icon"></i>
+                                                    </button>
+                                                    <button class="OptionButton">
+                                                        <i class="fa-solid fa-folder-plus Icon" style="color: #FFD43B;"></i>
+                                                    </button>
+                                                    <button class="OptionButton">
+                                                        <i class="fa-solid fa-ellipsis-vertical Icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="SideBarFilesIndex1">
+                                                <div class="SideBarFilesIndex2">
+                                                    <div class="SideBarFilesIndex3">
+                                                        <div class="SideBarFilesIndex4">
+                                                            <div class="SideBarFilesIndex5">
+                                                                <div role="tree" class="SideBarFilesIndex6">
+                                                                    <div role="treeitem" class="SideBarFilesTreeItems">
+                                                                        <div title="" class="SideBarFilesTreeItems1">
+                                                                            <div class="SideBarFilesIcon">
+                                                                                <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
+                                                                            </div>
+                                                                            <div class="SideBarFilesName">{{snippets}}</div>
+    
+                                                                        </div>
+                                                                        <button title="menu" class="SideBarFilesMenuButton">
+                                                                            <img class="Icon"></img>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="SideBarFilesHistoryDivider1">
+                                                <div class="SideBarFilesHistoryDivider2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="resizer" style="position: relative;
+                                        transition: height 120ms ease-out;
+                                        height: 340px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider">
+                            <div class="blanket"></div>
+                            <div class="grip"></div>
+                        </div>
+                        <main id="main-content" class="MainContainer">
+                            {% block content %}{% endblock %}
+                        </main>
                     </div>
                 </div>
             </div>
-            <div class="divider">
-                <div class="blanket"></div>
-                <div class="grip"></div>
-            </div>
-            <main id="main-content" class="MainContainer">
-                {% block content %}{% endblock %}
-            </main>
         </div>
     </div>
-
     <script>
     // Debug button functionality
     document.getElementById('Debug').addEventListener('click', function() {
@@ -170,6 +236,8 @@
             return true;
         }
     };
+
+    // A Function to reset all things positions in main
     function controlMainWidth(sidebarWidth,dividerWidth){
         const mainWidth=window.innerWidth-(sidebarWidth+dividerWidth);
         const panel=document.querySelector('.panelAll');
@@ -212,6 +280,15 @@
             Topbar.style.setProperty('height', `${TopbarHeight}px`);
             SidebarMain.style.setProperty('top', `${TopbarHeight}px`);
             SidebarMain.style.setProperty('height', `calc(100% - ${TopbarHeight}px)`);
+
+            //Initial Css style for OptionButtonIcon
+            const OptionButtonIcon = document.querySelectorAll(".OptionButton");
+            let IconWidth =24;
+            let IconHeight =24;
+            OptionButtonIcon.forEach(icon => {
+                icon.style.setProperty('--width', `${IconWidth}px`);
+                icon.style.setProperty('--height', `${IconHeight}px`);
+            });
 
             //Initial CSS style for sidebar
             const sidebar = document.querySelector('.SideBarContainer-1');
@@ -486,25 +563,58 @@
     
     </script>
 <style>
-    .AllContainer {
-        align-items: stretch;
-        border-width:0px;
-        border-style:solid;
-        box-sizing: border-box;
-        display: flex;
-        flex-basis:auto;
-        flex-direction:column;
-        flex-shrink: 0;
-        outline:none;
-        min-height:0px;
-        min-width:0px;
-        position:fixed;
-        top:0px;
-        left:0px;
-        height:100%;
-        width:100%;
+    body {
+        background-color: var(--background-root,#0E1525);
+        font-family: var(--font-family-default);
+        font-size: var(--font-size-default,14px);
+        color: var(--foreground-default,#f5f9f5);
+    }
+    input{
+        color:#f5f9f5;
     }
 
+    .AllContainer1{
+
+    }
+    .AllContainer2{
+        width: 100%;
+        position: relative;
+        padding-top: 0px;
+        min-height: 100vh;
+    }
+    .AllContainer3{
+        min-height: 100vh;
+        width: 100%;
+        position: relative;
+        background-color: var(--background-root,#0E1525);
+        padding-top: 0px;
+    }
+    .AllContainer4 {
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        background-color: var(--background-root,#0E1525);
+        --surface-background: var(--background-root,#0E1525);
+        --interactive-background: var(--background-default,#1C2333);
+        --interactive-background--active: var(--background-higher,#2B3245);
+        --interactive-border: var(--outline-dimmest,#2B3245);
+        --interactive-border--hover: var(--outline-default,#4E5569);
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+    }
+/******************************** Top Bar ********************************/
     .topbar {
         position: absolute;
         display:grid;
@@ -526,6 +636,7 @@
         border-bottom: 1px solid #dee2e6;
         align-items: center;
         -webkit-box-align:center;
+        color:black;
     }
 
     .topbar-left {
@@ -575,64 +686,6 @@
         justify-content: flex-end;
     }
 
-    .SideBarMain-container {
-        display:flex;
-        position:absolute;
-        flex-direction: column;
-        flex-basis:auto;
-        flex-shrink: 0;
-        align-items: stretch;
-        min-height:0;
-        min-width:0;
-        width:100%;
-        left:0px;
-    }
-    
-    .SideBarContainer-1 {
-        display:flex;
-        align-items: stretch;
-        border-width: 0;
-        border-style:solid;
-        box-sizing: border-box;
-        flex:1 1 auto;
-        height: calc(100vh - 50px); /* Full viewport height minus the top bar */
-        overflow-y: auto; /* Enable vertical scrolling */
-        transition: opacity 0.2s 200ms; /* Smooth slide effect */
-        position: absolute;
-        top: 0px; /* Start below the top bar */
-        left: 0;
-        width:var(--width,250px);
-        z-index: 1040;
-        align-items:stretch;
-        min-height:0px;
-        min-width: 0px;         
-    }
-
-    .SideBarContainer-2 {
-        display:flex;
-        align-items: stretch;
-        border-width: 0px;
-        border-style: solid;
-        box-sizing: border-box;
-        flex-basis: auto;
-        flex-shrink: 0;
-        outline:none;
-        min-height: 0px;
-        position: absolute;
-        flex-direction: column;
-        gap: 4px;
-        top:0px;
-        left:0px;
-        width:100%;
-        height:100%;
-        min-width:180px;
-        animation:0.2s ease-in-out 0s 1 normal none running;
-    }
-
-    #SideBarButton {
-            margin-left: 10px; /* Adjust margin as needed */
-    }
-
     #Debug {
         display: block;
         margin: 20px auto;
@@ -644,41 +697,640 @@
         width:100px;
     }
 
-    .SearchContainer-1{
-        display: flex;
+/******************************** Top Bar ********************************/
+
+    .SideBarMain-container {
+        -webkit-box-align: stretch;
         align-items: stretch;
         border-width: 0px;
         border-style: solid;
-        box-sizing  : border-box;
-        flex-basis  :auto;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
         flex-direction: column;
         flex-shrink: 0;
-        min-height: 0px;
-        min-width: 0px;
-        padding-left:8px;
-        width:var(--width);
-    }
-
-    /* Watch more in replit */
-    .SearchContainer-2{
-        display: flex;
-        align-items: stretch;
-        flex: 1 1 auto;
-        outline:none ;
+        outline: none;
         min-height: 0px;
         min-width: 0px;
         width: 100%;
-        height:100%;
-        flex-direction: row;
-        justify-content:center;
-        border-width: 0px;
-        border-style: solid;
-        border-radius:4px;
+        left: 0px;
+        position: absolute;
     }
 
-    .Search-final{
-        display:flex;
+/******************************** SideBar ********************************/
+
+    #SideBarButton {
+            margin-left: 10px; 
     }
+
+    .SideBarContainer-1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-flex: 1;
+        overflow: auto;
+        opacity: var(--opacity,1);
+        pointer-events: var(--pointerEvents,auto);
+        transition: opacity 0.2s 200ms;
+        width: var(--width);
+        visibility: var(--sidebarVisibility ,visible);
+    }
+
+    .SideBarContainer-2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        visibility: var(--mainContentVisibility,visible);
+    }
+
+    .SideBarContainer-3{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        position: absolute;
+        flex-direction: column;
+        gap: var(--space-4);
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        min-width: 180px;
+        animation: 0.2s ease-in-out 0s 1 normal none running animation-5j8bii;
+    }
+
+    .SideBarSearch-1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding-left: 8px;
+        z-index: 3;
+    }
+
+    .SideBarSearch-2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 3;
+    }
+    .SideBarContainer-2 > div:first-of-type > div:first-of-type{
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+    }
+
+    .SideBarSearch-3{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-pack: center;
+        justify-content: center;
+        border-radius: 4px;
+        container-name: CommandBar;
+        container-type: var(--containerType,normal);
+    }
+
+    .SideBarSearch-4{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        max-width: calc(600px - 16px);
+        font-size: var(--fontSize,14px);
+        max-width:100%;
+    }
+
+    .SideBarSearch-5{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding-bottom: 0px;
+        padding-top: var(--inputBarPadding,0px);
+        padding-inline: var(--inputBarPadding,0px);
+    }
+
+    .SideBarSearch-6{
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        background-color: var(--interactive-background,#1C2333);
+        border-color: transparent;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-flex: 1;
+        height: 2.29em;
+        border-radius: 0.29em;
+    }
+    .SideBarSearch-6:hover{
+        cursor: pointer;
+    }
+    .SideBarSearch-Input{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        height: 100%;
+        font-size: 1em;
+        padding: 0px 0.57em;
+        background-color: transparent;
+        border: 0px none;
+        outline: none 0px;
+    }
+
+    .SideBarFilesHistory{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+    }
+
+    .SideBarFilesOptions{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 36px;
+        user-select: none;
+    }
+
+    .SideBarFilesOptionsLeft{
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border: none;
+        background: transparent;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        height: 100%;
+        border-radius: 4px;
+        margin-left: 8px;
+        -webkit-box-flex: 1;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .ButtonExplain{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+
+    .ButtonExplainSpan{
+        -webkit-box-align: stretch;
+    align-items: stretch;
+    border-width: 0px;
+    border-style: solid;
+    box-sizing: border-box;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-shrink: 0;
+    outline: none;
+    min-height: 0px;
+    min-width: 0px;
+    display: inline;
+    overflow-wrap: break-word;
+    line-height: var(--lineHeight,1.6);
+    color: var(--color);
+    font-weight: var(--font-weight-medium,500);
+    font-size: 13px;
+    }
+
+    .SideBarFilesOptionsRight{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+        padding-right: 2px;
+    }
+    
+    .SideBarFilesIndex1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        overflow-y: auto;
+        scrollbar-width: none;
+        position: relative;
+    }
+
+    .SideBarFilesIndex2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding-bottom: 8px;
+    }
+
+    .SideBarFilesIndex3{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .SideBarFilesIndex4{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        padding-left:8px;
+    }
+
+    .SideBarFilesIndex5{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-width: 0px;
+        padding-left: 2px;
+        padding-right: 2px;
+        position: relative;
+        overflow-y: auto;
+        height: 100%;
+        min-height: var(--minHeight,24px);
+    }
+
+    .SideBarFilesIndex6{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        height: var(--scrollHeight,88px);
+    }
+    
+    .SideBarFilesTreeItems{
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: calc(100% - var(--rowLeftIndent,0px));
+        height: var(--rowHeight,24px);
+        transform: translateY(var(--rowY,8px));
+        margin-left: var(--rowLeftIndent,0px);
+        -webkit-box-flex: 1;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        transition-property: background-color, box-shadow;
+        transition-timing-function: ease-out;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        background-color: var(--nodeBackgroundColor,transparent);
+        border-radius: var(--borderRadius,4px);
+        cursor: pointer;
+        --hasUnsavedChangesDisplay: flex;
+        transition-duration: 0ms;
+    }
+    .SideBarFilesTreeItems:hover{
+        cursor:pointer;
+    }
+
+    .SideBarFilesTreeItems1{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-flex: 1;
+        padding-left: var(--horizontalPadding,4px);
+        padding-right: var(--horizontalPadding,4px);
+    }
+
+    .SideBarFilesIcon{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        margin-right: var(--iconTextGap,6px);
+    }
+
+    .SideBarFilesIcon img{
+        min-width: var(--iconSize,16px) !important;
+        min-height: var(--iconSize,16px) !important;
+        width: var(--iconSize,16px) !important;
+        height: var(--iconSize,16px) !important;
+    }
+
+    .SideBarFilesName{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: var(--fontSize,13px);
+        -webkit-box-flex: 1;
+        color: var(--statusColor,#C2C8CC);
+    }
+
+    .SideBarFilesMenuButton{
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        height: 100%;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        cursor: pointer;
+        transition-property: background-color, box-shadow;
+        transition-timing-function: ease-out;
+        display: var(--contextMenuButtonDisplay,none);
+        border-radius: 0 var(--borderRadius,4px) var(--borderRadius,4px) 0;
+        transition-duration: 0ms;
+    }
+
+    .SideBarFilesHistoryDivider1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        height: 0px;
+        width: 100%;
+        z-index: 1;
+        cursor: ns-resize;
+    }
+    
+    .SideBarFilesHistoryDivider2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        height: 8px;
+        top: -4px;
+    }
+/******************************** SideBar ***************************/
 
     /*Divider*/
     .divider{
