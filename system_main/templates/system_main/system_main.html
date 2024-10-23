@@ -1,5 +1,7 @@
 {% extends 'system_main/layout.html' %}
 
+{% load static %}
+
 {% block title %}Main System View{% endblock %}
 
 
@@ -8,7 +10,7 @@
     <div class="snippetBarLeft">
         <div class="snippetBarLeft1" role="tablist">
             <div class="snippetBarLeftName">
-                <div class="snippetBarLeftName1">
+                <div class="snippetBarLeftName1" role="tablist">
                     <div style="min-width: 100%; display: table">
                         <div class="snippetBarLeftName2">
                             <div class="snippetBarUnit">
@@ -16,7 +18,7 @@
                                     <span class="resizer">
                                         <button class="snippetBarButton">
                                             <div class="snippetBarButton1">
-                                                <img class="Icon"></img>
+                                                <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
                                             </div>
                                             <div class="snippetBarUnitButtonName">
                                                 <span class="snippetBarButtonName1"></span>
@@ -29,7 +31,7 @@
                                                 <div class="OptionButton2"></div>
                                             </div>
                                             <div class="snippetBarCloseButtonIcon">
-                                                <img class="Icon"></img>
+                                                <i class="fa-solid fa-xmark Icon"></i>
                                             </div>
                                         </button>
                                     </div>
@@ -41,7 +43,7 @@
             </div>
             <div class="snippetBarLeftCreateButton">
                 <button class="OptionButton">
-                    <img class="Icon"></img>
+                    <i class="fa-solid fa-plus Icon"></i>
                 </button>
             </div>
             <div class="snippetBarLeftBlankBrick">
@@ -51,13 +53,13 @@
     <div class="snippetBarRight">
         <div class="snippetBarRight1">
             <button class="OptionButton">
-                <img class="Icon"></img>
+                <i class="fa-solid fa-table-columns Icon"></i>
             </button>
             <button class="OptionButton">
-                <img class="Icon"></img>
+                <i class="fa-solid fa-up-right-and-down-left-from-center Icon"></i>
             </button>
             <button class="OptionButton">
-                <img class="Icon"></img>
+                <i class="fa-solid fa-ellipsis-vertical Icon"></i>
             </button>
         </div>
     </div>
@@ -71,9 +73,9 @@
                 <div class="panelNameLeft">
                     <div class="panelNameLeft1">
                         <button class="panelNameButton">
-                            <img class="Icon"></img>
+                            <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
                             <div class="panelNameWord">
-                                {{ snippet.lenght }}
+                                Python
                             </div>
                         </button>
                     </div>
@@ -95,7 +97,7 @@
                                     {% csrf_token %}
                                     <div>
                                         <div class="editor-container">
-                                            <textarea id="code-{{ snippet.id }}" name="code" rows="10">{{ snippet.code }}</textarea>
+                                            <textarea id="code-{{ snippet.id }}" name="code" rows="30">{{ snippet.code }}</textarea>
                                             <div class="resizer" id="resizer-{{ snippet.id }}"></div>
                                         </div>
                                     </div>
@@ -108,15 +110,15 @@
                 <div class="panelBottom">
                     <div class="resizer">
                         <button type="button" class="panelBottomButton">
-                            <img class="Icon"></img>
+                            <i class="fa-solid fa-brain Icon" style="color: #cf73e8;"></i>
+                            <div class="resizer">AI</div>
                         </button>
                     </div>
                     <div class="resizer">
-                        <div class="resizer">
-                            <button type="button" class="panelBottomButton">
-                                <img class="Icon"></img>
-                            </button>
-                        </div>
+                        <button type="button" class="panelBottomButton">
+                            <i class="fa-solid fa-check Icon" style="color: #0dd92f;"></i>
+                            <div class="resizer">Python</div>
+                        </button>
                     </div>
                     <div class="resizer">
                         <button type="button" disabled class="panelBottomButton"></button>
@@ -163,7 +165,7 @@
 <!-- Divider for resizing -->
 
 <!-- Panel 3 (Output)-->
-<div id ="panel-3" class="panel resizable">
+<div id ="panel-3" class="">
     <h2>Output</h2>
     <div id="output-container">
         <pre id="output"></pre>
@@ -174,12 +176,8 @@
 <style>
     .editor-container {
         position: relative;
-        border: 1px solid #ccc;
-    }
-
-    .CodeMirror {
-        background: #282a36; /* Dracula theme background */
-        color: #f8f8f2; /* Dracula theme text color */
+        border: 1px solid #3b2703;
+        height:100%
     }
 
 
@@ -188,7 +186,7 @@
         height:100vh; 
         width:100vw;
     }
-    
+
     /* Each Panel */
     
     #output-container {
@@ -304,21 +302,24 @@
     .panel1{
         -webkit-box-align: stretch;
         align-items: stretch;
-        border-width:0px;
+        border-width: 0px;
         border-style: solid;
-        box-sizing:border-box;
+        box-sizing: border-box;
         display: flex;
-        flex-direction:column;
-        outline:none;
-        min-height:0px;
-        min-width:0px;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
         position: relative;
-        width:100%;
-        -webkit-box-flex:1;
-        overflow:auto;
-        z-index:1;
-        user-select:var(--userSelect);
+        width: 100%;
+        -webkit-box-flex: 1;
+        overflow: auto;
+        z-index: 1;
+        user-select: var(--userSelect,auto);
     }
+
+    
     
     .resizer{
         -webkit-align-items:stretch;
@@ -343,20 +344,22 @@
     }
 
     .panel2{
-        -webkit-box-align:stretch;
-        align-items:stretch;
-        border-width:0px;
-        border-style:solid;
-        box-sizing:border-box;
-        flex-basis:auto;
-        flex-shrink:0;
-        outline:none;
-        min-height:0px;
-        min-width:0px;
-        flex-direction:column;
-        overflow-y:auto;
-        width:100%;
-        height:100%;
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow-y: hidden;
+        width: 100%;
+        height: 100%;
     }
 
     /*====================================================================*/
@@ -449,6 +452,11 @@
         border-radius:4px;
         transition-property:background-color,box-shadow,opacity;
         opacity:0.8;
+    }
+
+    .panelNameButton .Icon{
+        width:12px;
+        height:12px;
     }
     .panelNameButton:hover{
         cursor:pointer;
@@ -565,10 +573,11 @@
     }
     /*===================================================================*/
     .panelContent{
-        position:relative;
-        overflow-y:auto;
-        width:100%;
-        z-index:3;
+        position: relative;
+        overflow-y: auto;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
     }
     .panelContent1{
         position:relative;
@@ -584,6 +593,10 @@
         align-items:stretch;
         width:100%;
         height:100%;
+    }
+    .code-form{
+        width:100%;
+        flex:1 1 auto;
     }
     .panelContent3Style{
         flex:1 1 auto;
@@ -620,6 +633,7 @@
         scrollbar-width:none;
     }
 
+    /*===================================================================*/
     .panelBottom{
         -webkit-box-align:stretch;
         align-items:stretch;
@@ -639,7 +653,7 @@
         -webkit-box-flex:1;
         position:relative;
         border-top:1px solid var(--background-higher,#2B3245);
-        height:29px;
+        height:var(--height,29px);
         contain:strict;
     }
 
@@ -784,6 +798,7 @@
     .snippetBarLeftName1{
         height:100%;
         overflow:scroll hidden;
+        scrollbar-width: none;
     }
     .snippetBarLeftName1 >div{
         height:100%;
@@ -821,7 +836,7 @@
         border-bottom-color: var(--outline-dimmest,#2B3245);
     }
     .snippetBarUnit:hover{
-        --closeButtonOpacity:0;
+        --closeButtonOpacity:1;
     }
     .snippetBarUnit:not(:last-of-type){
         border-right-color: var(--outline-dimmest,#2B3245);
@@ -986,7 +1001,7 @@
         width: 20px;
         height: 100%;
         border-radius: 0px;
-        color: var(--foreground-dimmer);
+        color: var(--foreground-dimmer,#C2C8CC);
         padding-bottom: 3px;    
     }
     .snippetBarCloseButton .OptionButton:hover{
@@ -1032,6 +1047,8 @@
     }
     .OptionButton:hover{
         cursor: pointer;
+        background-color: var(--interactive-background,#2B3245);
+        transition-duration:0ms;
     }
     .OptionButton1{
         -webkit-box-align: stretch;
@@ -1158,22 +1175,47 @@
       cursor: move;
     }
 
-    #panel-1 {
-        display: flex;
-        top: 0px;
-        left: 10px;
-    }
 
     #panel-2 {
+        position:absolute;
         display: none;
         top: 0px;
-        left: 350px;
+        left: 700px;
     }
 
     #panel-3 {
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 250px;
+        min-width: 0px;
+        --surface-background: var(--background-root,#0E1525);
+        --interactive-background: var(--background-default,#1C2333);
+        --interactive-background--active: var(--background-higher,#2B3245);
+        --interactive-border: var(--outline-dimmest,#2B3245);
+        --interactive-border--hover: var(--outline-default,#4E5569);
+        border-radius: 4px 4px 0 0;
+        position: absolute;
         display: none;
-        top: 0px;
-        left: 690px;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        transform-origin: var(--transformOriginX,0px) bottom;
+        bottom: var(--bottom,0px);
+        left: var(--left,360px);
+        width: var(--width,100%);
+        height: var(--height,32px);
+        transform: scale(var(--scale,1));
+        transition-duration: var(--transitionDuration,0ms);
+        transition-property: top, left, width, height;
+        transition-timing-function: ease-out;
+        background-color: 
+        color-mix(in srgb, var(--interactive-background,#1C2333) 60%, var(--surface-background,#0E1525));
+        overflow-x: hidden;
     }
+
 </style>
 {% endblock %}

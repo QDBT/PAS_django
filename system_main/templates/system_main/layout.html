@@ -336,7 +336,11 @@
             let DividerWidth=6;
             let gripWidth =2;
             let gripHeight =20;
+            let gripColor = '#2B3245';
+            let gripColorHover ='#e2d8d87f';
             let cursor='col-resize';
+            let DividerBackgroundColor ='#0E1525';
+            let DividerBackgroundColorMove ='#4689b8';
 
 
             //Initial style for allsnippetBar
@@ -364,18 +368,28 @@
             //Initial style for allpanel
             const panels =document.querySelectorAll('.panelAll');
             let panelWidth = window.innerWidth -(CurrentSidebarWidth + DividerWidth);
+            let panelHeight = window.innerHeight - (TopbarHeight + snippetBarHeight);
             let panelTransformX = CurrentSidebarWidth + DividerWidth;
             let panelTransformY = 32;
             let panelTransformScale = 1;
+            let panelTransitionDuration = 0;
             
             
             //Initial style for each panel
             panels.forEach((panel,index)=>{
+                panel.style.setProperty('--width',`${panelWidth}px`);
+                panel.style.setProperty('--height',`${panelHeight}px`);
                 panel.style.setProperty('--transformX', `${panelTransformX}px`);
                 panel.style.setProperty('--transformY', `${panelTransformY}px`);
                 panel.style.setProperty('--scale', panelTransformScale);
+                panel.style.setProperty('--transitionDuration', `${panelTransitionDuration}ms`);
                 console.log("setupPanel");
             });
+
+            //Initial style for panel Bottom
+            const panelBottom = document.querySelector('.panelBottom');
+            let panelBottomHeight=29;
+            panelBottom.style.setProperty('--height',`${panelBottomHeight}px`);
 
             //Initial each divider with its own --transformX Variable
             dividers.forEach((divider,index)=>{
@@ -384,7 +398,13 @@
                 divider.style.setProperty('--width',`${DividerWidth}px`);
                 divider.style.setProperty('--gripWidth',`${gripWidth}px`);
                 divider.style.setProperty('--gripHeight',`${gripHeight}px`);
-                divider.style.setProperty('--cursor',`${cursor}px`);
+                divider.addEventListener('mouseenter',function(){
+                    divider.style.setProperty('--gripColor',`${gripColorHover}`)
+                });
+                divider.addEventListener('mouseleave',function(){
+                    divider.style.setProperty('--gripColor',`${gripColor}`)
+                });
+                divider.style.setProperty('--cursor',`${cursor}`);
                 //Initialize each divider's transformX variable
                 if (index == 0) {
                     divider.style.setProperty('--transformX', `${CurrentSidebarWidth}px`);//--transformX Value is the same with sidebarWidth
@@ -404,6 +424,7 @@
                     InitialTransformX=parseFloat(getComputedStyle(divider).getPropertyValue('--transformX')); //Get the current --transformX value
                     console.log('transformX=',InitialTransformX);
                     console.log('currentDivider',currentDivider);
+                    divider.style.setProperty('--background-color',`${DividerBackgroundColorMove}`);
                 });
 
                 //Mouse move event to handle dragging
@@ -434,11 +455,18 @@
                         console.log('mouseup');
                         isDragging = false;
                         currentDivider = null; // Reset the current divider
+                        divider.style.setProperty('--background-color',`${DividerBackgroundColor}`);
                     }
                 });
             });
+                window.addEventListener('resize',function(){
+                controlMainWidth(CurrentSidebarWidth,DividerWidth);
+            });
+    
 
 //-----------------------------------------------------------------------------------------------
+            
+
             var snippetTextareas = document.querySelectorAll('textarea[id^="code-"]');
             var snippetId = null;
             snippetTextareas.forEach(function(textarea) {
@@ -449,6 +477,8 @@
                     autoCloseBrackets: true,
                     theme: "dracula"  // Set the theme to dracula for a dark background
                 });
+
+                
     
                 // Enable real-time resizing
                 editor.on("change", function() {
@@ -456,11 +486,13 @@
                 });
     
                 window.addEventListener('resize', function() {
-                    editor.setSize("100%", "auto");
+                    editor.setSize("100%","100%");
+
                 });
-    
-                editor.setSize("100%", "auto");
-    
+                
+
+                editor.setSize("100%","100%");
+
             });
 //----------------------------------------------------------------    
             //FeedBack
@@ -560,7 +592,8 @@
                 sendFeedback('without_code');
             });
         });
-    
+
+
     </script>
 <style>
     body {
@@ -1355,9 +1388,11 @@
         width:var(--width);
         height:var(--height);
         cursor:var(--cursor);
-        background-color: grey;
+        background-color:var(--background-color);
     }
-
+    .divider:hover{
+        --gripColor:#e2d8d87f;
+    }
     .blanket{
         -webkit-box-align: stretch;
         align-items: stretch;
