@@ -353,18 +353,41 @@
             let snippetBarTransformOriginX = 0;
             let snippetBarTransitionDuration = 0;
             
-            //Initial style for eachsnippetBar
-            snippetBars.forEach((snippetBar,index) =>{
-                snippetBar.style.setProperty('--left', `${snippetBarLeft}px`);
-                snippetBar.style.setProperty('--top', `${snippetBarTop}px`);
-                snippetBar.style.setProperty('--width', `${snippetBarWidth}px`);
-                snippetBar.style.setProperty('--height', `${snippetBarHeight}px`);
-                snippetBar.style.setProperty('--scale', snippetBarScale);
-                snippetBar.style.setProperty('--transformOriginX', `${snippetBarTransformOriginX}px`);
-                snippetBar.style.setProperty('--transitionDuration', `${snippetBarTransitionDuration}ms`);
-                console.log("setupSnippetBar");
-            });
 
+            //Set up the data for snippetBar Position.The Position change as Top, Left, Width
+            const snippetBarPositionData = [
+                { Position:'Top-Left', 
+                  Top:0,
+                  Left:CurrentSidebarWidth + DividerWidth,
+                  TransformX:0,
+                  TransformY:0,
+                  Width: window.innerWidth -(CurrentSidebarWidth + DividerWidth),
+                  Height :snippetBarHeight },
+                { Position:'Top-Right', snippet:2}
+            ]
+
+            //function for updating snippetBar of each Position
+            function UpdateSnippetBarPosition(){
+                snippetBars.forEach((snippetBar,index) =>{
+                    const Position = snippetBar.getAttribute('panelPosition');
+                    snippetBarPositionData.forEach(item => {
+                        if (item.Position === Position) {
+                            console.log(item);
+                            snippetBar.style.setProperty('--left', `${item.Left}px`);
+                            snippetBar.style.setProperty('--top', `${item.Top}px`);
+                            snippetBar.style.setProperty('--width', `${item.Width}px`);
+                            snippetBar.style.setProperty('--height', `${item.Height}px`);
+                            snippetBar.style.setProperty('--scale', snippetBarScale);
+                            snippetBar.style.setProperty('--transformOriginX', `${item.TransformX}px`);
+                            snippetBar.style.setProperty('--transitionDuration', `${snippetBarTransitionDuration}ms`);
+                            console.log("setupSnippetBar",Position);
+                        }
+                    });
+                });
+            };
+            
+            //Initial style for each snippetBar of each Position
+            UpdateSnippetBarPosition();
             //Initial style for allpanel
             const panels =document.querySelectorAll('.panelAll');
             let panelWidth = window.innerWidth -(CurrentSidebarWidth + DividerWidth);
@@ -374,18 +397,37 @@
             let panelTransformScale = 1;
             let panelTransitionDuration = 0;
             
-            
-            //Initial style for each panel
-            panels.forEach((panel,index)=>{
-                panel.style.setProperty('--width',`${panelWidth}px`);
-                panel.style.setProperty('--height',`${panelHeight}px`);
-                panel.style.setProperty('--transformX', `${panelTransformX}px`);
-                panel.style.setProperty('--transformY', `${panelTransformY}px`);
-                panel.style.setProperty('--scale', panelTransformScale);
-                panel.style.setProperty('--transitionDuration', `${panelTransitionDuration}ms`);
-                console.log("setupPanel");
-            });
+            //Set up the data for snippetBar Position.The Position change as TransformX,TransformY, Width,Height
+            const panelPositionData =[
+                { Position:'Top-Left',
+                  Width: window.innerWidth -(CurrentSidebarWidth + DividerWidth),
+                  Height: window.innerHeight - (TopbarHeight + snippetBarHeight),
+                  TransformX:CurrentSidebarWidth + DividerWidth,
+                  TransformY:32,
+                  TransformScale:1,
+                  TransitionDuration:0  
+                }
+            ]
+            //function for updating snippetBar of each Position
+            function UpdatePanelPosition(){
+                panels.forEach((panel,index)=>{
+                    const Position = panel.getAttribute('panelPosition');
+                    panelPositionData.forEach(item => {
+                        if (panel.getAttribute('panelPosition') == Position){
+                        panel.style.setProperty('--width',`${item.Width}px`);
+                        panel.style.setProperty('--height',`${item.Height}px`);
+                        panel.style.setProperty('--transformX', `${item.TransformX}px`);
+                        panel.style.setProperty('--transformY', `${item.TransformY}px`);
+                        panel.style.setProperty('--scale', item.TransformScale);
+                        panel.style.setProperty('--transitionDuration', `${item.Transitionduration}ms`);
+                        console.log("setupPanel",Position);
+                        }
+                    });
+                });
+            }
 
+            //Initial style for each panel with position
+            UpdatePanelPosition();
             //Initial style for panel Bottom
             const panelBottom = document.querySelector('.panelBottom');
             let panelBottomHeight=29;
