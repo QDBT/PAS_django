@@ -6,6 +6,13 @@
 
 
 {% block content %}
+<!-- Divider -->
+<div class="divider" dividerPosition="MiddleVsBottom">
+    <div class="blanket"></div>
+    <div class="grip"></div>
+</div>
+
+<!-- Panel 1 (Code) -->   
 <div class="snippetBar" panelPosition="Top-Left">
     <div class="snippetBarLeft">
         <div class="snippetBarLeft1" role="tablist">
@@ -134,9 +141,125 @@
         </div>
     </div>
 </div>
-<!-- Panel 1 (Snippets) -->   
-
-<!-- Divider for resizing -->
+<!-- Panel 2 (Out Put) -->   
+<div class="snippetBar" panelPosition="Bottom">
+    <div class="snippetBarLeft">
+        <div class="snippetBarLeft1" role="tablist">
+            <div class="snippetBarLeftName">
+                <div class="snippetBarLeftName1" role="tablist">
+                    <div style="min-width: 100%; display: table">
+                        <div class="snippetBarLeftName2">
+                            <div class="snippetBarUnit">
+                                <div class="snippetBarUnit1">
+                                    <span class="resizer">
+                                        <button class="snippetBarButton">
+                                            <div class="snippetBarButton1">
+                                                <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
+                                            </div>
+                                            <div class="snippetBarUnitButtonName">
+                                                <span class="snippetBarButtonName1"></span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                    <div class="snippetBarCloseButton">
+                                        <button class="OptionButton">
+                                            <div class="OptionButton1">
+                                                <div class="OptionButton2"></div>
+                                            </div>
+                                            <div class="snippetBarCloseButtonIcon">
+                                                <i class="fa-solid fa-xmark Icon"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="snippetBarLeftCreateButton">
+                <button class="OptionButton">
+                    <i class="fa-solid fa-plus Icon"></i>
+                </button>
+            </div>
+            <div class="snippetBarLeftBlankBrick">
+            </div>
+        </div>
+    </div>
+    <div class="snippetBarRight">
+        <div class="snippetBarRight1">
+            <button class="OptionButton">
+                <i class="fa-solid fa-table-columns Icon"></i>
+            </button>
+            <button class="OptionButton">
+                <i class="fa-solid fa-up-right-and-down-left-from-center Icon"></i>
+            </button>
+            <button class="OptionButton">
+                <i class="fa-solid fa-ellipsis-vertical Icon"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div role="tabpanel" class="panelAll" panelPosition="Bottom">
+    <div class="panel1"> 
+        <div tabindex="-1" class ="resizer">
+        </div>
+        <div class="panel2">
+            <div class="panelName">
+                <div class="panelNameLeft">
+                    <div class="panelNameLeft1">
+                        <button class="panelNameButton">
+                            <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
+                            <div class="panelNameWord">
+                                Python
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="panelNameRight">
+                    <div class="panelNameRight1">
+                        <button class ="panelFormatButton">
+                            <img class="Icon"></img>
+                            <div class="panelFormatWord"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class ="panelContent">
+                <div class="panelContent1">
+                    <div class="panelContent2">
+                       
+                    </div>
+                </div>
+            </div>
+            <div style="display:block;">
+                <div class="panelBottom">
+                    <div class="resizer">
+                        <button type="button" class="panelBottomButton">
+                            <i class="fa-solid fa-brain Icon" style="color: #cf73e8;"></i>
+                            <div class="resizer">AI</div>
+                        </button>
+                    </div>
+                    <div class="resizer">
+                        <button type="button" class="panelBottomButton">
+                            <i class="fa-solid fa-check Icon" style="color: #0dd92f;"></i>
+                            <div class="resizer">Python</div>
+                        </button>
+                    </div>
+                    <div class="resizer">
+                        <button type="button" disabled class="panelBottomButton"></button>
+                    </div>
+                    <div class="blankbrick"></div>
+                    <div class="resizer">
+                        <button type="button" class="panelBottomButton">
+                            <span>ln,col</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--Help option-->
 <div id="help-option">

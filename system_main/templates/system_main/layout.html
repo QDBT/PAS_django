@@ -277,8 +277,10 @@
 
             //Initial CSS style
             const root = document.getElement;
-
             //Initial Css style for Topbar
+            let panelPositionData=null;
+            let snippetBarEachPositionData = null;
+            let DividerEachPositionData = null;
             const TopbarData = {
                 Height:50,
             };
@@ -344,26 +346,14 @@
 
             function UpdateSidebarPosition(){
                 sidebar.style.setProperty('--width', `${SidebarData.Width}px`);
-                console.log(SidebarData);
             };
             UpdateSidebarPosition();
-            let sidebarWidthBeforeClosed = 0;
-
-            const sidebarNextElement = sidebar.nextElementSibling;
-            let dividerNextToSidebar; // Find the divider next to sidebar
-            // Loop to find the closest sibling with the class 'divider'
-            while (sidebarNextElement) {
-                if (sidebarNextElement.classList.contains('divider')) {
-                    dividerNextToSidebar = sidebarNextElement;// define the divider next to sidebar
-                    break; // Stop the loop once the .divider element is found
-                }
-                sidebarNextElement = sidebarNextElement.nextElementSibling; // Move to the next sibling
-            }
 
              //Initial CSS style for Each divider
-            const DividerEachPositionData=[
+            DividerEachPositionData=[
                 {
                     Position:'SidebarVsMain',
+                    ControlType:'vertical',
                     get Height(){
                         return SidebarAndMainData.Height;
                     },
@@ -380,9 +370,54 @@
                     startX:0,
                     currentX:0,
                     InitialTransformX:0,
-                    TransformX:SidebarData.WidthInit,
+                    TransformX:SidebarData.WidthInit,//Change this
+                    startY:0,
+                    currentY:0,
+                    InitialTransformY:0,
+                    TransformY:0,
+                },
+                {
+                    Position:'MiddleVsBottom',
+                    ControlType:'horizontal',
+                    get LeftDivider() {
+                        return DividerEachPositionData.find(divider => divider.Position === 'SidebarVsMain');
+                    },
+                    get TopPanel() {
+                        // Check if panelPositionData exists in the global scope
+                        if (panelPositionData == null) {
+                            return { Height: 0, TransformY: 0 };
+                        }
+                        // Default return if panelPositionData doesn't exist
+    
+                        return panelPositionData.find(panel => panel.Position === 'Top-Left') ?? { Height: 0, TransformY: 0 };
+                        
+                    },
+                    Height:6,
+                    get Width(){
+                        return window.innerWidth-(this.TransformX)
+                    },
+                    gripWidth:20,
+                    gripHeight:2,
+                    gripColor : '#2B3245',
+                    gripColorHover:'#e2d8d87f',
+                    cursor:'row-resize',
+                    backgroundColor:'#0E1525',
+                    backgroundColorMove:'#4689b8',
+                    CurrentDivider:null,
+                    isDragging:false,
+                    startX:0,
+                    currentX:0,
+                    InitialTransformX:0,
+                    get TransformX(){
+                        return SidebarData.Width + this.LeftDivider.Width
+                    },
+                    startY:0,
+                    currentY:0,
+                    InitialTransformY:0,
+                    TransformY:500,//change this
                 }
             ]
+            
             
             const dividers=document.querySelectorAll(".divider");//Select all the divider elements
             function UpdateDividerPosition(){
@@ -403,6 +438,13 @@
                             });
                             divider.style.setProperty('--cursor',`${item.cursor}`);
                             divider.style.setProperty('--transformX', `${item.TransformX}px`);//--transformX Value is the same with sidebarWidth
+                            divider.style.setProperty('--transformY', `${item.TransformY}px`);
+                            if (item.isDragging==true){
+                                divider.style.setProperty('--background-color', `${item.backgroundColorMove}`);
+                            }
+                            else {
+                                divider.style.setProperty('--background-color', `${item.backgroundColor}`);
+                            }
                         }
                     });
                 });
@@ -416,7 +458,7 @@
                 TransitionDuration:0,
             }
             //Set up the data for snippetBar Position.The Position change as Top, Left, Width
-            const snippetBarEachPositionData = [
+            snippetBarEachPositionData = [
                 { 
                     Position:'Top-Left', 
                     get LeftDivider() {
@@ -431,15 +473,33 @@
                     get Width(){
                         return window.innerWidth - this.Left
                     },
-                    get Height(){
-                        return snippetBarAllPostionData.Height
-                    },
+                    Height:snippetBarAllPostionData.Height,
                     Scale:snippetBarAllPostionData.Scale,
                     TransitionDuration:snippetBarAllPostionData.TransitionDuration,
                   },
-                { Position:'Top-Right', snippet:2}
+                { 
+                    Position:'Bottom', 
+                    get LeftDivider() {
+                        return DividerEachPositionData.find(divider => divider.Position === 'SidebarVsMain');
+                    },
+                    get TopDivider(){
+                        return DividerEachPositionData.find(divider => divider.Position === 'MiddleVsBottom');
+                    },
+                    get Top(){ 
+                        return this.TopDivider.TransformY + this.TopDivider.Height;
+                    },
+                    get Left(){
+                        return SidebarData.Width + this.LeftDivider.Width
+                    },
+                    get Width(){
+                        return window.innerWidth - this.Left
+                    },
+                    Height:snippetBarAllPostionData.Height,
+                    Scale:snippetBarAllPostionData.Scale,
+                    TransitionDuration:snippetBarAllPostionData.TransitionDuration,
+                }
             ]
-                  console.log(snippetBarEachPositionData)
+                  
             const snippetBars=document.querySelectorAll('.snippetBar');
 
             //function for updating snippetBar of each Position
@@ -466,23 +526,58 @@
 
             
             //Set up the data for snippetBar Position.The Position change as TransformX,TransformY, Width,Height
-            const panelPositionData =[
+            panelPositionData =[
                 { 
                     Position:'Top-Left',
+                    get OwnSnippetBar(){
+                        return snippetBarEachPositionData.find(snippet => snippet.Position === this.Position);
+                    },
                     get LeftDivider(){
                         return DividerEachPositionData.find(divider => divider.Position === 'SidebarVsMain');
                     },
+                    get BottomDivider(){
+                        return DividerEachPositionData.find(divider => divider.Position === 'MiddleVsBottom');
+                    },
+                    get BottomPanel(){
+                        return panelPositionData.find(panel => panel.Position === 'Bottom') ?? {Height:0,Width:0}
+                    },       
                     get Width(){ 
                         return window.innerWidth - this.TransformX;
                     },
                     get Height(){
-                        return window.innerHeight - (TopbarData.Height + snippetBarAllPostionData.Height)
+                        return window.innerHeight - this.TransformY- (window.innerHeight - this.BottomDivider.TransformY)
                     },
                     get TransformX(){
                         return SidebarData.Width + this.LeftDivider.Width;
                     },
                     get TransformY(){
-                        return 32
+                        return this.OwnSnippetBar.Top + this.OwnSnippetBar.Height
+                    },
+                    TransformScale:1,
+                    TransitionDuration:0  
+                },
+                {
+                    Position:'Bottom',
+                    get OwnSnippetBar(){
+                        return snippetBarEachPositionData.find(snippet => snippet.Position === this.Position);
+                    },
+                    get LeftDivider(){
+                        return DividerEachPositionData.find(divider => divider.Position === 'SidebarVsMain');
+                    },
+                    get TopDivider(){
+                        return DividerEachPositionData.find(divider => divider.Position === 'MiddleVsBottom');
+                    },
+                    get Width(){ 
+                        return window.innerWidth - this.TransformX;
+                    },
+                    get Height(){
+                        return window.innerHeight - this.TransformY;
+                    },
+                    get TransformX(){
+                        return this.LeftDivider.TransformX + this.LeftDivider.Width;
+                    },
+                    get TransformY(){
+                        return this.OwnSnippetBar.Top + this.OwnSnippetBar.Height
                     },
                     TransformScale:1,
                     TransitionDuration:0  
@@ -491,16 +586,17 @@
             //function for updating snippetBar of each Position
             function UpdatePanelPosition(){
                 panels.forEach((panel,index)=>{
+                    
                     const Position = panel.getAttribute('panelPosition');
-                    panelPositionData.forEach(item => {
-                        if (panel.getAttribute('panelPosition') == Position){
+                    panelPositionData.forEach((item,index) => {
+                        if (item.Position === Position){
                         panel.style.setProperty('--width',`${item.Width}px`);
                         panel.style.setProperty('--height',`${item.Height}px`);
                         panel.style.setProperty('--transformX', `${item.TransformX}px`);
                         panel.style.setProperty('--transformY', `${item.TransformY}px`);
                         panel.style.setProperty('--scale', item.TransformScale);
                         panel.style.setProperty('--transitionDuration', `${item.Transitionduration}ms`);
-                        console.log("setupPanel",Position,item);
+                        console.log("setupPanel",item.Position);
                         }
                     });
                 });
@@ -524,6 +620,9 @@
                     Item.isDragging = true;
                     Item.startX = e.clientX;
                     Item.InitialTransformX = Item.TransformX;
+                    Item.startY = e.clientY;
+                    Item.InitialTransformY = Item.TransformY;
+                    
                     console.log('mousedown')
                 });
 
@@ -531,16 +630,24 @@
                 document.addEventListener('mousemove', function(e) {
                     DividerEachPositionData.forEach(item => {
                         if (item.isDragging) {
-                            item.currentX = e.clientX - item.startX;
-                            item.TransformX = item.InitialTransformX + item.currentX;
-                            //console.log('Sidebar',SidebarData.Width,SidebarData.isClosed);
-                            item.TransformX = item.TransformX < SidebarData.MinWidth ? 0 : item.TransformX;
-                            console.log(item.TransformX);
+                            if (item.ControlType ==='vertical') {
+                                item.currentX = e.clientX - item.startX;
+                                item.TransformX = item.InitialTransformX + item.currentX;
+                                //console.log('Sidebar',SidebarData.Width,SidebarData.isClosed);
+                                item.TransformX = item.TransformX < SidebarData.MinWidth ? 0 : item.TransformX;
+                                
+                                console.log(item.TransformX);
 
 
-                            // Update the sidebar width and divider transformX
-                            SidebarData.CurrentWidth = item.TransformX;
-
+                                // Update the sidebar width and divider transformX
+                                SidebarData.CurrentWidth = item.TransformX;
+                            }
+                            else if (item.ControlType ==='horizontal'){
+                                item.currentY = e.clientY - item.startY;
+                                item.TransformY = item.InitialTransformY + item.currentY;
+                                
+                                console.log(item.TransformY);
+                            }
                             // Update other UI components based on the sidebar’s new width
                             UpdatePanelPosition();
                             UpdateSidebarPosition();
@@ -555,6 +662,7 @@
                    DividerEachPositionData.forEach(item =>{
                     item.isDragging = false;
                    })
+                   UpdateAllPosition();
                    console.log('mouseup')
                 });
             });
@@ -567,6 +675,7 @@
                 UpdateDividerPosition();
                 UpdateSnippetBarPosition();
             };
+            UpdateAllPosition();
     
 
 //-----------------------------------------------------------------------------------------------
