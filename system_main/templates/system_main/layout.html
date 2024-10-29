@@ -39,7 +39,7 @@
                         </div>
                         <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
                     </header>
-                    <div class="SideBarMain-container" >
+                    <div class="SidebarAndMain-container" >
                         <div class="SideBarContainer-1">
                             <div class="SideBarContainer-2">
                                 <div class="SideBarContainer-3">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="divider">
+                        <div class="divider" dividerPosition="SidebarVsMain">
                             <div class="blanket"></div>
                             <div class="grip"></div>
                         </div>
@@ -239,15 +239,18 @@
 
     // A Function to reset all things positions in main
     function controlMainWidth(sidebarWidth,dividerWidth){
-        const mainWidth=window.innerWidth-(sidebarWidth+dividerWidth);
-        const panel=document.querySelector('.panelAll');
-        const panelTransformX=sidebarWidth+dividerWidth;
-        const snippetBar=document.querySelector('.snippetBar')
-        panel.style.setProperty('--width', `${mainWidth}px`);
-        panel.style.setProperty('--transformX', `${panelTransformX}px`);
-        snippetBar.style.setProperty('--width', `${mainWidth}px`);
-        snippetBar.style.setProperty('--left', `${panelTransformX}px`);
+        
+        //const mainWidth=window.innerWidth-(sidebarWidth+dividerWidth);
+        //const panel=document.querySelector('.panelAll');
+        //const panelTransformX=sidebarWidth+dividerWidth;
+        //const snippetBar=document.querySelector('.snippetBar')
+        //panel.style.setProperty('--width', `${mainWidth}px`);
+        //panel.style.setProperty('--transformX', `${panelTransformX}px`);
+        //snippetBar.style.setProperty('--width', `${mainWidth}px`);
+        //snippetBar.style.setProperty('--left', `${panelTransformX}px`);
     };
+
+    
     
     </script>
 
@@ -274,13 +277,29 @@
 
             //Initial CSS style
             const root = document.getElement;
-            const Topbar=document.querySelector(".topbar");
-            const SidebarMain = document.querySelector('.SideBarMain-container');
-            let TopbarHeight = 50;
-            Topbar.style.setProperty('height', `${TopbarHeight}px`);
-            SidebarMain.style.setProperty('top', `${TopbarHeight}px`);
-            SidebarMain.style.setProperty('height', `calc(100% - ${TopbarHeight}px)`);
 
+            //Initial Css style for Topbar
+            const TopbarData = {
+                Height:50,
+            };
+            const Topbar=document.querySelector(".topbar");
+            Topbar.style.setProperty('height', `${TopbarData.Height}px`);
+
+            //Initial Css style for SidebarAndMain
+            const SidebarAndMainData = {
+                Top : TopbarData.Height,
+                get Height(){ 
+                    return window.innerHeight - this.Top;
+                }
+            }
+            
+            const SidebarAndMain = document.querySelector('.SidebarAndMain-container');
+            function UpdateSidebarAndMainStyle(){
+                SidebarAndMain.style.setProperty('--top', `${SidebarAndMainData.Top}px`);
+                SidebarAndMain.style.setProperty('--height', `${SidebarAndMainData.Height}px`);
+            }
+
+            UpdateSidebarAndMainStyle();
             //Initial Css style for OptionButtonIcon
             const OptionButtonIcon = document.querySelectorAll(".OptionButton");
             let IconWidth =24;
@@ -291,10 +310,43 @@
             });
 
             //Initial CSS style for sidebar
+            const SidebarData ={
+                WidthInit :250,
+                CurrentWidth:250,
+                MinWidth:30,
+                get Width() {
+                    if (this.isClosed){
+                        console.log("sidebar closed");    
+                        return 0;
+                    }
+                    else {
+                        return Math.max(this.CurrentWidth, this.MinWidth);
+                    }
+                },
+                isClosed: false,
+                
+
+            }
+            //Sidebar open/close
+            document.getElementById('SideBarButton').addEventListener('click', function() {
+                if (!SidebarData.isClosed) {
+                    //Collapse sidebar
+                    SidebarData.isClosed=true;
+                } else{
+                    //Expand sidebar        
+                    SidebarData.isClosed=false;                    
+                }
+                console.log(SidebarData);
+                UpdateAllPosition();// set the width
+            });
+            
             const sidebar = document.querySelector('.SideBarContainer-1');
-            let sidebarWidth = 250;
-            let CurrentSidebarWidth =sidebarWidth;
-            sidebar.style.setProperty('--width', `${CurrentSidebarWidth}px`);
+
+            function UpdateSidebarPosition(){
+                sidebar.style.setProperty('--width', `${SidebarData.Width}px`);
+                console.log(SidebarData);
+            };
+            UpdateSidebarPosition();
             let sidebarWidthBeforeClosed = 0;
 
             const sidebarNextElement = sidebar.nextElementSibling;
@@ -308,79 +360,100 @@
                 sidebarNextElement = sidebarNextElement.nextElementSibling; // Move to the next sibling
             }
 
-            //Sidebar open/close
-            document.getElementById('SideBarButton').addEventListener('click', function() {
-                if (CurrentSidebarWidth >0) {
-                    //Collapse sidebar
-                    sidebarWidthBeforeClosed = CurrentSidebarWidth;
-                    CurrentSidebarWidth = 0;
-                } else{
-                    //Expand sidebar
-                    CurrentSidebarWidth = sidebarWidthBeforeClosed;
+             //Initial CSS style for Each divider
+            const DividerEachPositionData=[
+                {
+                    Position:'SidebarVsMain',
+                    get Height(){
+                        return SidebarAndMainData.Height;
+                    },
+                    Width:6,
+                    gripWidth:2,
+                    gripHeight:20,
+                    gripColor : '#2B3245',
+                    gripColorHover:'#e2d8d87f',
+                    cursor:'col-resize',
+                    backgroundColor:'#0E1525',
+                    backgroundColorMove:'#4689b8',
+                    CurrentDivider:null,
+                    isDragging:false,
+                    startX:0,
+                    currentX:0,
+                    InitialTransformX:0,
+                    TransformX:SidebarData.WidthInit,
                 }
-                console.log(CurrentSidebarWidth);
-                sidebar.style.setProperty('--width', `${CurrentSidebarWidth}px`);// set the width
-                dividerNextToSidebar.style.setProperty('--transformX', `${CurrentSidebarWidth}px`);// set the divider
-                controlMainWidth(CurrentSidebarWidth,DividerWidth);
-            });
-
-            //Initial CSS style for divider
+            ]
+            
             const dividers=document.querySelectorAll(".divider");//Select all the divider elements
-            let isDragging = false;
-            let startX = 0;
-            let currentX = 0;
-            let InitialTransformX=0;//The initial position of the divider being dragged
-            let CurrentDivider = null;//Track which divider is being dragged
-            let transformVariable = '';//Track the CSS variable name for each divider
-            let DividerHeight=910;
-            let DividerWidth=6;
-            let gripWidth =2;
-            let gripHeight =20;
-            let gripColor = '#2B3245';
-            let gripColorHover ='#e2d8d87f';
-            let cursor='col-resize';
-            let DividerBackgroundColor ='#0E1525';
-            let DividerBackgroundColorMove ='#4689b8';
-
+            function UpdateDividerPosition(){
+                //Initial each divider with its own --transformX Variable
+                dividers.forEach(divider=>{
+                    const Position = divider.getAttribute('dividerPosition');
+                    DividerEachPositionData.forEach(item=>{ 
+                        if (item.Position == Position){
+                            divider.style.setProperty('--height',`${item.Height}px`);
+                            divider.style.setProperty('--width',`${item.Width}px`);
+                            divider.style.setProperty('--gripWidth',`${item.gripWidth}px`);
+                            divider.style.setProperty('--gripHeight',`${item.gripHeight}px`);
+                            divider.addEventListener('mouseenter',function(){
+                                divider.style.setProperty('--gripColor',`${item.gripColorHover}`)
+                            });
+                            divider.addEventListener('mouseleave',function(){
+                                divider.style.setProperty('--gripColor',`${item.gripColor}`)
+                            });
+                            divider.style.setProperty('--cursor',`${item.cursor}`);
+                            divider.style.setProperty('--transformX', `${item.TransformX}px`);//--transformX Value is the same with sidebarWidth
+                        }
+                    });
+                });
+            }
+            UpdateDividerPosition();
 
             //Initial style for allsnippetBar
-            const snippetBars=document.querySelectorAll('.snippetBar');
-            let snippetBarLeft = CurrentSidebarWidth + DividerWidth;
-            let snippetBarTop = 0;
-            let snippetBarWidth = window.innerWidth -(CurrentSidebarWidth + DividerWidth);
-            let snippetBarHeight = 32;
-            let snippetBarScale = 1;
-            let snippetBarTransformOriginX = 0;
-            let snippetBarTransitionDuration = 0;
-            
-
+            const snippetBarAllPostionData ={
+                Height : 32,
+                Scale:1,
+                TransitionDuration:0,
+            }
             //Set up the data for snippetBar Position.The Position change as Top, Left, Width
-            const snippetBarPositionData = [
-                { Position:'Top-Left', 
-                  Top:0,
-                  Left:CurrentSidebarWidth + DividerWidth,
-                  TransformX:0,
-                  TransformY:0,
-                  Width: window.innerWidth -(CurrentSidebarWidth + DividerWidth),
-                  Height :snippetBarHeight },
+            const snippetBarEachPositionData = [
+                { 
+                    Position:'Top-Left', 
+                    get LeftDivider() {
+                        return DividerEachPositionData.find(divider => divider.Position === 'SidebarVsMain');
+                    },
+                    get Top(){ 
+                        return 0
+                    },
+                    get Left(){
+                        return SidebarData.Width + this.LeftDivider.Width
+                    },
+                    get Width(){
+                        return window.innerWidth - this.Left
+                    },
+                    get Height(){
+                        return snippetBarAllPostionData.Height
+                    },
+                    Scale:snippetBarAllPostionData.Scale,
+                    TransitionDuration:snippetBarAllPostionData.TransitionDuration,
+                  },
                 { Position:'Top-Right', snippet:2}
             ]
+                  console.log(snippetBarEachPositionData)
+            const snippetBars=document.querySelectorAll('.snippetBar');
 
             //function for updating snippetBar of each Position
             function UpdateSnippetBarPosition(){
                 snippetBars.forEach((snippetBar,index) =>{
                     const Position = snippetBar.getAttribute('panelPosition');
-                    snippetBarPositionData.forEach(item => {
+                    snippetBarEachPositionData.forEach(item => {
                         if (item.Position === Position) {
-                            console.log(item);
                             snippetBar.style.setProperty('--left', `${item.Left}px`);
                             snippetBar.style.setProperty('--top', `${item.Top}px`);
                             snippetBar.style.setProperty('--width', `${item.Width}px`);
                             snippetBar.style.setProperty('--height', `${item.Height}px`);
-                            snippetBar.style.setProperty('--scale', snippetBarScale);
-                            snippetBar.style.setProperty('--transformOriginX', `${item.TransformX}px`);
-                            snippetBar.style.setProperty('--transitionDuration', `${snippetBarTransitionDuration}ms`);
-                            console.log("setupSnippetBar",Position);
+                            snippetBar.style.setProperty('--scale',`${item.Scale}`);
+                            snippetBar.style.setProperty('--transitionDuration', `${item.TransitionDuration}ms`);
                         }
                     });
                 });
@@ -390,22 +463,29 @@
             UpdateSnippetBarPosition();
             //Initial style for allpanel
             const panels =document.querySelectorAll('.panelAll');
-            let panelWidth = window.innerWidth -(CurrentSidebarWidth + DividerWidth);
-            let panelHeight = window.innerHeight - (TopbarHeight + snippetBarHeight);
-            let panelTransformX = CurrentSidebarWidth + DividerWidth;
-            let panelTransformY = 32;
-            let panelTransformScale = 1;
-            let panelTransitionDuration = 0;
+
             
             //Set up the data for snippetBar Position.The Position change as TransformX,TransformY, Width,Height
             const panelPositionData =[
-                { Position:'Top-Left',
-                  Width: window.innerWidth -(CurrentSidebarWidth + DividerWidth),
-                  Height: window.innerHeight - (TopbarHeight + snippetBarHeight),
-                  TransformX:CurrentSidebarWidth + DividerWidth,
-                  TransformY:32,
-                  TransformScale:1,
-                  TransitionDuration:0  
+                { 
+                    Position:'Top-Left',
+                    get LeftDivider(){
+                        return DividerEachPositionData.find(divider => divider.Position === 'SidebarVsMain');
+                    },
+                    get Width(){ 
+                        return window.innerWidth - this.TransformX;
+                    },
+                    get Height(){
+                        return window.innerHeight - (TopbarData.Height + snippetBarAllPostionData.Height)
+                    },
+                    get TransformX(){
+                        return SidebarData.Width + this.LeftDivider.Width;
+                    },
+                    get TransformY(){
+                        return 32
+                    },
+                    TransformScale:1,
+                    TransitionDuration:0  
                 }
             ]
             //function for updating snippetBar of each Position
@@ -420,7 +500,7 @@
                         panel.style.setProperty('--transformY', `${item.TransformY}px`);
                         panel.style.setProperty('--scale', item.TransformScale);
                         panel.style.setProperty('--transitionDuration', `${item.Transitionduration}ms`);
-                        console.log("setupPanel",Position);
+                        console.log("setupPanel",Position,item);
                         }
                     });
                 });
@@ -433,77 +513,60 @@
             let panelBottomHeight=29;
             panelBottom.style.setProperty('--height',`${panelBottomHeight}px`);
 
-            //Initial each divider with its own --transformX Variable
-            dividers.forEach((divider,index)=>{
-                const TransformXVar = `--transformX-divider${index+1}`;//Unique Name for each divide
-                divider.style.setProperty('--height',`${DividerHeight}px`);
-                divider.style.setProperty('--width',`${DividerWidth}px`);
-                divider.style.setProperty('--gripWidth',`${gripWidth}px`);
-                divider.style.setProperty('--gripHeight',`${gripHeight}px`);
-                divider.addEventListener('mouseenter',function(){
-                    divider.style.setProperty('--gripColor',`${gripColorHover}`)
-                });
-                divider.addEventListener('mouseleave',function(){
-                    divider.style.setProperty('--gripColor',`${gripColor}`)
-                });
-                divider.style.setProperty('--cursor',`${cursor}`);
-                //Initialize each divider's transformX variable
-                if (index == 0) {
-                    divider.style.setProperty('--transformX', `${CurrentSidebarWidth}px`);//--transformX Value is the same with sidebarWidth
-                } else {
-                    divider.style.setProperty('--transformX', '0px');
-                }//Initialize each divider's transformX variable
-                divider.setAttribute('data-transformX',TransformXVar);//Store the transformX variable
-            });
             
             //Set the function to move divider
             dividers.forEach(divider=>{
                 //Mousedown events to start dragging a specific divider
                 divider.addEventListener('mousedown',function(e) {
-                    isDragging =true;
-                    startX=e.clientX;//get the intialX position of the mouse
-                    currentDivider = divider;// Track the current divider being dragged
-                    InitialTransformX=parseFloat(getComputedStyle(divider).getPropertyValue('--transformX')); //Get the current --transformX value
-                    console.log('transformX=',InitialTransformX);
-                    console.log('currentDivider',currentDivider);
-                    divider.style.setProperty('--background-color',`${DividerBackgroundColorMove}`);
+                    const Position = divider.getAttribute('dividerPosition');
+                    const Item = DividerEachPositionData.find(item => item.Position === Position);
+                    
+                    Item.isDragging = true;
+                    Item.startX = e.clientX;
+                    Item.InitialTransformX = Item.TransformX;
+                    console.log('mousedown')
                 });
 
                 //Mouse move event to handle dragging
-                document.addEventListener('mousemove',function(e){
-                    if (!isDragging || !currentDivider){
-                        return;
-                    }
-                    // Calculate the new transformX based on mouse movement
-                    currentX = e.clientX - startX;
-                    const newTransformX = InitialTransformX + currentX;
-                    
-                    CurrentSidebarWidth=newTransformX; //Set the current sidebar width for sidebar Open/close buttons
-                    panelTransformX = CurrentSidebarWidth + DividerWidth;//set the paneltransformX by the change of Sidebar 
-                    if (CurrentSidebarWidth<30){
-                        CurrentSidebarWidth=0; //Set the current to easy to close sidebar
-                    }
-                    currentDivider.style.setProperty('--transformX', `${newTransformX}px`);// set the divider
-                    // Because Some reasons {if (CurrentDivider == dividerNextToSidebar)} always false so I use libaries function) {
-                        if (compareDividers(currentDivider, dividerNextToSidebar)){ //Can use this to compare between two elements, true if no difference
-                        sidebar.style.setProperty('--width', `${CurrentSidebarWidth}px`);// if no different, set the sidebar width
-                        controlMainWidth(CurrentSidebarWidth,DividerWidth);//and set the panel transformX
-                    }
+                document.addEventListener('mousemove', function(e) {
+                    DividerEachPositionData.forEach(item => {
+                        if (item.isDragging) {
+                            item.currentX = e.clientX - item.startX;
+                            item.TransformX = item.InitialTransformX + item.currentX;
+                            //console.log('Sidebar',SidebarData.Width,SidebarData.isClosed);
+                            item.TransformX = item.TransformX < SidebarData.MinWidth ? 0 : item.TransformX;
+                            console.log(item.TransformX);
+
+
+                            // Update the sidebar width and divider transformX
+                            SidebarData.CurrentWidth = item.TransformX;
+
+                            // Update other UI components based on the sidebar’s new width
+                            UpdatePanelPosition();
+                            UpdateSidebarPosition();
+                            UpdateDividerPosition();
+                            UpdateSnippetBarPosition();
+                        }
+                    });
                 });
 
                 // Mouse up event to stop dragging 
                 document.addEventListener('mouseup', function() {
-                    if (isDragging) {
-                        console.log('mouseup');
-                        isDragging = false;
-                        currentDivider = null; // Reset the current divider
-                        divider.style.setProperty('--background-color',`${DividerBackgroundColor}`);
-                    }
+                   DividerEachPositionData.forEach(item =>{
+                    item.isDragging = false;
+                   })
+                   console.log('mouseup')
                 });
             });
                 window.addEventListener('resize',function(){
-                controlMainWidth(CurrentSidebarWidth,DividerWidth);
+                
             });
+            function UpdateAllPosition(){
+                UpdatePanelPosition();
+                UpdateSidebarPosition();
+                UpdateDividerPosition();
+                UpdateSnippetBarPosition();
+            };
     
 
 //-----------------------------------------------------------------------------------------------
@@ -774,7 +837,9 @@
 
 /******************************** Top Bar ********************************/
 
-    .SideBarMain-container {
+/******************************** SidebarAndMain ********************************/
+
+    .SidebarAndMain-container {
         -webkit-box-align: stretch;
         align-items: stretch;
         border-width: 0px;
@@ -790,6 +855,8 @@
         width: 100%;
         left: 0px;
         position: absolute;
+        height:var(--height);
+        top:var(--top);
     }
 
 /******************************** SideBar ********************************/
