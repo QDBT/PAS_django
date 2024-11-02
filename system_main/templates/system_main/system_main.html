@@ -6,6 +6,8 @@
 
 
 {% block content %}
+<!--Delete after-->
+
 <!-- Divider -->
 <div class="divider" dividerPosition="MiddleVsBottom">
     <div class="blanket"></div>
@@ -75,11 +77,11 @@
         </div>
     </div>
 </div>
-<div role="tabpanel" class="panelAll" panelPosition="Top-Left">
-    <div class="panel1"> 
+<div role="tabpanel" class="panelAll1" panelPosition="Top-Left">
+    <div class="panelAll2"> 
         <div tabindex="-1" class ="resizer">
         </div>
-        <div class="panel2">
+        <div class="panelCode">
             <div class="panelName">
                 <div class="panelNameLeft">
                     <div class="panelNameLeft1">
@@ -204,61 +206,103 @@
         </div>
     </div>
 </div>
-<div role="tabpanel" class="panelAll" panelPosition="Bottom">
-    <div class="panel1"> 
+<div role="tabpanel" class="panelAll1" panelPosition="Bottom">
+    <div class="panelAll2"> 
         <div tabindex="-1" class ="resizer">
         </div>
-        <div class="panel2">
-            <div class="panelName">
-                <div class="panelNameLeft">
-                    <div class="panelNameLeft1">
-                        <button class="panelNameButton">
-                            <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
-                            <div class="panelNameWord">
-                                Python
+        <div class="panelOutput1">
+            <div class="panelOutput2">
+                <div class="panelOutputOption">
+                    <div class="panelOutputOptionLeft"></div>
+                    <div class="panelOutputOptionRight">
+                        <div class="panelOutputOptionShow1">
+                            <label class="panelOutputOptionShow2">
+                                <div style="border: 0px;clip: rect(0px, 0px, 0px, 0px);clip-path: inset(50%);height: 1px;margin: -1px;overflow: hidden;padding: 0px;position: absolute;width: 1px;white-space: nowrap;">
+                                    <input aria-label="Show Only Lastest" type="checkbox" role ="switch">
+                                </div>
+                                <svg class="svgToggle" aria-hidden="true" width="38" height="24" viewBox="0 0 38 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;">
+                                    <rect x="0" y="0" width="38" height="24" rx="12" fill="" class="svgBackground"></rect>
+                                    <rect x="4" y="4" width="16" height="16" rx="8" fill="#FCFCFC" opacity="1" class="svgKnob"></rect>
+                                    <rect x="0.5" y="0.5" width="37" height="23" rx="12" stroke="transparent" data-switch-outline="true"></rect>
+                                    <rect x="-1" y="-1" stroke="transparent" width="40" height="26" rx="13" stroke-width="2"></rect>
+                                  </svg>
+                                  <span class ="SpanWord">
+                                    <div class="panelFormatWord">Show Only Lastest</div>
+                                  </span>
+                            </label>
+                        </div>
+                        <Button class="panelFormatButton">
+                            <i class="fa-solid fa-trash Icon"></i>
+                            <div class="panelFormatWord">Clear History</div>
+                        </Button>
+                    </div>
+                </div>
+                <div class="panelOutputContent">
+                    <div class="resizer">
+                        <div class="panelOutputContentHeader">
+                            <div class="panelOutputContentHeaderLeft">
+                                <button type="button" aria-label="Collapse" class="OptionButton">
+                                    <i class="fa-solid fa-angle-down Icon"></i>
+                                </button>
+                                <div color="grey" class="panelOutputContentHeaderLeftRun">
+                                    <span>Run</span>
+                                </div>
+                                <div class="panelOutputContentHeaderTextIfCollapsed"></div>
                             </div>
-                        </button>
+                            <div class="panelOutputContentHeaderRight">
+                                <div class="panelOutputContentHeaderRightAskAI">
+                                    <span class="panelOutputContentHeaderRightAskAISpan">
+                                        <button type="button" class="panelOutputContentHeaderRightAskAIButton">
+                                            <div class="SpanAndIconInsideButton">
+                                                <i class="fa-solid fa-headset Icon"></i>
+                                                <span class="SpanAndIconInsideButtonSpan">Ask AI</span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                    <div class="panelOutputContentHeaderRiver"></div>
+                                </div>
+                                <div class="panelOutputContentHeaderRightTime">
+                                    <span class="panelOutputContentHeaderRightTime1">
+                                        <span class="resizer">27ms</span>
+                                        &nbsp;・ &nbsp;
+                                        <span class="panelOutputContentHeaderRightTime2">
+                                            <span class="SpanAndIconInsideButtonSpan">1 hour ago</span>
+                                        </span>
+                                    </span>
+                                    <div class="panelOutputContentHeaderRiver"></div>
+                                </div>
+                                <div class="panelOutputContentHeaderRightStatus">
+                                    <span class="resizer">
+                                        <i class="fa-solid fa-check Icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="resizer" style="position: sticky; top: 28px;"></div>
+                        <div style="transition: height 120ms ease-out; overflow: visible;">
+                            <div class="panelOutputContentBlock1">
+                                <div class="resizer">
+                                    <div class="resizer">
+                                        <div class="panelOutputContentBlock2">
+                                            <div class="panelOutputContentBlock3">
+                                                <div dir="ltr" class="terminal xterm">
+                                                    <div class="xterm-viewport" style="background-color: rgb(28, 35, 51);">
+                                                        <div class="xterm-scroll-area" style="height:80px;"></div>
+                                                    </div>
+                                                    <div class="xterm-screen" style="width:704px; height:64px">
+                                                        <div id="output"></div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panelOutputContentRiver"></div>
                     </div>
-                </div>
-                <div class="panelNameRight">
-                    <div class="panelNameRight1">
-                        <button class ="panelFormatButton">
-                            <img class="Icon"></img>
-                            <div class="panelFormatWord"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class ="panelContent">
-                <div class="panelContent1">
-                    <div class="panelContent2">
-                       
-                    </div>
-                </div>
-            </div>
-            <div style="display:block;">
-                <div class="panelBottom">
-                    <div class="resizer">
-                        <button type="button" class="panelBottomButton">
-                            <i class="fa-solid fa-brain Icon" style="color: #cf73e8;"></i>
-                            <div class="resizer">AI</div>
-                        </button>
-                    </div>
-                    <div class="resizer">
-                        <button type="button" class="panelBottomButton">
-                            <i class="fa-solid fa-check Icon" style="color: #0dd92f;"></i>
-                            <div class="resizer">Python</div>
-                        </button>
-                    </div>
-                    <div class="resizer">
-                        <button type="button" disabled class="panelBottomButton"></button>
-                    </div>
-                    <div class="blankbrick"></div>
-                    <div class="resizer">
-                        <button type="button" class="panelBottomButton">
-                            <span>ln,col</span>
-                        </button>
-                    </div>
+                    <div class="panelOutputContentEnd"></div>
                 </div>
             </div>
         </div>
@@ -324,11 +368,11 @@
         </div>
     </div>
 </div>
-<div role="tabpanel" class="panelAll" panelPosition="Top-Right">
-    <div class="panel1"> 
+<div role="tabpanel" class="panelAll1" panelPosition="Top-Right">
+    <div class="panelAll2"> 
         <div tabindex="-1" class ="resizer">
         </div>
-        <div class="panel2">
+        <div class="panelCode">
             <div class="panelName">
                 <div class="panelNameLeft">
                     <div class="panelNameLeft1">
@@ -384,14 +428,7 @@
         </div>
     </div>
 </div>
-<!--Help option-->
-<div id="help-option">
-    Do you need help?
-    <div id="help-options">
-        <button id="please-help" class="btn btn-primary">Please help me</button>
-        <button id="do-it-myself" class="btn btn-secondary">I will do it myself</button>
-    </div>
-</div>
+
 
 <!-- Panel 2 (FeedBack) -->
 <div id="panel-2" class="panel resizable">
@@ -401,6 +438,9 @@
             <div class="feedback-options">
                 <a id="without-code" class="feedback-option">Without Code</a>
                 <a id="only-code" class="feedback-option">Only Code</a>
+
+            <div id="please-help"></div>
+            <div id="do-it-myself"></div>
             </div>
         </div>
         <div>
@@ -410,14 +450,6 @@
 </div>
 <!-- Divider for resizing -->
 
-<!-- Panel 3 (Output)-->
-<div id ="panel-3" class="">
-    <h2>Output</h2>
-    <div id="output-container">
-        <pre id="output"></pre>
-        <pre id="error"></pre>
-    </div>
-</div>
 
 <style>
     .editor-container {
@@ -508,8 +540,8 @@
     .container {
         position: relative;
     }
-    /*^^^^^^^^^^^^^^ panelALL Style ^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-    .panelAll {
+    /*^^^^^^^^^^^^^^ panelAll1 Style ^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+    .panelAll1 {
         -webkit-box-align: stretch;
         align-items: stretch;
         border-width: 0px;
@@ -545,7 +577,7 @@
         --fixed-position-offset-y:var(--fixedPositionOffsetY);
     }
     
-    .panel1{
+    .panelAll2{
         -webkit-box-align: stretch;
         align-items: stretch;
         border-width: 0px;
@@ -589,7 +621,7 @@
         min-width: 0px;
     }
 
-    .panel2{
+    .panelCode{
         -webkit-box-align: stretch;
         align-items: stretch;
         border-width: 0px;
@@ -792,6 +824,8 @@
     }
     .panelFormatButton:hover{
         cursor:pointer;
+        background-color:var(--interactive-background,#2B3245);
+
     }
     .Icon{
         min-width:6px;
@@ -964,7 +998,705 @@
         min-width:0px;
         -webkit-box-flex:1;
     }
-    /*vvvvvvvvvvvvvv panelALL Style vvvvvvvvvvvvvvvvvvvvvvvvvv*/
+    /*===================================================================*/
+    .panelOutput1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        overflow: hidden;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .panelOutput2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 100%;
+    }
+    .panelOutputOption{
+        border-top-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-top-style: solid;
+        border-right-style: solid;
+        border-left-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 28px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--background-higher,#2B3245);
+        opacity: 0.8;
+    }
+    
+    .panelOutputOptionLeft{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 0 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-flex: 1;
+        height: 100%;
+        flex-direction: row;
+        gap: 4px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    .panelOutputOptionRight{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 100%;
+        flex-direction: row;
+        gap: 4px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    .panelOutputOptionShow1{
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 22px;
+        padding-right: 4px;
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        border-radius: 4px;
+        background-color: transparent;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        opacity: 0.8;
+        user-select: none;
+    }
+    .panelOutputOptionShow1:hover{
+        cursor:pointer;
+        background-color:#2B3245;
+        transition-duration:0ms;
+    }
+    .panelOutputOptionShow1 >label{
+        cursor:pointer;
+        gap:0px;
+        margin-bottom:0px;
+    }
+    .panelOutputOptionShow1>label>svg{
+        scale:0.6;
+    }
+    .panelOutputOptionShow2{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: var(--space-8);
+        -webkit-box-align: center;
+        align-items: center;
+    }
+
+    .svgBackground {
+        transition: fill 80ms ease-out;
+    }
+
+    /* SVG knob */
+    .svgKnob {
+        transition: x 80ms ease-out;
+    }
+
+    .svgToggle[data-switch-outline]{
+        transition:stroke 100ms ease-out;
+    }
+    .svgToggle[data-switch-outline]:hover{
+        transition:stroke;
+    }
+    .SpanWord{
+        -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        border-width: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-basis: auto;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0;
+        min-width: 0;
+        display: inline;
+        overflow-wrap: break-word;
+        font-size: var(--fontSize,14px);
+        line-height: var(--lineHeight,1.6);
+        font-weight: var(--fontWeight);
+        color: var(--color);
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    
+    /*============================================================*/
+    .panelOutputContent{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: auto;
+        overflow-y: scroll;
+        -webkit-box-flex: 1;
+        scroll-snap-type: y mandatory;
+    }
+    .panelOutputContentHeader{
+        border-width: 0px 0px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        container-type: size;
+        padding-left: 4px;
+        padding-right: 8px;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        height: 28px;
+        background-color: var(--background-default,#1C2333);
+        border-bottom-color: var(--background-higher,#2B3245);
+        position: sticky;
+        top: 0px;
+        z-index: 1;
+    }
+    .panelOutputContentHeaderLeft{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        flex-shrink: 1;
+    }
+    .panelOutputContentHeaderLeftRun{
+        border: 1px solid transparent;
+        background-color: color-mix(in srgb, var(--interactive-background,#2B3245) 75%, transparent);
+        color: var(--foreground-dimmer,#C2C8CC);
+        box-sizing: border-box;
+        flex-basis: auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        flex-direction: row;
+        gap: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        border-radius: var(--border-radius-round,1028px);
+        height: 24px;
+        font-size: var(--font-size-small,12px);
+        flex-shrink: 0;
+        display: flex;
+    }
+    .panelOutputContentHeaderTextIfCollapsed{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-shrink: 1;
+    }
+    .panelOutputContentHeaderRight{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+    .panelOutputContentHeaderRightAskAI{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        margin: 0px;
+    }
+    .panelOutputContentHeaderRightAskAISpan{
+        -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        border-width: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-basis: auto;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0;
+        min-width: 0;
+        display: inline;
+        overflow-wrap: break-word;
+        font-size: var(--fontSize,14px);
+        line-height: var(--lineHeight,1.6);
+        font-weight: var(--fontWeight);
+        color: var(--color,#C2C8CC);
+    }
+    .panelOutputContentHeaderRightAskAIButton{
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 8px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        text-decoration: none;
+        padding: 0px;
+    }
+    .SpanAndIconInsideButton{
+        -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        border-width: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-basis: auto;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0;
+        min-width: 0;
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -webkit-flex-shrink: 1;
+        -ms-flex-negative: 1;
+        flex-shrink: 1;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        gap: 8px;
+    }
+    .SpanAndIconInsideButtonSpan{
+            -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        border-width: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-basis: auto;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0;
+        min-width: 0;
+        display: inline;
+        overflow-wrap: break-word;
+        font-size: var(--fontSize,12px);
+        line-height: var(--lineHeight,1.5);
+        font-weight: var(--fontWeight);
+        color: var(--color,#C2C8CC);
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .panelOutputContentHeaderRiver{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        margin-left: 6px;
+        margin-right:6px;
+        width: 1px;
+        height: 28px;
+        background: var(--background-higher,#2B3245);
+    }
+    .panelOutputContentHeaderRightTime{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        overflow: hidden;
+        width: 155px;
+        flex-shrink: 0;
+    }
+    .panelOutputContentHeaderRightTime1{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        overflow-wrap: break-word;
+        font-size: var(--fontSize,12px);
+        line-height: var(--lineHeight,1.5);
+        font-weight: var(--fontWeight);
+        color: var(--color,#C2C8CC);
+        display: flex;
+        flex-direction: row;
+        -webkit-box-align: center;
+        align-items: center;
+        text-align: right;
+        flex-shrink: 1;
+        margin-left: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .panelOutputContentHeaderRightTime2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        width: max-content;
+    }
+    .panelOutputContentHeaderRightStatus{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    .panelOutputContentRiver{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px 0px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 1px;
+        z-index: 1;
+        border-bottom-color: var(--background-higher,#2B3245);
+        margin-top: -1px;
+    }
+    .panelOutputContentBlock1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-width: 0px;
+        min-height: var(--blockMinHeight,80px);
+        background-color: var(--terminalBackgroundColor,#1C2333);
+    }
+    .panelOutputContentBlock2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        display: grid;
+        height:80px;
+        pointer-events: all;
+    }
+    .panelOutputContentBlock3{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        grid-area: 1 / 1;
+        position: sticky;
+        top: 28px;
+        height:80px;
+        max-height: 400px;
+    }
+    .panelOutputContentBlock3 .xterm{
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-left: 8px;
+        height: 100%;
+        overflow: hidden;
+    }
+    .panelOutputContentBlock3 .xterm-viewport{
+        overflow:hidden;
+    }
+    .panelOutputContentBlock3 .xterm-scroll-area{
+        height:0px !important;
+    }
+    .xterm{
+        cursor: text;
+        position: relative;
+        -moz-user-select: none;
+        user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+    }
+    .xterm .xterm-viewport{
+        background-color: #000;
+        overflow-y: scroll;
+        cursor: default;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+    }
+    .xterm .xterm-screen{
+        position: relative;
+    }
+    .xterm .xterm-scroll-area{
+        visibility: hidden;
+    }
+    .panelOutputContentEnd{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 1px;
+        margin-top: -1px;
+        pointer-events: none;
+        scroll-snap-align: end;
+    }
+    /*vvvvvvvvvvvvvv panelAll1 Style vvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
     /*^^^^^^^^^^^^^^ snippetsBar Style ^^^^^^^^^^^^^^^^^^^^^^^*/
 

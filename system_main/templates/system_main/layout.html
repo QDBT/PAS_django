@@ -126,54 +126,7 @@
     </div>
     <script>
     // Debug button functionality
-    document.getElementById('Debug').addEventListener('click', function() {
-            const activeEditor = document.querySelector('.CodeMirror');
-            if (activeEditor) {
-                const textarea = activeEditor.CodeMirror.getTextArea();
-                textarea.value = activeEditor.CodeMirror.getValue(); // Ensure textarea value is updated
-                const form = textarea.closest('form');
-                if (form) {
-                    const snippetId = textarea.id.split('-')[1];
-                    console.log("Snippet ID:", snippetId);
-                    document.getElementById('current-snippet-id').value = snippetId; // Log the snippet ID
-                    const code = textarea.value;
-                    const url = `/'{{username}}'/'{{project.title}}'/save_snippet/${snippetId}/`;
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify({ code: code })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            console.log("data:",'{{data}}')
-                            return response.text().then(text => { throw new Error(text) });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Snippet saved successfully:', data);
-                        document.getElementById('output').innerText = data.output;
-                        document.getElementById('error').innerText = data.error;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred: ' + error.message);
-                    });
-                }
-            } else {
-                checkCodeMirrorValue();
-                alert('No active editor to save.');
-            }
-
-            // Display the help option after running the code
-            if (CanActiveDisplay){
-                document.getElementById('help-option').style.display = 'block';
-            }
-        });
-
+    
         function checkCodeMirrorValue() {
         // Ensure CodeMirror instance is available
         var codeMirrorInstance = document.querySelector('.CodeMirror');
@@ -241,7 +194,7 @@
     function controlMainWidth(sidebarWidth,dividerWidth){
         
         //const mainWidth=window.innerWidth-(sidebarWidth+dividerWidth);
-        //const panel=document.querySelector('.panelAll');
+        //const panel=document.querySelector('.panelAll1');
         //const panelTransformX=sidebarWidth+dividerWidth;
         //const snippetBar=document.querySelector('.snippetBar')
         //panel.style.setProperty('--width', `${mainWidth}px`);
@@ -594,7 +547,7 @@
             //Initial style for each snippetBar of each Position
             UpdateSnippetBarPosition();
             //Initial style for allpanel
-            const panels =document.querySelectorAll('.panelAll');
+            const panels =document.querySelectorAll('.panelAll1');
 
             
             //Set up the data for snippetBar Position.The Position change as TransformX,TransformY, Width,Height
@@ -757,16 +710,16 @@
 
                 // Mouse up event to stop dragging 
                 document.addEventListener('mouseup', function() {
-                   DividerEachPositionData.forEach(item =>{
-                    item.isDragging = false;
-                   })
-                   UpdateAllPosition();
-                   console.log('mouseup')
+                    DividerEachPositionData.forEach(item =>{
+                        if (item.isDragging){
+                            item.isDragging = false;
+                            UpdateAllPosition();
+                            console.log('mouseup')
+                        }
+                   })               
                 });
             });
-                window.addEventListener('resize',function(){
-                
-            });
+
             function UpdateAllPosition(){
                 UpdatePanelPosition();
                 UpdateSidebarPosition();
@@ -806,6 +759,113 @@
                 editor.setSize("100%","100%");
 
             });
+//----------------------------------------------------------------
+            //Output
+
+            let OutputDataHistory = [];
+            const maxEntries = 10;
+            const output=document.getElementById("output");
+
+
+            function addToOutputDataHistory(status, data, duration) {
+                const debugEntry = {
+                    Status: status,//status=true means Debug succeeded, false means Error
+                    Data: data,//// Stores response data or error messages
+                    DebugDuration: duration,// Store duration in milliseconds
+                    When: Date.now()
+                };
+
+                if (OutputDataHistory.length >= maxEntries) {
+                    OutputDataHistory.shift(); // Remove the oldest entry if max limit reached
+                }
+                OutputDataHistory.push(debugEntry);
+                console.log("Current OutputDataHistory:", OutputDataHistory); // Log for verification
+                output.innerHTML 
+            }
+
+
+            document.getElementById('Debug').addEventListener('click', function() {
+                const startTime = Date.now();
+                const activeEditor = document.querySelector('.CodeMirror');
+                if (activeEditor) {
+                    const textarea = activeEditor.CodeMirror.getTextArea();
+                    textarea.value = activeEditor.CodeMirror.getValue(); // Ensure textarea value is updated
+                    const form = textarea.closest('form');
+                    if (form) {
+                        const snippetId = textarea.id.split('-')[1];
+                        console.log("Snippet ID:", snippetId);
+                        document.getElementById('current-snippet-id').value = snippetId; // Log the snippet ID
+                        const code = textarea.value;
+                        const url = `/'{{username}}'/'{{project.title}}'/save_snippet/${snippetId}/`;
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({ code: code })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                console.log("data:",'{{data}}')
+                                return response.text().then(text => { throw new Error(text) });
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const debugDuration = Date.now() - startTime;
+                            console.log('Snippet saved successfully:', data);
+                            if (data.output){
+                                addToOutputDataHistory(true, data.output,debugDuration);
+                            }
+                            else if (data.error){
+                                addToOutputDataHistory(false, data.error,debugDuration);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred: ' + error.message);
+                        });
+                    }
+                } else {
+                    checkCodeMirrorValue();
+                    alert('No active editor to save.');
+                }
+        });
+
+            //Output Show History Toggle
+            // Select the hidden checkbox and the SVG elements
+            const ShowOnlyToggleCheckbox = document.querySelector(".panelOutputOptionShow2 input");
+            const svgBackground = document.querySelector(".svgBackground");
+            const svgKnob = document.querySelector(".svgKnob");
+
+            // Function to update the SVG based on the checkbox state
+            function updateToggleSwitch() {
+            if (ShowOnlyToggleCheckbox.checked) {
+                // When checked (ON state)
+                svgBackground.setAttribute("fill", "#0079F2"); // Active background color
+                svgKnob.setAttribute("x", "18"); // Move knob to the right
+            } else {
+                // When unchecked (OFF state)
+                svgBackground.setAttribute("fill", "#3C445C"); // Inactive background color
+                svgKnob.setAttribute("x", "4"); // Move knob to the left
+            }
+            }
+
+            // Initialize the toggle appearance based on the initial state
+            updateToggleSwitch();
+
+            // Add a click event listener to the label to toggle the checkbox and update the SVG
+            document.querySelector(".panelOutputOptionShow2").addEventListener("click", function () {
+            // Toggle the checkbox state
+            ShowOnlyToggleCheckbox.checked = !ShowOnlyToggleCheckbox.checked;
+            
+            // Update the SVG appearance based on the new state
+            updateToggleSwitch();
+
+            // Optional: Log the current state or perform additional actions
+            console.log(ShowOnlyToggleCheckbox.checked ? "Switch is ON" : "Switch is OFF");
+            });            
 //----------------------------------------------------------------    
             //FeedBack
             var onlyCodeOption = document.getElementById("only-code");
@@ -818,7 +878,6 @@
              document.getElementById('please-help').addEventListener('click', function() {
                 document.getElementById('feedback-container').style.display = 'block';
                 document.getElementById('help-option').style.display = 'none';
-                CanActiveDisplay = false;
             });
             
             // Handle the do it myself click
@@ -917,7 +976,9 @@
     input{
         color:#f5f9f5;
     }
-
+    *{
+        scrollbar-color: var(--background-highest,#3C445C) var(--background-default,#1C2333);
+    }
     .AllContainer1{
 
     }

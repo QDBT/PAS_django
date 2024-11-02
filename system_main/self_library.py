@@ -11,6 +11,7 @@ def run_code(code):
             capture_output=True,
             timeout=10  # Limit the execution time
         )
+        
         output = process.stdout
         error = process.stderr
 
