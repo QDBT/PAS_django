@@ -15,7 +15,7 @@ def run_code(code):
         output = process.stdout
         error = process.stderr
 
-        print(f'Process output: {output}\n')
+        print(f'Process output:\n{output}\n')
         print(f'Process error: {error}\n')
         print(f'Process return code: {process.returncode}\n')
     except Exception as e:

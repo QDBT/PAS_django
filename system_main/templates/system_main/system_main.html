@@ -238,72 +238,8 @@
                     </div>
                 </div>
                 <div class="panelOutputContent">
-                    <div class="resizer">
-                        <div class="panelOutputContentHeader">
-                            <div class="panelOutputContentHeaderLeft">
-                                <button type="button" aria-label="Collapse" class="OptionButton">
-                                    <i class="fa-solid fa-angle-down Icon"></i>
-                                </button>
-                                <div color="grey" class="panelOutputContentHeaderLeftRun">
-                                    <span>Run</span>
-                                </div>
-                                <div class="panelOutputContentHeaderTextIfCollapsed"></div>
-                            </div>
-                            <div class="panelOutputContentHeaderRight">
-                                <div class="panelOutputContentHeaderRightAskAI">
-                                    <span class="panelOutputContentHeaderRightAskAISpan">
-                                        <button type="button" class="panelOutputContentHeaderRightAskAIButton">
-                                            <div class="SpanAndIconInsideButton">
-                                                <i class="fa-solid fa-headset Icon"></i>
-                                                <span class="SpanAndIconInsideButtonSpan">Ask AI</span>
-                                            </div>
-                                        </button>
-                                    </span>
-                                    <div class="panelOutputContentHeaderRiver"></div>
-                                </div>
-                                <div class="panelOutputContentHeaderRightTime">
-                                    <span class="panelOutputContentHeaderRightTime1">
-                                        <span class="resizer">27ms</span>
-                                        &nbsp;・ &nbsp;
-                                        <span class="panelOutputContentHeaderRightTime2">
-                                            <span class="SpanAndIconInsideButtonSpan">1 hour ago</span>
-                                        </span>
-                                    </span>
-                                    <div class="panelOutputContentHeaderRiver"></div>
-                                </div>
-                                <div class="panelOutputContentHeaderRightStatus">
-                                    <span class="resizer">
-                                        <i class="fa-solid fa-check Icon"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="resizer" style="position: sticky; top: 28px;"></div>
-                        <div style="transition: height 120ms ease-out; overflow: visible;">
-                            <div class="panelOutputContentBlock1">
-                                <div class="resizer">
-                                    <div class="resizer">
-                                        <div class="panelOutputContentBlock2">
-                                            <div class="panelOutputContentBlock3">
-                                                <div dir="ltr" class="terminal xterm">
-                                                    <div class="xterm-viewport" style="background-color: rgb(28, 35, 51);">
-                                                        <div class="xterm-scroll-area" style="height:80px;"></div>
-                                                    </div>
-                                                    <div class="xterm-screen" style="width:704px; height:64px">
-                                                        <div id="output"></div>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panelOutputContentRiver"></div>
-                    </div>
-                    <div class="panelOutputContentEnd"></div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -1235,7 +1171,7 @@
         -webkit-box-pack: justify;
         justify-content: space-between;
         height: 28px;
-        background-color: var(--background-default,#1C2333);
+        background-color: var(--background-color,#331c1c);
         border-bottom-color: var(--background-higher,#2B3245);
         position: sticky;
         top: 0px;
@@ -1603,7 +1539,7 @@
         flex-shrink: 0;
         outline: none;
         min-width: 0px;
-        min-height: var(--blockMinHeight,80px);
+        min-height: var(--BlockMinHeight,80px);
         background-color: var(--terminalBackgroundColor,#1C2333);
     }
     .panelOutputContentBlock2{
@@ -1619,7 +1555,7 @@
         min-height: 0px;
         min-width: 0px;
         display: grid;
-        height:80px;
+        height:var(--BlockMinHeight,80px);
         pointer-events: all;
     }
     .panelOutputContentBlock3{
@@ -1638,7 +1574,7 @@
         grid-area: 1 / 1;
         position: sticky;
         top: 28px;
-        height:80px;
+        height:var(--BlockMinHeight,80px);
         max-height: 400px;
     }
     .panelOutputContentBlock3 .xterm{

@@ -752,7 +752,7 @@
     
                 window.addEventListener('resize', function() {
                     editor.setSize("100%","100%");
-
+                    UpdateAllPosition();
                 });
                 
 
@@ -764,14 +764,177 @@
 
             let OutputDataHistory = [];
             const maxEntries = 10;
-            const output=document.getElementById("output");
+            const OneLineHeight = 20;
+            
+            function formatElapsedTime(milliseconds) {
+                const minutes = Math.floor(milliseconds / 60000);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
 
+                if (days > 0) {
+                    return `${days} day${days > 1 ? 's' : ''} ago`;
+                } else if (hours > 0) {
+                    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+                } else {
+                    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+                }
+            }
+
+            function createBaseStructure(status, data , duration ) {
+                //Record the Time Started
+                const WhenStarted = Date.now();
+
+                // Main container
+                
+                const resizer = document.createElement('div');
+                resizer.classList.add('resizer');
+
+                // Panel header
+                const panelOutputContentHeader = document.createElement('div');
+                panelOutputContentHeader.classList.add('panelOutputContentHeader');
+                //The Header Background will follow status
+                panelOutputContentHeader.style.setProperty('--background-color',`${status ? '#1c331c' : '#331c1c'}`);
+                resizer.appendChild(panelOutputContentHeader);
+
+                // Left side of header
+                const headerLeft = document.createElement('div');
+                headerLeft.classList.add('panelOutputContentHeaderLeft');
+                panelOutputContentHeader.appendChild(headerLeft);
+
+                const collapseButton = document.createElement('button');
+                collapseButton.type = 'button';
+                collapseButton.classList.add('OptionButton');
+                collapseButton.style.setProperty('--height','24px');
+                collapseButton.style.setProperty('--width','24px');
+                collapseButton.setAttribute('aria-label', 'Collapse');
+                collapseButton.innerHTML = '<i class="fa-solid fa-angle-down Icon"></i>';
+                headerLeft.appendChild(collapseButton);
+
+                const runContainer = document.createElement('div');
+                runContainer.classList.add('panelOutputContentHeaderLeftRun');
+                runContainer.innerHTML = '<span>Run</span>';
+                headerLeft.appendChild(runContainer);
+
+                const collapsedText = document.createElement('div');
+                collapsedText.classList.add('panelOutputContentHeaderTextIfCollapsed');
+                headerLeft.appendChild(collapsedText);
+
+                // Right side of header
+                const headerRight = document.createElement('div');
+                headerRight.classList.add('panelOutputContentHeaderRight');
+                panelOutputContentHeader.appendChild(headerRight);
+
+                // Ask AI button
+                const askAIContainer = document.createElement('div');
+                askAIContainer.classList.add('panelOutputContentHeaderRightAskAI');
+                headerRight.appendChild(askAIContainer);
+
+                const askAIButton = document.createElement('button');
+                askAIButton.type = 'button';
+                askAIButton.classList.add('panelOutputContentHeaderRightAskAIButton');
+                askAIButton.innerHTML = `<div class="SpanAndIconInsideButton">
+                                            <i class="fa-solid fa-headset Icon"></i>
+                                            <span class="SpanAndIconInsideButtonSpan">Ask AI</span>
+                                        </div>`;
+                askAIContainer.appendChild(askAIButton);
+
+                const askAIRiver = document.createElement('div');
+                askAIRiver.classList.add('panelOutputContentHeaderRiver');
+                askAIContainer.appendChild(askAIRiver);
+
+                // Time and duration
+                const timeContainer = document.createElement('div');
+                timeContainer.classList.add('panelOutputContentHeaderRightTime');
+                headerRight.appendChild(timeContainer);
+                
+                
+
+                const timeSpan = document.createElement('span');
+                timeSpan.classList.add('panelOutputContentHeaderRightTime1');
+                timeSpan.innerHTML = `${duration}ms &nbsp;・ &nbsp;<span class="panelOutputContentHeaderRightTime2">Just now</span>`;
+                timeContainer.appendChild(timeSpan);
+
+                const TimeAgo = setInterval(() => {
+                    const elapsedTime = Date.now() - WhenStarted;
+                    const formattedTime = formatElapsedTime(elapsedTime);
+
+                    // Update the inner HTML of timeSpan
+                    timeSpan.innerHTML = `${duration} &nbsp;・ &nbsp;<span class="panelOutputContentHeaderRightTime2">${formattedTime}</span>`;
+                }, 60000); // Updates every minute
+
+                const timeRiver = document.createElement('div');
+                timeRiver.classList.add('panelOutputContentHeaderRiver');
+                timeContainer.appendChild(timeRiver);
+
+                // Status icon section
+                const statusContainer = document.createElement('div');
+                statusContainer.classList.add('panelOutputContentHeaderRightStatus');
+                const statusIcon = document.createElement('span');
+                statusIcon.classList.add('resizer');
+                statusIcon.innerHTML = `<i class="fa-solid ${status ? 'fa-check' : 'fa-triangle-exclamation'} Icon"></i>`;
+                statusContainer.appendChild(statusIcon);
+                headerRight.appendChild(statusContainer);
+
+                // Terminal output
+                const terminalContainer = document.createElement('div');
+                terminalContainer.classList.add('panelOutputContentBlock1');
+                terminalContainer.style.position = 'sticky';
+                terminalContainer.style.top = '28px';
+                const newlineCount = (data.match(/\n/g) || []).length+1;
+                console.log("Number of newline characters:", newlineCount);
+                const BlockMinHeight=newlineCount * OneLineHeight;
+                terminalContainer.style.setProperty('--BlockMinHeight',`${BlockMinHeight}px`);
+                resizer.appendChild(terminalContainer);
+
+                const terminalBlock = document.createElement('div');
+                terminalBlock.classList.add('panelOutputContentBlock2');
+                terminalContainer.appendChild(terminalBlock);
+
+                const outputContentBlock3 = document.createElement('div');
+                outputContentBlock3.classList.add('panelOutputContentBlock3');
+                terminalBlock.appendChild(outputContentBlock3);
+
+                const terminal = document.createElement('div');
+                terminal.classList.add('terminal', 'xterm');
+                outputContentBlock3.appendChild(terminal);
+
+                const xtermViewport = document.createElement('div');
+                xtermViewport.classList.add('xterm-viewport');
+                xtermViewport.style.backgroundColor = 'rgb(28, 35, 51)';
+                xtermViewport.style.height = '80px';
+                terminal.appendChild(xtermViewport);
+
+                const xtermScreen = document.createElement('div');
+                xtermScreen.classList.add('xterm-screen');
+                xtermScreen.style.width = '704px';
+                xtermScreen.style.height = '64px';
+
+                const outputContainer = document.createElement('div');
+                outputContainer.classList.add('output');
+                outputContainer.innerHTML = data.replace(/ /g, '&nbsp;').replace(/\n/g, '<br>');
+                xtermScreen.appendChild(outputContainer);
+                terminal.appendChild(xtermScreen);
+
+                resizer.appendChild(terminalContainer);
+
+                const panelOutputContentRiver = document.createElement('div');
+                panelOutputContentRiver.classList.add('panelOutputContentRiver');
+                resizer.appendChild(panelOutputContentRiver);
+
+                const panelOutputContentEnd = document.createElement('div');
+                panelOutputContentEnd.classList.add('panelOutputContentEnd');
+                resizer.appendChild(panelOutputContentEnd);
+
+                // Append the complete structure to the body or a specific container
+                document.querySelector(".panelOutputContent").appendChild(resizer);
+            }
 
             function addToOutputDataHistory(status, data, duration) {
+                 
                 const debugEntry = {
                     Status: status,//status=true means Debug succeeded, false means Error
                     Data: data,//// Stores response data or error messages
-                    DebugDuration: duration,// Store duration in milliseconds
+                    DebugDuration: duration + 'ms',// Store duration in milliseconds
                     When: Date.now()
                 };
 
@@ -779,10 +942,13 @@
                     OutputDataHistory.shift(); // Remove the oldest entry if max limit reached
                 }
                 OutputDataHistory.push(debugEntry);
+                createBaseStructure(status, data, duration)
                 console.log("Current OutputDataHistory:", OutputDataHistory); // Log for verification
-                output.innerHTML 
+                
             }
 
+            // Update the elapsed time every minute
+            
 
             document.getElementById('Debug').addEventListener('click', function() {
                 const startTime = Date.now();
