@@ -33,9 +33,13 @@
                                 <i class="fa-solid fa-play"></i>
                                 <span>Run</span>
                             </button>
+                            <select id="main-file-select" class="form-select ml-2">
+                                
+                            </select>
                         </div>
                         <div class="topbar-right">
-                            {{ project.user }}
+                            <button class="topbar-rightUser">                                
+                            </button>
                         </div>
                         <input type="hidden" id="current-snippet-id" value=""> <!--To store the snippet ID-->
                     </header>
@@ -66,7 +70,7 @@
                                                     </div>
                                                 </button>
                                                 <div class="SideBarFilesOptionsRight">
-                                                    <button class="OptionButton">
+                                                    <button class="OptionButton" id="SideBarNewFile">
                                                         <i class="fa-solid fa-file-circle-plus Icon"></i>
                                                     </button>
                                                     <button class="OptionButton">
@@ -83,18 +87,7 @@
                                                         <div class="SideBarFilesIndex4">
                                                             <div class="SideBarFilesIndex5">
                                                                 <div role="tree" class="SideBarFilesIndex6">
-                                                                    <div role="treeitem" class="SideBarFilesTreeItems">
-                                                                        <div title="" class="SideBarFilesTreeItems1">
-                                                                            <div class="SideBarFilesIcon">
-                                                                                <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
-                                                                            </div>
-                                                                            <div class="SideBarFilesName">{{snippets}}</div>
-    
-                                                                        </div>
-                                                                        <button title="menu" class="SideBarFilesMenuButton">
-                                                                            <img class="Icon"></img>
-                                                                        </button>
-                                                                    </div>
+                                                                   
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -139,6 +132,44 @@
     }
 //----------------------------------------------------------------
     //  libraries
+    function createUserIcon(Parent){
+        // Use the server-rendered username
+    const user = "{{ project.user }}";
+
+    // Extract the first two letters of the user's name
+    const userName = user || "";
+    const initials = userName.slice(0, 2).toUpperCase();
+
+    // Find the parent element by its class name
+    const parent = document.querySelector(`${Parent}`);
+    if (!parent) {
+        console.error(`Parent element with class "${Parent}" not found.`);
+        return;
+    }
+
+    // Create the UserAvatarIcon structure
+    const userAvatarIcon1 = document.createElement('div');
+    userAvatarIcon1.className = 'UserAvatarIcon1';
+    userAvatarIcon1.style.setProperty('--size', '24px');
+    userAvatarIcon1.style.setProperty('--ring-size', '1px');
+    userAvatarIcon1.style.setProperty('--ring-color', 'var(--outline-dimmer, #3C445C)');
+    userAvatarIcon1.style.setProperty('--has-on-click-shadow', 'inset 0 0 0 var(--ring-size) var(--ring-color)');
+    userAvatarIcon1.style.setProperty('--border-radius', 'var(--border-radius-round)');
+
+    const userAvatarIcon2 = document.createElement('div');
+    userAvatarIcon2.className = 'UserAvatarIcon2';
+    
+    const userAvatarName = document.createElement('div');
+    userAvatarName.className = 'UserAvatarIconName';
+    userAvatarName.textContent = initials;
+    
+
+    // Build the structure
+    userAvatarIcon2.appendChild(userAvatarName);
+    userAvatarIcon1.appendChild(userAvatarIcon2);
+    parent.appendChild(userAvatarIcon1);
+    }
+
     function compareDividers(div1, div2) {
         // Collect differences
         const differences = [];
@@ -227,7 +258,197 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+//-----------------------------------------------------------------------------------------------
+            // Create Structure
+            function createTabPanel(data) {
+                // Create the main `tabpanel` container
+                const tabPanel = document.createElement('div');
+                tabPanel.setAttribute('role', 'tabpanel');
+                tabPanel.classList.add('panelAll1');
+                tabPanel.setAttribute('panelPosition', 'Top-Left');
+                tabPanel.setAttribute('id', data.id);
+                tabPanel.addEventListener('click', event =>{
+                    WhichPanelPositionIsChoosen = tabPanel.getAttribute('panelPosition')
+                })
 
+                // Create the second container
+                const panelAll2 = document.createElement('div');
+                panelAll2.classList.add('panelAll2');
+                tabPanel.appendChild(panelAll2);
+
+                // Add the resizer
+                const resizer = document.createElement('div');
+                resizer.setAttribute('tabindex', '-1');
+                resizer.classList.add('resizer');
+                panelAll2.appendChild(resizer);
+
+                // Create the panelCode container
+                const panelCode = document.createElement('div');
+                panelCode.classList.add('panelCode');
+                panelAll2.appendChild(panelCode);
+
+                // Add the panelName container
+                const panelName = document.createElement('div');
+                panelName.classList.add('panelName');
+                panelCode.appendChild(panelName);
+
+                // Add the panelNameLeft
+                const panelNameLeft = document.createElement('div');
+                panelNameLeft.classList.add('panelNameLeft');
+                panelName.appendChild(panelNameLeft);
+
+                const panelNameLeft1 = document.createElement('div');
+                panelNameLeft1.classList.add('panelNameLeft1');
+                panelNameLeft.appendChild(panelNameLeft1);
+
+                const nameButton = document.createElement('button');
+                nameButton.classList.add('panelNameButton');
+                panelNameLeft1.appendChild(nameButton);
+
+                const iconImg = document.createElement('img');
+                iconImg.classList.add('Icon');
+                iconImg.src =  '{% static "images/Python.jpg" %}';
+                nameButton.appendChild(iconImg);
+
+                const panelNameWord = document.createElement('div');
+                panelNameWord.classList.add('panelNameWord');
+                panelNameWord.textContent = data.Language || 'Python';
+                nameButton.appendChild(panelNameWord);
+
+                // Add the panelNameRight
+                const panelNameRight = document.createElement('div');
+                panelNameRight.classList.add('panelNameRight');
+                panelName.appendChild(panelNameRight);
+
+                const panelNameRight1 = document.createElement('div');
+                panelNameRight1.classList.add('panelNameRight1');
+                panelNameRight.appendChild(panelNameRight1);
+
+                const formatButton = document.createElement('button');
+                formatButton.classList.add('panelFormatButton');
+                panelNameRight1.appendChild(formatButton);
+
+                const formatIcon = document.createElement('img');
+                formatIcon.classList.add('Icon');
+                formatButton.appendChild(formatIcon);
+
+                const formatWord = document.createElement('div');
+                formatWord.classList.add('panelFormatWord');
+                formatButton.appendChild(formatWord);
+
+                // Create the panelContent container
+                const panelContent = document.createElement('div');
+                panelContent.classList.add('panelContent');
+                panelCode.appendChild(panelContent);
+
+                const panelContent1 = document.createElement('div');
+                panelContent1.classList.add('panelContent1');
+                panelContent.appendChild(panelContent1);
+
+                const panelContent2 = document.createElement('div');
+                panelContent2.classList.add('panelContent2');
+                panelContent1.appendChild(panelContent2);
+
+                const panelContentEditor = document.createElement('div');
+                panelContentEditor.classList.add('panelContentEditor');
+                panelContent2.appendChild(panelContentEditor);
+
+                const textarea = document.createElement('textarea');
+                textarea.name = 'code';
+                textarea.rows = '30';
+                textarea.innerHTML = data.Code
+                panelContentEditor.appendChild(textarea);
+
+                // Create the panelBottom section
+                const panelBottomParent =document.createElement('div');
+                panelBottomParent.style.setProperty('display','block');
+                panelCode.appendChild(panelBottomParent);
+
+                const panelBottom = document.createElement('div');
+                panelBottom.classList.add('panelBottom');
+                panelBottomParent.appendChild(panelBottom);
+
+                // Button 1: AI
+                const resizerAI = document.createElement('div');
+                resizerAI.classList.add('resizer');
+                panelBottom.appendChild(resizerAI);
+
+                const buttonAI = document.createElement('button');
+                buttonAI.type = 'button';
+                buttonAI.classList.add('panelBottomButton');
+                resizerAI.appendChild(buttonAI);
+
+                const iconAI = document.createElement('i');
+                iconAI.classList.add('fa-solid', 'fa-brain', 'Icon');
+                iconAI.style.color = '#cf73e8';
+                buttonAI.appendChild(iconAI);
+
+                const labelAI = document.createElement('div');
+                labelAI.classList.add('resizer');
+                labelAI.textContent = 'AI';
+                buttonAI.appendChild(labelAI);
+
+                // Button 2: Python
+                const resizerPython = document.createElement('div');
+                resizerPython.classList.add('resizer');
+                panelBottom.appendChild(resizerPython);
+
+                const buttonPython = document.createElement('button');
+                buttonPython.type = 'button';
+                buttonPython.classList.add('panelBottomButton');
+                resizerPython.appendChild(buttonPython);
+
+                const iconPython = document.createElement('i');
+                iconPython.classList.add('fa-solid', 'fa-check', 'Icon');
+                iconPython.style.color = '#0dd92f';
+                buttonPython.appendChild(iconPython);
+
+                const labelPython = document.createElement('div');
+                labelPython.classList.add('resizer');
+                labelPython.textContent = 'Python';
+                buttonPython.appendChild(labelPython);
+
+                // Button 3: Disabled
+                const resizerDisabled = document.createElement('div');
+                resizerDisabled.classList.add('resizer');
+                panelBottom.appendChild(resizerDisabled);
+
+                const buttonDisabled = document.createElement('button');
+                buttonDisabled.type = 'button';
+                buttonDisabled.classList.add('panelBottomButton');
+                buttonDisabled.disabled = true;
+                resizerDisabled.appendChild(buttonDisabled);
+
+                // Blank Spacer
+                const blankbrick = document.createElement('div');
+                blankbrick.classList.add('blankbrick');
+                panelBottom.appendChild(blankbrick);
+
+                // Button 4: Line and Column
+                const resizerLnCol = document.createElement('div');
+                resizerLnCol.classList.add('resizer');
+                panelBottom.appendChild(resizerLnCol);
+
+                const buttonLnCol = document.createElement('button');
+                buttonLnCol.type = 'button';
+                buttonLnCol.classList.add('panelBottomButton');
+                resizerLnCol.appendChild(buttonLnCol);
+
+                const labelLnCol = document.createElement('span');
+                labelLnCol.textContent = 'ln,col';
+                buttonLnCol.appendChild(labelLnCol);
+
+                Main = document.querySelector('main');
+                Main.appendChild(tabPanel);
+                
+                CodeMirrorStyle(textarea,data);//Set Up Style for Coding Area with CodeMirror
+                UpdatePanelPosition();
+
+                console.log('Created tabPanel');
+            }
+            createUserIcon(".topbar-rightUser")//createUserIcon(ParentClassName) To know where to create
+            
+//-----------------------------------------------------------------------------------------------
             //Initial CSS style
             const root = document.getElement;
             let MainContainerAreaData = null;
@@ -546,10 +767,8 @@
             
             //Initial style for each snippetBar of each Position
             UpdateSnippetBarPosition();
-            //Initial style for allpanel
-            const panels =document.querySelectorAll('.panelAll1');
-
             
+            //Initial style for allpanel                        
             //Set up the data for snippetBar Position.The Position change as TransformX,TransformY, Width,Height
             panelPositionData =[
                 { 
@@ -633,6 +852,7 @@
             ]
             //function for updating snippetBar of each Position
             function UpdatePanelPosition(){
+                const panels =document.querySelectorAll('.panelAll1');
                 panels.forEach((panel,index)=>{
                     
                     const Position = panel.getAttribute('panelPosition');
@@ -653,9 +873,7 @@
             //Initial style for each panel with position
             UpdatePanelPosition();
             //Initial style for panel Bottom
-            const panelBottom = document.querySelector('.panelBottom');
-            let panelBottomHeight=29;
-            panelBottom.style.setProperty('--height',`${panelBottomHeight}px`);
+
 
             
             //Set the function to move divider
@@ -727,38 +945,399 @@
                 UpdateSnippetBarPosition();
             };
             UpdateAllPosition();
+            let WhichPanelPositionIsChoosen = "Top-Left"; //Init that Top-Left 
+            const AllsnippetBar = document.querySelectorAll('.snippetBar'); // Will Remove this after done create structure  
+            AllsnippetBar.forEach(snippetBar =>{
+                snippetBar.addEventListener('click',event =>{
+                    WhichPanelPositionIsChoosen = snippetBar.getAttribute('panelPosition');
+                    console.log(WhichPanelPositionIsChoosen)
+                })
+            })
     
 
 //-----------------------------------------------------------------------------------------------
-            
+            //Create new file
+            //In Sidebar---------------------------------------------------
+            const FileData = [
+                {% for snippet in snippets %}
+                    {
+                        FileName: `{{ snippet.file_name|escapejs}}`,
+                        Language: "{{snippet.language}}",  // Default language
+                        Code: `{{ snippet.code|escapejs }}`,
+                    }{% if not forloop.last %},{% endif %}
+                {% endfor %}                
+            ];//FileData is all files
+              //First time update from server
+            //Create a unique ID for EachFile
+            FileData.forEach((file) => {
+                file.id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+            });
 
-            var snippetTextareas = document.querySelectorAll('textarea[id^="code-"]');
-            var snippetId = null;
-            snippetTextareas.forEach(function(textarea) {
-                var editor = CodeMirror.fromTextArea(textarea, {
+            //MainFileData is the File would be debug, the rest of this is SubFile
+            let MainFileData = FileData[0];
+            //Create The Option that which file will be debuged
+
+            function CreateTopBarSelectMainFileOption(file){
+                //find parent
+                parent = document.querySelector('#main-file-select');
+
+                // Create the option
+                const option = document.createElement('option');
+                option.value = file.FileName;
+                option.textContent = file.FileName;
+
+                parent.appendChild(option);
+                // Add an event listener to the <select> to handle selection changes
+                parent.addEventListener('change', (event) => {
+                    const selectedFileName = event.target.value; // Get selected option's value
+                    if (selectedFileName === file.FileName) {
+                        MainFileData = file; // Set MainFileData
+                        console.log('Main file updated:', file); // Log the new main file
+                        console.log(FileData)
+                    }
+                });
+            }
+            FileData.forEach((file) => CreateTopBarSelectMainFileOption(file));
+            
+            
+            //Update First time
+            function CreateSidebarTree(data,index){
+                console.log(data);
+                const SideBarTreeContainer = document.querySelector('.SideBarFilesIndex6');
+                const rowHeight = 24;
+                const rowY = 8 + rowHeight * index;
+
+                const treeItem = document.createElement('div');
+                treeItem.setAttribute('role', 'treeitem');
+                treeItem.setAttribute('id',data.id);
+                treeItem.className = 'SideBarFilesTreeItems';
+                treeItem.style.setProperty('--rowHeight', `${rowHeight}px`);
+                treeItem.style.setProperty('--rowY', `${rowY}px`);
+                treeItem.addEventListener('click',(event)=>{
+                    UserChooseThisFile(data);
+                })
+
+                // Create the inner structure
+                const treeItemInner = document.createElement('div');
+                treeItemInner.title = data.FileName;
+                treeItemInner.className = 'SideBarFilesTreeItems1';
+
+                // Create the file icon container
+                const iconContainer = document.createElement('div');
+                iconContainer.className = 'SideBarFilesIcon';
+
+                // Add the image to the icon container
+                const iconImage = document.createElement('img');
+                iconImage.className = 'Icon';
+                iconImage.src = "{% static 'images/Python.jpg' %}"; // Adjust this for file type icons
+                iconContainer.appendChild(iconImage);
+
+                // Add the file name
+                const fileNameDiv = document.createElement('div');
+                fileNameDiv.className = 'SideBarFilesName';
+                fileNameDiv.setAttribute('data-filename', data.FileName); // For duplicate checks
+                fileNameDiv.textContent = data.FileName;
+
+                // Append the icon container and file name to the inner div
+                treeItemInner.appendChild(iconContainer);
+                treeItemInner.appendChild(fileNameDiv);
+
+                // Create the menu button
+                const menuButton = document.createElement('button');
+                menuButton.title = 'menu';
+                menuButton.className = 'SideBarFilesMenuButton';
+
+                // Add the menu button icon
+                const menuIcon = document.createElement('img');
+                menuIcon.className = 'Icon';
+                menuButton.appendChild(menuIcon);
+
+                // Append the inner div and menu button to the tree item
+                treeItem.appendChild(treeItemInner);
+                treeItem.appendChild(menuButton);
+
+                // Append the tree item to the container
+                SideBarTreeContainer.appendChild(treeItem);
+                CreateSnippetsBarUnit(data);
+
+            }
+            FileData.forEach(function(data,index){
+                CreateSidebarTree(data,index)
+            })
+            function UpdateFileData(name,language=null,code=null){
+                id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;//create id for each
+                FileData.push(
+                    {
+                        FileName:name,
+                        Language:language,
+                        Code:code,
+                        id:id,
+                    }
+                )
+                
+            }
+
+            const SideBarNewFile = document.getElementById('SideBarNewFile')
+            SideBarNewFile.addEventListener('click', function(){
+                const SideBarTreeContainer = document.querySelector('.SideBarFilesIndex6');
+
+                const rowHeight = 24;
+                const rowY = 8 + rowHeight * FileData.length;
+                // Create an input field for the new file name
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.setAttribute('role', 'treeitem');
+                inputField.className = 'SideBarFilesTreeItems';
+                inputField.placeholder = 'Enter file name (e.g., NewFile.py)';
+                inputField.style.setProperty('--rowHeight', `${rowHeight}px`);
+                inputField.style.setProperty('--rowY', `${rowY}px`);
+
+                // Append the input field to the sidebar
+                SideBarTreeContainer.appendChild(inputField);
+                inputField.focus();
+
+                // Handle input confirmation (when user presses Enter or blurs the input)
+                let isHandled = false;
+
+                const handleConfirm = () => {
+                    if (isHandled) return; // Ensure the handler runs only once
+                    isHandled = true;
+
+                    const fileName = inputField.value.trim();
+
+                    // Validate file name
+                    if (!fileName) {
+                        alert('File name cannot be empty!');
+                        inputField.remove();
+                        return;
+                    }
+                    if (document.querySelector(`.SideBarFilesName[data-filename="${fileName}"]`)) {
+                        alert('A file with this name already exists!');
+                        inputField.remove();
+                        return;
+                    }
+                    
+                    // Determine file title and language
+                    let language = ""; // Default language
+
+                    // Extract the part after the last '.' in the filename
+                    const parts = fileName.split('.');
+                    if (parts.length > 1) {
+                        language = parts.pop().toLowerCase(); // Get the extension and convert to lowercase
+                    } else {
+                        language = ""; // Default if no '.' in the filename
+                    }
+
+                    // Validate the extracted language
+                    const allowedLanguages = ["py", "js", "c", "css"]; // Add more valid extensions as needed
+                    if (!allowedLanguages.includes(language)) {
+                        language = ""; // Set to default if not allowed
+                    }
+                    // Remove input field
+                    inputField.remove();
+
+                    // Create the new file tree item
+                    UpdateFileData(fileName, language, "");
+                    console.log(FileData)
+                    CreateSidebarTree(FileData[FileData.length-1],FileData.length-1);
+                    CreateTopBarSelectMainFileOption(FileData[FileData.length-1]);
+                };
+
+                // Confirm on blur or Enter key
+                inputField.addEventListener('blur', handleConfirm);
+                inputField.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        handleConfirm();
+                    }
+                });
+            })
+
+            //In SnippetsBar----------------------------------------------------
+
+            function CreateSnippetsBarUnit(data) {
+                //Find Parent 
+                const  snippetBar = document.querySelectorAll('.snippetBar');
+                const snippetBarWithThisPosition = Array.from(snippetBar).find(item => 
+                    item.getAttribute('panelPosition') === WhichPanelPositionIsChoosen
+                );
+                const parent = snippetBarWithThisPosition.querySelector('.snippetBarLeftName2')
+                // Create this child
+                const snippetBarUnit = document.createElement('div');
+                snippetBarUnit.className = 'snippetBarUnit';
+                snippetBarUnit.setAttribute('id',data.id);
+                snippetBarUnit.addEventListener('click', event => {
+                    UserChooseThisFile(data);                    
+                });
+                //snippetBarUnit1 Container
+                const snippetBarUnit1 = document.createElement('div');
+                snippetBarUnit1.className = 'snippetBarUnit1';
+
+                // Resizer container
+                const resizer = document.createElement('span');
+                resizer.className = 'resizer';
+
+                // Snippet bar button
+                const snippetBarButton = document.createElement('button');
+                snippetBarButton.className = 'snippetBarButton';
+
+                // Snippet bar button content
+                const snippetBarButtonContent = document.createElement('div');
+                snippetBarButtonContent.className = 'snippetBarButton1';
+
+                // Icon inside snippet button
+                const snippetIcon = document.createElement('img');
+                snippetIcon.className = 'Icon';
+                snippetIcon.src = "{% static 'images/Python.jpg' %}"; // Adjust dynamically based on data if needed
+
+                // Append icon to button content
+                snippetBarButtonContent.appendChild(snippetIcon);
+
+                // Snippet name container
+                const snippetNameContainer = document.createElement('div');
+                snippetNameContainer.className = 'snippetBarUnitButtonName';
+
+                // Snippet name
+                const snippetName = document.createElement('span');
+                snippetName.className = 'snippetBarUnitButtonName1';
+                snippetName.textContent = `${data.FileName}`; // Use the file name from `data`
+
+                // Append snippet name to its container
+                snippetNameContainer.appendChild(snippetName);
+
+                // Append content and name to snippet button
+                snippetBarButton.appendChild(snippetBarButtonContent);
+                snippetBarButton.appendChild(snippetNameContainer);
+
+                // Append button to resizer
+                resizer.appendChild(snippetBarButton);
+
+                // Close button container
+                const closeButtonContainer = document.createElement('div');
+                closeButtonContainer.className = 'snippetBarCloseButton';
+
+                // Option button
+                const optionButton = document.createElement('button');
+                optionButton.className = 'OptionButton';
+
+                // Option button inner structure
+                const optionButtonInner = document.createElement('div');
+                optionButtonInner.className = 'OptionButton1';
+
+                const optionButtonInner2 = document.createElement('div');
+                optionButtonInner2.className = 'OptionButton2';
+
+                // Append inner structure to option button
+                optionButtonInner.appendChild(optionButtonInner2);
+
+                // Close button icon
+                const closeButtonIcon = document.createElement('div');
+                closeButtonIcon.className = 'snippetBarCloseButtonIcon';
+
+                const closeIcon = document.createElement('i');
+                closeIcon.className = 'fa-solid fa-xmark Icon';
+
+                // Append close icon to container
+                closeButtonIcon.appendChild(closeIcon);
+                optionButton.appendChild(optionButtonInner);
+                optionButton.appendChild(closeButtonIcon);
+
+                // Append option button to close button container
+                closeButtonContainer.appendChild(optionButton);
+
+                // Append resizer and close button to parent container
+                snippetBarUnit1.appendChild(resizer);
+                snippetBarUnit1.appendChild(closeButtonContainer);
+                
+                snippetBarUnit.appendChild(snippetBarUnit1);
+
+                
+                parent.appendChild(snippetBarUnit);
+
+                createTabPanel(data);
+            }
+            
+//-----------------------------------------------------------------------------------------------
+            function CodeMirrorStyle(element,filedata){
+                var Textarea = CodeMirror.fromTextArea(element, {
                     lineNumbers: true,
                     mode: "python",  // Change to your desired language
                     matchBrackets: true,
                     autoCloseBrackets: true,
                     theme: "dracula"  // Set the theme to dracula for a dark background
-                });
-
-                
-    
+                })
                 // Enable real-time resizing
-                editor.on("change", function() {
-                    textarea.value = editor.getValue();
+                Textarea.on("change", function() {
+                    element.value = Textarea.getValue();
+                    filedata.Code=element.value;// auto changed file data code if typing
                 });
     
                 window.addEventListener('resize', function() {
-                    editor.setSize("100%","100%");
+                    Textarea.setSize("100%","100%");
                     UpdateAllPosition();
                 });
                 
 
-                editor.setSize("100%","100%");
+                Textarea.setSize("100%","100%");
+            }
+            function UserChooseThisFile(data){
+                function UpdateSideBarTree(data){
+                    const AllSideBarTree=document.querySelectorAll('[role=treeitem]');
+                    console.log(AllSideBarTree)
+                    const ActiveSideBarTree = Array.from(AllSideBarTree).find(item => item.id === data.id);
+                    AllSideBarTree.forEach((item)=>{
+                        item.style.setProperty("--nodeBackgroundColor","#transparent");
+                        
+                    })
+                    ActiveSideBarTree.style.setProperty("--nodeBackgroundColor","#c2c8cc39");
+                    console.log('Update sidebartree')
+                }
+                function UpdateSnippetBarUnit(data){
+                    //find the parent
+                    const snippetBar=document.querySelectorAll('.snippetBar');
+                    const snippetBarWithThisPosition = Array.from(snippetBar).find(item => 
+                        item.getAttribute('panelPosition') === WhichPanelPositionIsChoosen
+                    );
+                    //Update Unchoosen Unit
+                    const AllsnippetBarUnit = snippetBarWithThisPosition.querySelectorAll('.snippetBarUnit')
+                    AllsnippetBarUnit.forEach(unit =>{
+                        unit.style.setProperty('background-color','');
+                        unit.style.setProperty('color','#c2c8cc');
+                        unit.style.setProperty('border-top','');
+                    })
+                    //Update Choosen Unit
+                    ActiveSnippetBarUnit=Array.from(AllsnippetBarUnit).find(item => item.id === data.id);
+                    ActiveSnippetBarUnit.style.setProperty('background-color','#1c2333');
+                    ActiveSnippetBarUnit.style.setProperty('color','#f5f9fc');
+                    ActiveSnippetBarUnit.style.setProperty('border-top','3px solid #ff00f7')
+                }
+                function UpdateTabPanel(data){
+                    //set up Index
+                    const ActiveZIndex = 5;
+                    const InActiveZIndex = 3;
 
-            });
+                    //find the parent
+                    const AlltabPanel = document.querySelectorAll(`[role=tabpanel]`);
+
+                    //Update Unchoosen panel
+                    const AlltabPanelWithThisPosition = Array.from(AlltabPanel).filter(panel => 
+                        panel.getAttribute('panelPosition') === WhichPanelPositionIsChoosen
+                    );        
+                    AlltabPanelWithThisPosition.forEach(panel =>{
+                        panel.style.setProperty("z-index",InActiveZIndex);
+                        panel.style.setProperty("opacity",0);
+                        panel.style.setProperty("visibility",'hidden');
+                    })
+
+                    //Update Unchoosen panel 
+                    const ActiveTabPanel = Array.from(AlltabPanelWithThisPosition).find(item => item.id === data.id);
+                    ActiveTabPanel.style.setProperty("z-index",ActiveZIndex);
+                    ActiveTabPanel.style.setProperty("opacity",1);
+                    ActiveTabPanel.style.setProperty("visibility",'visible');           
+                }
+                UpdateTabPanel(data);
+                UpdateSnippetBarUnit(data);
+                UpdateSideBarTree(data);
+            }
 //----------------------------------------------------------------
             //Output
 
@@ -780,10 +1359,13 @@
                 }
             }
 
-            function createBaseStructure(status, data , duration ) {
+            function createBaseStructure(HistoryData) {
                 //Record the Time Started
+                data =HistoryData.Data;
+                duration =HistoryData.DebugDuration;
+                created_at =HistoryData.When;
                 const WhenStarted = Date.now();
-
+                
                 // Main container
                 
                 const resizer = document.createElement('div');
@@ -793,7 +1375,7 @@
                 const panelOutputContentHeader = document.createElement('div');
                 panelOutputContentHeader.classList.add('panelOutputContentHeader');
                 //The Header Background will follow status
-                panelOutputContentHeader.style.setProperty('--background-color',`${status ? '#1c331c' : '#331c1c'}`);
+                panelOutputContentHeader.style.setProperty('--background-color',`${HistoryData.Status ? '#1c331c' : '#331c1c'}`);
                 resizer.appendChild(panelOutputContentHeader);
 
                 // Left side of header
@@ -838,6 +1420,12 @@
                                         </div>`;
                 askAIContainer.appendChild(askAIButton);
 
+                // Attach event listener to the Ask AI button
+                askAIButton.addEventListener("click", function() {
+                    // Assuming we want to use 'only_code' as the feedback option when this button is clicked
+                    AskAIDirectlyFromOutPut(created_at);
+                });
+
                 const askAIRiver = document.createElement('div');
                 askAIRiver.classList.add('panelOutputContentHeaderRiver');
                 askAIContainer.appendChild(askAIRiver);
@@ -859,7 +1447,7 @@
                     const formattedTime = formatElapsedTime(elapsedTime);
 
                     // Update the inner HTML of timeSpan
-                    timeSpan.innerHTML = `${duration} &nbsp;・ &nbsp;<span class="panelOutputContentHeaderRightTime2">${formattedTime}</span>`;
+                    timeSpan.innerHTML = `${duration}ms &nbsp;・ &nbsp;<span class="panelOutputContentHeaderRightTime2">${formattedTime}</span>`;
                 }, 60000); // Updates every minute
 
                 const timeRiver = document.createElement('div');
@@ -871,7 +1459,7 @@
                 statusContainer.classList.add('panelOutputContentHeaderRightStatus');
                 const statusIcon = document.createElement('span');
                 statusIcon.classList.add('resizer');
-                statusIcon.innerHTML = `<i class="fa-solid ${status ? 'fa-check' : 'fa-triangle-exclamation'} Icon"></i>`;
+                statusIcon.innerHTML = `<i class="fa-solid ${HistoryData.Status ? 'fa-check' : 'fa-triangle-exclamation'} Icon"></i>`;
                 statusContainer.appendChild(statusIcon);
                 headerRight.appendChild(statusContainer);
 
@@ -882,7 +1470,7 @@
                 terminalContainer.style.top = '28px';
                 const newlineCount = (data.match(/\n/g) || []).length+1;
                 console.log("Number of newline characters:", newlineCount);
-                const BlockMinHeight=newlineCount * OneLineHeight;
+                const BlockMinHeight = Math.max(50, newlineCount * OneLineHeight);
                 terminalContainer.style.setProperty('--BlockMinHeight',`${BlockMinHeight}px`);
                 resizer.appendChild(terminalContainer);
 
@@ -901,13 +1489,12 @@
                 const xtermViewport = document.createElement('div');
                 xtermViewport.classList.add('xterm-viewport');
                 xtermViewport.style.backgroundColor = 'rgb(28, 35, 51)';
-                xtermViewport.style.height = '80px';
                 terminal.appendChild(xtermViewport);
 
                 const xtermScreen = document.createElement('div');
                 xtermScreen.classList.add('xterm-screen');
-                xtermScreen.style.width = '704px';
-                xtermScreen.style.height = '64px';
+                xtermScreen.style.width = '100%';
+                xtermScreen.style.height = `100%`;
 
                 const outputContainer = document.createElement('div');
                 outputContainer.classList.add('output');
@@ -915,7 +1502,7 @@
                 xtermScreen.appendChild(outputContainer);
                 terminal.appendChild(xtermScreen);
 
-                resizer.appendChild(terminalContainer);
+                
 
                 const panelOutputContentRiver = document.createElement('div');
                 panelOutputContentRiver.classList.add('panelOutputContentRiver');
@@ -926,23 +1513,28 @@
                 resizer.appendChild(panelOutputContentEnd);
 
                 // Append the complete structure to the body or a specific container
-                document.querySelector(".panelOutputContent").appendChild(resizer);
+                const ChildElement= document.querySelector(".panelOutputContent");
+                ChildElement.appendChild(resizer);
             }
 
-            function addToOutputDataHistory(status, data, duration) {
-                 
+
+            //
+            function addToOutputDataHistory(status, data, duration, created_at) {
                 const debugEntry = {
                     Status: status,//status=true means Debug succeeded, false means Error
                     Data: data,//// Stores response data or error messages
-                    DebugDuration: duration + 'ms',// Store duration in milliseconds
-                    When: Date.now()
+                    DebugDuration: duration ,// Store duration in milliseconds
+                    When: created_at,
                 };
-
                 if (OutputDataHistory.length >= maxEntries) {
                     OutputDataHistory.shift(); // Remove the oldest entry if max limit reached
                 }
                 OutputDataHistory.push(debugEntry);
-                createBaseStructure(status, data, duration)
+                if (ShowOnlyToggleCheckbox.checked) { 
+                    const panelOutputContent = document.querySelector('.panelOutputContent');
+                    panelOutputContent.innerHTML = ''; // Clear the existing content
+                }
+                createBaseStructure(OutputDataHistory[OutputDataHistory.length-1]);
                 console.log("Current OutputDataHistory:", OutputDataHistory); // Log for verification
                 
             }
@@ -952,52 +1544,46 @@
 
             document.getElementById('Debug').addEventListener('click', function() {
                 const startTime = Date.now();
-                const activeEditor = document.querySelector('.CodeMirror');
+                const activeEditor = document.querySelector('.CodeMirror');   
                 if (activeEditor) {
                     const textarea = activeEditor.CodeMirror.getTextArea();
                     textarea.value = activeEditor.CodeMirror.getValue(); // Ensure textarea value is updated
-                    const form = textarea.closest('form');
-                    if (form) {
-                        const snippetId = textarea.id.split('-')[1];
-                        console.log("Snippet ID:", snippetId);
-                        document.getElementById('current-snippet-id').value = snippetId; // Log the snippet ID
-                        const code = textarea.value;
-                        const url = `/'{{username}}'/'{{project.title}}'/save_snippet/${snippetId}/`;
-                        fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': '{{ csrf_token }}'
-                            },
-                            body: JSON.stringify({ code: code })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                console.log("data:",'{{data}}')
-                                return response.text().then(text => { throw new Error(text) });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            const debugDuration = Date.now() - startTime;
-                            console.log('Snippet saved successfully:', data);
-                            if (data.output){
-                                addToOutputDataHistory(true, data.output,debugDuration);
-                            }
-                            else if (data.error){
-                                addToOutputDataHistory(false, data.error,debugDuration);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('An error occurred: ' + error.message);
-                        });
-                    }
-                } else {
-                    checkCodeMirrorValue();
-                    alert('No active editor to save.');
-                }
-        });
+                    console.log("Act9ve",FileData);
+                    const code = textarea.value;
+                    const url = `/${'{{username}}'}/${'{{project.title}}'}/code_debug/`;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ FileData,MainFileData })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log("data:",'{{data}}')
+                            return response.text().then(text => { throw new Error(text) });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const debugDuration = Date.now() - startTime;
+                        console.log('Snippet saved successfully:', data);
+                        if (data.output){
+                            addToOutputDataHistory(true, data.output,debugDuration,data.created_at);
+
+                        }
+                        else if (data.error){
+                            addToOutputDataHistory(false, data.error,debugDuration,data.created_at);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred: ' + error.message);
+                    });
+                    
+                } 
+            });
 
             //Output Show History Toggle
             // Select the hidden checkbox and the SVG elements
@@ -1023,17 +1609,64 @@
 
             // Add a click event listener to the label to toggle the checkbox and update the SVG
             document.querySelector(".panelOutputOptionShow2").addEventListener("click", function () {
-            // Toggle the checkbox state
-            ShowOnlyToggleCheckbox.checked = !ShowOnlyToggleCheckbox.checked;
-            
-            // Update the SVG appearance based on the new state
-            updateToggleSwitch();
+                const HTMLHistory= document.querySelector(".panelOutputContent");
+                const LastestHistory=OutputDataHistory[OutputDataHistory.length-1]
+                if (!ShowOnlyToggleCheckbox.checked) {
+                    //When turn On
+                    HTMLHistory.innerHTML =""; // Clear all the History on HTML
+                    
+                    createBaseStructure(LastestHistory)//Show the Lastest
+                }
+                else {
+                    //When turn Off
+                    HTMLHistory.innerHTML =""; // Clear all the History on HTML
+                    OutputDataHistory.forEach(function(entry){
+                        createBaseStructure(entry)
+                    })//Show all the History
+                }
+                
+                // Toggle the checkbox state
+                ShowOnlyToggleCheckbox.checked = !ShowOnlyToggleCheckbox.checked;
+                
+                // Update the SVG appearance based on the new state
+                updateToggleSwitch();
 
-            // Optional: Log the current state or perform additional actions
-            console.log(ShowOnlyToggleCheckbox.checked ? "Switch is ON" : "Switch is OFF");
-            });            
+                // Optional: Log the current state or perform additional actions
+                console.log(ShowOnlyToggleCheckbox.checked ? "Switch is ON" : "Switch is OFF");
+            });    
+
+
+            //Clear the History Button
+            document.getElementById("clearHistoryButton").addEventListener("click", ClearHistory);
+            function ClearHistory(){
+                OutputDataHistory.length = 0; // Clear the history
+                const panelOutputContent = document.querySelector('.panelOutputContent');
+                if (panelOutputContent) {
+                    panelOutputContent.innerHTML = '';
+                }
+            }
+//----------------------------------------------------------------
+            //Send Feedback inside output
+            
 //----------------------------------------------------------------    
             //FeedBack
+            const panelAIStyle = document.querySelector('.panelAskAIMain');
+            function updatePanelAIStyle(){
+                panelAIStyle.style.setAttribute("--flexDirection","column");
+                panelAIStyle.style.setProperty("--overflowY","auto");
+                panelAIStyle.style.setProperty("--overflowX","hidden");
+                panelAIStyle.style.setProperty("--buttonBottom","0");
+                panelAIStyle.style.setProperty("--buttonTop","auto");
+                panelAIStyle.style.setProperty("--buttonLeft","50%");
+                panelAIStyle.style.setProperty("--buttonRight","auto");
+                panelAIStyle.style.setProperty("--buttonBorderRadius","16px");
+                panelAIStyle.style.setProperty("--buttonPx","6px");
+                panelAIStyle.style.setProperty("--scrollBehavior","auto");
+                panelAIStyle.style.setProperty("--scrollSnapType","none");
+                panelAIStyle.style.setProperty("--padding","0");
+                panelAIStyle.style.setProperty("--scrollHeight","28px");
+            }
+
             var onlyCodeOption = document.getElementById("only-code");
             var withoutCodeOption = document.getElementById("without-code");
             var feedback = document.getElementById("feedback");
@@ -1050,22 +1683,15 @@
             document.getElementById('do-it-myself').addEventListener('click', function() {
                 document.getElementById('help-option').style.display = 'none';
             });
-    
-            // Function to send the selected feedback option to the backend
-            function sendFeedback(option) {
-                var snippetId = document.getElementById('current-snippet-id').value; // Get snippet ID from hidden input
-                console.log(snippetId)
-                if (!snippetId) {
-                    alert("No snippet selected");
-                    return;
-                }
+            
+            function AskAIDirectlyFromOutPut(created_at){
                 fetch(`/'{{username}}'/'{{project.title}}'/feedback/50/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
-                    body: JSON.stringify({ feedback_option: option })
+                    body: JSON.stringify({ 'created_at': created_at })
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -1075,59 +1701,15 @@
                 })
                 .then(data=> {
                     console.log('Feedback option sent successfully:', data);
-                    if (option == "only_code"){
-                        displayFeedbackOnlyCode(data.output,data.diff);
-                    }
-                    else {
-                        displayFeedbackWithoutCode(data.output)
-                    }
+                    displayFeedback(data.output)
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('An error occurred: ' + error.message);
                 });
             }
+            // Function to send the selected feedback option to the backend
     
-            function displayFeedbackOnlyCode(output,diff) {
-                feedback.innerHTML = '<div id="feedback-code"></div>';
-                var feedbackCodeDiv = document.getElementById("feedback-code");
-                
-                diff.forEach(line => {
-                    var lineElement = document.createElement('div');
-                    lineElement.textContent = line;
-                    
-                    if (line.startsWith('+')) {
-                        lineElement.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';  // Green background for additions
-                    } else if (line.startsWith('-')) {
-                        lineElement.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';  // Red background for deletions
-                    } else if (line.startsWith('@')) {
-                        lineElement.style.backgroundColor = 'rgba(0, 0, 255, 0.2)';  // Blue background for line info
-                    }
-    
-                    feedbackCodeDiv.appendChild(lineElement);
-                });
-    
-                feedback.innerHTML += `<p>${output}</p>`;
-            }
-            
-    
-            function displayFeedbackWithoutCode(output){
-                document.getElementById("feedback").innerText = output;
-            }
-    
-            onlyCodeOption.addEventListener("click", function() {
-                onlyCodeOption.classList.add("active");
-                withoutCodeOption.classList.remove("active");
-                feedback.textContent = "Wait for FeedBack Only Code";
-                sendFeedback('only_code');
-            });
-    
-            withoutCodeOption.addEventListener("click", function() {
-                withoutCodeOption.classList.add("active");
-                onlyCodeOption.classList.remove("active");
-                feedback.textContent = "Wait for FeedBack Without Code";
-                sendFeedback('without_code');
-            });
         });
 
 
@@ -1144,6 +1726,7 @@
     }
     *{
         scrollbar-color: var(--background-highest,#3C445C) var(--background-default,#1C2333);
+        --border-radius-round: 1028px;
     }
     .AllContainer1{
 
@@ -1257,7 +1840,108 @@
         align-items: center;
         justify-content: flex-end;
     }
-
+    .topbar-rightUser {
+        padding: 4px;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 2px;
+        -webkit-box-align: center;
+        align-items: center;
+        color: var(--foreground-default,#F5F9FC);
+        cursor: pointer;
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        border-radius: 4px;
+        background-color: transparent;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        height: 32px;
+    }
+    .topbar-rightUser:hover {
+        cursor:pointer;
+    }
+    .AvatarIcon{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+    }
+    .UserAvatarIcon1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        width: var(--size,24px);
+        height: var(--size,24px);
+        background-color: var(--outline-dimmest,#2B3245);
+        position: relative;
+    }
+    .UserAvatarIcon2{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+    .UserAvatarIconName{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        color: var(--foreground-dimmest,#9DA2A6);
+        font-size: calc(var(--size) / 2.5);
+    }
     #Debug {
         display: block;
         margin: 20px auto;
@@ -1768,8 +2452,8 @@
     }
     .SideBarFilesTreeItems:hover{
         cursor:pointer;
+        background-color: #c2c8cc2e;
     }
-
     .SideBarFilesTreeItems1{
         border-width: 0px;
         border-style: solid;

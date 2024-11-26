@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import CodeSnippet,CodeRecord
+from .models import CodeSnippet,CodeRecordAfterDebug
 # Register your models here.
 
 admin.site.register(CodeSnippet)
-admin.site.register(CodeRecord)
+admin.site.register(CodeRecordAfterDebug)

@@ -7,4 +7,4 @@ from system_main.models import CodeSnippet
 @receiver(post_save, sender=Project)
 def create_first_snippet(sender, instance, created, **kwargs):
     if created and not CodeSnippet.objects.filter(project=instance).exists():
-        CodeSnippet.objects.create(project=instance, title=instance.title, code='')
+        CodeSnippet.objects.create(project=instance, file_name=f'{instance.title}.{instance.language}', code='')

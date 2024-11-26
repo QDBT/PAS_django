@@ -4,7 +4,7 @@ import tiktoken
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 Engine_Model="gpt-3.5-turbo"
-Max_Token =     100
+Max_Token =     200
 
 last_system_message = None
 def OpenAI_API(contextx,system_message=None):
@@ -12,23 +12,23 @@ def OpenAI_API(contextx,system_message=None):
     messages=[]
     enc = tiktoken.encoding_for_model(Engine_Model)
 
-    messages.append({"role":"system","content":system_message})
+    #messages.append({"role":"system","content":system_message})
 
     # Join the content into one sentence to avoid redundancy
     combined_content = "".join(contextx)
     messages.append({"role": "user", "content": combined_content})
 
-    #print("Messages to be sent to the API:")
-    #print(f"{messages}")
+    print("Messages to be sent to the API:")
+    print(f"{messages}")
 
     for message in messages:
         if message['role'] == "system":
             print(f"Role: {message['role']}, Content: {message['content']}")
 
-    # Calculate and print the tokens for system and user messages
-    system_tokens = sum(len(enc.encode(message["content"])) for message in messages if message["role"] == "system")
-    user_tokens = sum(len(enc.encode(message["content"])) for message in messages if message["role"] == "user")
-    total_input_tokens = system_tokens + user_tokens
+    # Calculate and print the tokens for system and user messages 
+    #system_tokens = sum(len(enc.encode(message["content"])) for message in messages if message["role"] == "system")
+    #user_tokens = sum(len(enc.encode(message["content"])) for message in messages if message["role"] == "user")
+    #total_input_tokens = system_tokens + user_tokens
 
     completion = openai.chat.completions.create(
         model=Engine_Model,
@@ -39,9 +39,9 @@ def OpenAI_API(contextx,system_message=None):
     respawn_message= completion.choices[0].message.content
     respawn_tokens = len(enc.encode(respawn_message))
 
-    print(f"System Tokens: {system_tokens}")
-    print(f"User Tokens: {user_tokens}")
-    print(f"Total Input Tokens: {total_input_tokens}")
+    #print(f"System Tokens: {system_tokens}")
+    #print(f"User Tokens: {user_tokens}")
+    #print(f"Total Input Tokens: {total_input_tokens}")
     print(f"\n{respawn_message}")
     print(f"respawn_tokens={respawn_tokens}\n")
 
@@ -49,4 +49,4 @@ def OpenAI_API(contextx,system_message=None):
     #    token_text = enc.decode([token])
     #    print(f"Token: {token}, Text: '{token_text}'")
 
-    return([respawn_message,total_input_tokens,respawn_tokens])
+    return([respawn_message,respawn_tokens])

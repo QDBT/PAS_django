@@ -23,33 +23,9 @@
     <div class="snippetBarLeft">
         <div class="snippetBarLeft1" role="tablist">
             <div class="snippetBarLeftName">
-                <div class="snippetBarLeftName1" role="tablist">
+                <div class="snippetBarLeftName1" >
                     <div style="min-width: 100%; display: table">
                         <div class="snippetBarLeftName2">
-                            <div class="snippetBarUnit">
-                                <div class="snippetBarUnit1">
-                                    <span class="resizer">
-                                        <button class="snippetBarButton">
-                                            <div class="snippetBarButton1">
-                                                <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
-                                            </div>
-                                            <div class="snippetBarUnitButtonName">
-                                                <span class="snippetBarButtonName1"></span>
-                                            </div>
-                                        </button>
-                                    </span>
-                                    <div class="snippetBarCloseButton">
-                                        <button class="OptionButton">
-                                            <div class="OptionButton1">
-                                                <div class="OptionButton2"></div>
-                                            </div>
-                                            <div class="snippetBarCloseButtonIcon">
-                                                <i class="fa-solid fa-xmark Icon"></i>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,6 +53,8 @@
         </div>
     </div>
 </div>
+ <!-- Panel 1 (Structure)
+
 <div role="tabpanel" class="panelAll1" panelPosition="Top-Left">
     <div class="panelAll2"> 
         <div tabindex="-1" class ="resizer">
@@ -104,18 +82,10 @@
             </div>
             <div class ="panelContent">
                 <div class="panelContent1">
-                    <div class="panelContent2">
-                        {% for snippet in snippets %}
-                                <form method="post" action="{% url 'save_snippet' username project.title snippet.id %}" class="code-form">
-                                    {% csrf_token %}
-                                    <div>
-                                        <div class="editor-container">
-                                            <textarea id="code-{{ snippet.id }}" name="code" rows="30">{{ snippet.code }}</textarea>
-                                            <div class="resizer" id="resizer-{{ snippet.id }}"></div>
-                                        </div>
-                                    </div>
-                                </form>
-                        {% endfor %}
+                    <div class="panelContent2">   
+                        <div class="panelContentEditor">
+                            <textarea name="code" rows="30"></textarea>
+                        </div>        
                     </div>
                 </div>
             </div>
@@ -147,6 +117,7 @@
         </div>
     </div>
 </div>
+-->
 <!-- Panel 2 (Out Put) -->   
 <div class="snippetBar" panelPosition="Bottom">
     <div class="snippetBarLeft">
@@ -163,7 +134,7 @@
                                                 <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
                                             </div>
                                             <div class="snippetBarUnitButtonName">
-                                                <span class="snippetBarButtonName1"></span>
+                                                <span class="snippetBarUnitButtonName1">OUTPUT</span>
                                             </div>
                                         </button>
                                     </span>
@@ -231,9 +202,9 @@
                                   </span>
                             </label>
                         </div>
-                        <Button class="panelFormatButton">
+                        <Button class="panelFormatButton" id="clearHistoryButton">
                             <i class="fa-solid fa-trash Icon"></i>
-                            <div class="panelFormatWord">Clear History</div>
+                            <div class="panelFormatWord" >Clear History</div>
                         </Button>
                     </div>
                 </div>
@@ -261,7 +232,7 @@
                                                 <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
                                             </div>
                                             <div class="snippetBarUnitButtonName">
-                                                <span class="snippetBarButtonName1"></span>
+                                                <span class="snippetBarUnitButtonName1">AI</span>
                                             </div>
                                         </button>
                                     </span>
@@ -308,58 +279,95 @@
     <div class="panelAll2"> 
         <div tabindex="-1" class ="resizer">
         </div>
-        <div class="panelCode">
-            <div class="panelName">
-                <div class="panelNameLeft">
-                    <div class="panelNameLeft1">
-                        <button class="panelNameButton">
-                            <img class="Icon" src="{% static 'images/Python.jpg' %}"></img>
-                            <div class="panelNameWord">
-                                Python
+        <div class="panelAskAI">
+            <div class="panelAskAIHeader1">
+                    <div class="panelAskAIHeader2">
+                    <button type="button" aria-label="All Chats" class="OptionButton">
+                        <i class="fa-solid fa-bars Icon"></i>
+                    </button>
+                    <div class="panelAskAIHeaderName1">
+                        <div class="panelAskAIHeaderName2"></div>
+                    </div>
+                    <div class="panelAskAIHeaderOption">
+                        <div class="panelAskAIHeaderOptionUsage"></div>
+                        <button type="button" aria-label="New Chat" class="OptionButton">
+                            <i class="fa-solid fa-plus Icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panelAskAISidebarAndMain">
+                <div class="panelAskAISidebar"></div>
+                <div class="panelAskAIHeaderAndMainRiver"></div>
+                <div class="panelAskAIMain">
+                    <div class="panelAskAIMainContent1">
+                        <div class="panelAskAIMainContent2">
+                            <div class="panelAskAIMainMessageAndUser">
+                                <div class="panelAskAIMainInformation">
+                                    <div class="panelAskAIMainInformation">
+                                        <div class="UserAvatarIcon1" style="--size: 24px;--ring-size: 1px;--ring-color: var(--outline-dimmer,#3C445C);--has-on-click-shadow: inset 0 0 0 var(--ring-size) var(--ring-color);--border-radius: var(--border-radius-round);">
+                                            <div class="UserAvatarIcon2">
+                                                <div class="UserAvatarIconName">YA</div>
+                                            </div>
+                                        </div>
+                                        <div class="SpanAndIconSpan">{{ project.user }}</div>
+                                    </div>
+                                    <span class="TimeAgo">
+                                        <span class="SpanAndIconInsideButtonSpan">Just now</span>
+                                    </span>
+                                </div>
+                                <div class="rendered-markdown css-0">
+                                    <div class="panelAskAIMainMessage">
+                                        <p>User Message Here</p>
+                                    </div>
+                                </div>
                             </div>
-                        </button>
+                            <div class="panelAskAIMainMessageAndUser">
+                                <div class="panelAskAIMainInformation">
+                                    <div class="panelAskAIMainInformation">
+                                        <div class="Avatar"></div>
+                                        <span class="SpanAndIconSpan">AI</span>
+                                    </div>
+                                    <span class="resizer">
+                                        <div class="panelAskAIModel">
+                                            <span>Basic Model</span>
+                                        </div>
+                                    </span>
+                                    <div class="TimeAgo">
+                                        <span class="SpanAndIconInsideButtonSpan">Just Now</span>
+                                    </div>
+                                    <button type="button" class="panelAskAIMainButtonOption">
+                                        <span class="SpanInsideButtonAndOutSideSpan">
+                                            <span class="SpanAndIconInsideButtonSpan">Context</span>
+                                        </span>
+                                        <i class="fa-solid fa-angle-down Icon"></i>
+                                    </button>
+                                    <button type="button" class="panelAskAIMainButtonOption">
+                                        <div class="SpanAndIconInsideButton">
+                                            <i class="fa-solid fa-arrows-rotate"></i>
+                                            <span class="SpanInsideButtonAndOutSideSpan">
+                                                <span class="SpanAndIconInsideButtonSpan">Rerun</span>
+                                            </span>
+                                        </div>
+                                        <i class="fa-solid fa-angle-down Icon"></i>
+                                    </button>
+                                </div>
+                                <div class="rendered-markdown css-0">
+                                    <div class="panelAskAIMainMessage">
+                                        <pre id="feedback"></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="resizer"></div>
+                        <div class="panelAskAIMainContentScroll"></div>
                     </div>
+                    <button class="panelAskAIMainScrollToLast">
+                        <i class="fa-solid fa-arrow-down Icon"></i>
+                        <span class="SpanAndIconSpan">Scroll to lastest</span>
+                    </button>
                 </div>
-                <div class="panelNameRight">
-                    <div class="panelNameRight1">
-                        <button class ="panelFormatButton">
-                            <img class="Icon"></img>
-                            <div class="panelFormatWord"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class ="panelContent">
-                <div class="panelContent1">
-                    <div class="panelContent2">
-                       
-                    </div>
-                </div>
-            </div>
-            <div style="display:block;">
-                <div class="panelBottom">
-                    <div class="resizer">
-                        <button type="button" class="panelBottomButton">
-                            <i class="fa-solid fa-brain Icon" style="color: #cf73e8;"></i>
-                            <div class="resizer">AI</div>
-                        </button>
-                    </div>
-                    <div class="resizer">
-                        <button type="button" class="panelBottomButton">
-                            <i class="fa-solid fa-check Icon" style="color: #0dd92f;"></i>
-                            <div class="resizer">Python</div>
-                        </button>
-                    </div>
-                    <div class="resizer">
-                        <button type="button" disabled class="panelBottomButton"></button>
-                    </div>
-                    <div class="blankbrick"></div>
-                    <div class="resizer">
-                        <button type="button" class="panelBottomButton">
-                            <span>ln,col</span>
-                        </button>
-                    </div>
-                </div>
+                <div class="panelAskAIChatBox"></div>
             </div>
         </div>
     </div>
@@ -388,13 +396,7 @@
 
 
 <style>
-    .editor-container {
-        position: relative;
-        border: 1px solid #3b2703;
-        height:100%
-    }
-
-
+    
     .container {
         display: flex;
         height:100vh; 
@@ -436,12 +438,6 @@
         margin-top: 0;
     }
 
-    #feedback {
-        padding: 10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        min-height: 100px;
-    }
 
     .feedback-options{
         display:flex;
@@ -848,6 +844,12 @@
         contain:strict;
         scrollbar-width:none;
     }
+    .panelContentEditor {
+        position: relative;
+        border: 1px solid #3b2703;
+        height:100%;
+        width:100%;
+    }
 
     /*===================================================================*/
     .panelBottom{
@@ -869,7 +871,7 @@
         -webkit-box-flex:1;
         position:relative;
         border-top:1px solid var(--background-higher,#2B3245);
-        height:var(--height,29px);
+        height:29px;
         contain:strict;
     }
 
@@ -1593,10 +1595,6 @@
     .xterm{
         cursor: text;
         position: relative;
-        -moz-user-select: none;
-        user-select: none;
-        -ms-user-select: none;
-        -webkit-user-select: none;
     }
     .xterm .xterm-viewport{
         background-color: #000;
@@ -1632,6 +1630,600 @@
         pointer-events: none;
         scroll-snap-align: end;
     }
+
+    /*============================================================*/
+    .panelAskAI{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        -webkit-box-flex: 1;
+        height: 100%;
+        container: content / inline-size;
+    }
+    .panelAskAIHeader1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        background-color: var(--background-default,#1C2333);
+        --surface-background: var(--background-default,#1C2333);
+        --interactive-background: var(--background-higher,#2B3245);
+        --interactive-background--active: var(--background-highest,#3C445C);
+        --interactive-border: var(--outline-dimmer,#3C445C);
+        --interactive-border--hover: var(--outline-stronger,#5F677A);
+        z-index: 1;
+    }
+    .panelAskAIHeader2{
+        border-width: 0px 0px 1px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        height: 36px;
+        flex-direction: row;
+        gap: 4px;
+        padding-left: 2px;
+        padding-right:2px;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        align-items: center;
+        border-bottom-color: var(--outline-dimmest,#2B3245);
+    }
+    .panelAskAIHeaderName1{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+    .panelAskAIHeaderName2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        max-width: 100%;
+    }
+    .panelAskAIHeaderOption{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 0px;
+    }
+    .panelAskAIHeaderOptionUsage{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 4px;
+    }
+    .panelAskAISidebarAndMain{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        -webkit-box-flex: 1;
+        -webkit-box-pack: end;
+        justify-content: flex-end;
+    }
+    .panelAskAISidebar{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px 1px 0px 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        background-color: var(--background-default,#1C2333);
+        --surface-background: var(--background-default,#1C2333);
+        --interactive-background: var(--background-higher,#2B3245);
+        --interactive-background--active: var(--background-highest,#3C445C);
+        --interactive-border: var(--outline-dimmer,#3C445C);
+        --interactive-border--hover: var(--outline-stronger,#5F677A);
+        border-right-color: var(--borderColor,transparent);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        max-width: 200px;
+        overflow-y: auto;
+        z-index: 1;
+        transform: var(--sidebarTransform,translateX(-100%));
+        transition-property: transform;
+        transition-duration: 120ms;
+    }
+    .panelAskAIHeaderAndMainRiver{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding: 2px;
+    }
+    .panelAskAIMain{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: relative;
+        -webkit-box-flex: 1;
+    }
+    .panelAskAIMainContent1{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        -webkit-box-flex: 1;
+        padding: var(--padding,0);
+        flex-direction: var(--flexDirection,column);
+        scroll-behavior: var(--scrollBehavior,auto);
+        scroll-snap-type: var(--scrollSnapType,none);
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+    .panelAskAIMainContent2{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        margin: var(--firstChildMargin,0);
+        flex-direction: var(--flexDirection,column);
+    }
+    .panelAskAIMainMessageAndUser{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .panelAskAIMainInformation{
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 8px;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+    /**/
+    .panelAskAIMainMessage{
+        word-break: break-word;
+        box-sizing: border-box;
+        line-height: var(--line-height-default,1.6);
+        color: var(--foreground-default,#F5F9FC);
+        font-size: var(--font-size-default,14px);
+        text-size-adjust: 100%;
+        white-space: normal;
+        font-family: var(--font-family-default,'IBM Plex Sans',sans-serif) !important;
+    }
+    .panelAskAIMainMessage > :first-child{
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+    .panelAskAIMainMessage p{
+        margin-bottom: 16px;
+        font-size: var(--font-size-default,14px);
+        font-family: var(--font-family-default,'IBM Plex Sans',sans-serif) !important;
+    }
+    .panelAskAIMainMessage ol, .panelAskAIMainMessage ul{
+        padding-left: 16px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .panelAskAIMainMessage ul{
+        list-style: disc;
+        margin-bottom: 16px;
+    }
+    .panelAskAIMainMessage pre{
+        margin: 16px 0;
+        border-radius: 4px;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        color: var(--foreground-default,#F5F9FC);
+        font-family: var(--font-family-code,'ReplitHack',monospace) !important;
+    }
+    .panelAskAIMainMessage > :last-child{
+        border-bottom: none;
+        margin-bottom: 0px !important;
+    }
+    /**/
+    .panelAskAIModel{
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border: 1px solid transparent;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        flex-direction: row;
+        gap: 4px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        flex-shrink: 1;
+        height: 24px;
+        font-size: 12px;
+        background: var(--interactive-background,#2B3245);
+        border-radius: 4px;
+        padding: 4px 3px;
+        cursor: pointer;
+        color: var(--foreground-default,#F2E088);
+        background-color: color-mix(in srgb, var(--accent-yellow-dimmest,#4D4000) 50%, transparent);
+        box-shadow: none;
+        border: 1px solid transparent;
+    }
+    .panelAskAIMainButtonOption{
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        flex-direction: row;
+        gap: 8px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        background-image: initial;
+        background-position: initial;
+        background-size: initial;
+        background-repeat: initial;
+        background-attachment: initial;
+        background-origin: initial;
+        background-clip: initial;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        padding: 8px;
+        border-radius:4px;
+        height: 28px;
+        color: var(--foreground-dimmest,#9DA2A6);
+        background-color: var(--background-default,#1C2333);
+    }
+    .panelAskAIMainButtonOption:hover{
+        background-color: var(--interactive-background--hover,#2B3245);
+        color: var(--foreground-default,#F5F9F5);
+    }
+    .SpanInsideButtonAndOutSideSpan{
+        height: var(--fontSize,12px);
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        min-width: 0px;
+    }
+    .Avatar{
+        -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        border-width: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-basis: auto;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0;
+        min-width: 0;
+        position: relative;
+    }
+    .TimeAgo{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        width: max-content;
+    }
+    .SpanAndIconSpan{
+        -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        border-width: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-basis: auto;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0;
+        min-width: 0;
+        display: inline;
+        overflow-wrap: break-word;
+        font-size: var(--fontSize,12px);
+        line-height: var(--lineHeight,1.5);
+        font-weight: var(--fontWeight);
+        color: var(--color);
+    }
+    .panelAskAIMainContentScroll{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        position: absolute;
+        width: var(--trackWidth,16px);
+        height: var(--trackHeight,600px);
+        opacity: var(--trackOpacity,0);
+        right: 0px;
+        top: 0px;
+        transition-behavior: normal;
+        transition-duration: 300ms;
+        transition-timing-function: ease;
+        transition-property: opacity;
+        transition-delay: var(--trackTranstionDelay,600ms);
+        --trackTranstionDelay: 600ms;
+        --thumbUIWidth: 40%;
+        pointer-events: var(--trackPointerEvents,none);
+    }
+    .panelAskAIMainScrollToLast{
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        --surface-background: var(--background-higher,#2B3245);
+        --interactive-background: var(--background-highest,#3C445C);
+        --interactive-background--active: var(--background-default,#1C2333);
+        --interactive-border: var(--outline-default,#4e5569);
+        --interactive-border--hover: var(--outline-strongest,#70788C);
+        border: 1px solid transparent;
+        background-image: initial;
+        background-position: initial;
+        background-size: initial;
+        background-repeat: initial;
+        background-attachment: initial;
+        background-origin: initial;
+        background-clip: initial;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        background-color: var(--interactive-background,#3c445c);
+        position: absolute;
+        -webkit-box-align: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 4px;
+        box-shadow: var(--shadow-1,0px 4px 8px 0px rgba(2, 2, 3, 0.16));
+        -webkit-box-pack: center;
+        justify-content: center;
+        padding-right: var(--buttonPx,6px);
+        padding-left: var(--buttonPx,6px);
+        top: var(--buttonTop,auto);
+        bottom: var(--buttonBottom,8px);
+        right: var(--buttonRight,auto);
+        left: var(--buttonLeft,50%);
+        border-radius: var(--buttonBorderRadius,16px);
+        height: var(--buttonHeight,28px);
+        width: var(--buttonWidth,auto);
+        opacity: var(--opacity, 0);
+        transform: var(--scrollToBottomTransform,translate(-50%, 16px) scaleX(0.25));
+        transition-property: transform, opacity;
+        transition-duration: 300ms;
+        transition-timing-function: cubic-bezier(0.4, 1.6, 0.7, 0.8);
+    }
+    .panelAskAIChatBox{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        border-width: 0px;
+        border-style: solid;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-bottom: 8px;
+        justify-self: end;
+    }
+    /*----------------------------------------------------------------*/
+
     /*vvvvvvvvvvvvvv panelAll1 Style vvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
     /*^^^^^^^^^^^^^^ snippetsBar Style ^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -1834,6 +2426,7 @@
     }
     .snippetBarButton:hover{
         cursor:pointer;
+        background-color: #2B3245;
     }
     .snippetBarButton1{
         -webkit-box-align: stretch;
@@ -2130,6 +2723,7 @@
         color-mix(in srgb, var(--interactive-background,#1C2333) 60%, var(--surface-background,#0E1525));
         overflow-x: hidden;
     }
+
 
 </style>
 {% endblock %}
