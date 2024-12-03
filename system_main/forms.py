@@ -1,3 +1,3 @@
 from django import forms
-from .models import CodeSnippet,CodeRecordAfterDebug
+from .models import CodeSnippet,AskAIRecord
 

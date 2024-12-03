@@ -220,20 +220,6 @@
             return true;
         }
     };
-
-    // A Function to reset all things positions in main
-    function controlMainWidth(sidebarWidth,dividerWidth){
-        
-        //const mainWidth=window.innerWidth-(sidebarWidth+dividerWidth);
-        //const panel=document.querySelector('.panelAll1');
-        //const panelTransformX=sidebarWidth+dividerWidth;
-        //const snippetBar=document.querySelector('.snippetBar')
-        //panel.style.setProperty('--width', `${mainWidth}px`);
-        //panel.style.setProperty('--transformX', `${panelTransformX}px`);
-        //snippetBar.style.setProperty('--width', `${mainWidth}px`);
-        //snippetBar.style.setProperty('--left', `${panelTransformX}px`);
-    };
-
     
     
     </script>
@@ -975,6 +961,8 @@
 
             //MainFileData is the File would be debug, the rest of this is SubFile
             let MainFileData = FileData[0];
+            let ChosenFile = null;
+
             //Create The Option that which file will be debuged
 
             function CreateTopBarSelectMainFileOption(file){
@@ -1141,6 +1129,9 @@
                     console.log(FileData)
                     CreateSidebarTree(FileData[FileData.length-1],FileData.length-1);
                     CreateTopBarSelectMainFileOption(FileData[FileData.length-1]);
+
+                    //For Update Style
+                    UserChooseThisFile(FileData[FileData.length-1]);
                 };
 
                 // Confirm on blur or Enter key
@@ -1179,6 +1170,7 @@
                 // Snippet bar button
                 const snippetBarButton = document.createElement('button');
                 snippetBarButton.className = 'snippetBarButton';
+                
 
                 // Snippet bar button content
                 const snippetBarButtonContent = document.createElement('div');
@@ -1218,6 +1210,58 @@
                 // Option button
                 const optionButton = document.createElement('button');
                 optionButton.className = 'OptionButton';
+                // Add the close button functionality
+                optionButton.addEventListener('click', event => {
+                    event.stopPropagation(); // Prevent triggering parent click events
+                    
+                    snippetBarUnit.remove(); // Remove the snippetBarUnit from the DOM
+                    
+                    //find the tab panel and remove it
+                    let AllPanel = document.querySelectorAll(`[role=tabpanel]`);
+                    let panel = Array.from(AllPanel).find(item => 
+                        item.getAttribute('panelposition') === WhichPanelPositionIsChoosen &&
+                        item.getAttribute('id') === data.id,                   
+                    );
+                    if (panel) {
+                        panel.remove();
+                    }
+
+                    //If this was the Chosen Panel, change the another one exits in snippetBar
+                    const x = FileData.findIndex(file => file.id === data.id);
+                    
+                    if (x != FileData.length - 1) {
+                        return -1;        
+                    }
+                    
+                    UserChooseThisFile(FileData[FindTheLastUnitStillAvailable(x)]);
+                    console.log(FileData)
+                    function FindTheLastUnitStillAvailable(x) {
+                        if (x < 0) {
+                            return -1; // Return an invalid index or handle as needed
+                        }
+
+                        const snippetBar = document.querySelectorAll('.snippetBar');
+                        const snippetBarWithThisPosition = Array.from(snippetBar).find(item => 
+                            item.getAttribute('panelPosition') === WhichPanelPositionIsChoosen
+                        );
+
+                        if (!snippetBarWithThisPosition) {
+                            console.error("No snippet bar found for the given position.");
+                            return -1; // Return an invalid index or handle as needed
+                        }
+
+                        const AllUnit = snippetBarWithThisPosition.querySelectorAll('.snippetBarUnit');
+                        const unit = Array.from(AllUnit).find(item => 
+                            item.getAttribute('id') === FileData[x]?.id // Handle potential undefined FileData[x]
+                        );
+
+                        if (!unit) {
+                            return FindTheLastUnitStillAvailable(x - 1); // Recursively check previous units
+                        } else {
+                            return x; // Return the valid index
+                        }
+                    }
+                });
 
                 // Option button inner structure
                 const optionButtonInner = document.createElement('div');
@@ -1281,15 +1325,27 @@
             }
             function UserChooseThisFile(data){
                 function UpdateSideBarTree(data){
+                    //find all Sidebar Unit
                     const AllSideBarTree=document.querySelectorAll('[role=treeitem]');
-                    console.log(AllSideBarTree)
-                    const ActiveSideBarTree = Array.from(AllSideBarTree).find(item => item.id === data.id);
-                    AllSideBarTree.forEach((item)=>{
-                        item.style.setProperty("--nodeBackgroundColor","#transparent");
-                        
+
+                    //Update Unchosen SidebarUnit
+                    AllSideBarTree.forEach((AnotherSideBarUnit)=>{
+                        UpdateStyleForUnchosenSidebarUnit(AnotherSideBarUnit)
                     })
-                    ActiveSideBarTree.style.setProperty("--nodeBackgroundColor","#c2c8cc39");
-                    console.log('Update sidebartree')
+                    
+                    //Find Chosen Sidebar Unit
+                    const ActiveSideBarUnit = Array.from(AllSideBarTree).find(item => item.id === data.id);
+                    
+                    //Update Chosen Sidebar Unit
+                    UpdateStyleForChosenSidebarUnit(ActiveSideBarUnit);
+
+                    //Style Css
+                    function UpdateStyleForChosenSidebarUnit(ActiveSideBarUnit){
+                        ActiveSideBarUnit.style.setProperty("--nodeBackgroundColor","#c2c8cc39");
+                    }
+                    function UpdateStyleForUnchosenSidebarUnit(AnotherSideBarUnit){
+                        AnotherSideBarUnit.style.setProperty("--nodeBackgroundColor","#transparent");
+                    }
                 }
                 function UpdateSnippetBarUnit(data){
                     //find the parent
@@ -1297,18 +1353,43 @@
                     const snippetBarWithThisPosition = Array.from(snippetBar).find(item => 
                         item.getAttribute('panelPosition') === WhichPanelPositionIsChoosen
                     );
+
                     //Update Unchoosen Unit
-                    const AllsnippetBarUnit = snippetBarWithThisPosition.querySelectorAll('.snippetBarUnit')
-                    AllsnippetBarUnit.forEach(unit =>{
-                        unit.style.setProperty('background-color','');
-                        unit.style.setProperty('color','#c2c8cc');
-                        unit.style.setProperty('border-top','');
+                    let AllsnippetBarUnit = snippetBarWithThisPosition.querySelectorAll('.snippetBarUnit')
+                    
+                    AllsnippetBarUnit.forEach(AnotherUnit =>{
+                        UpdateStyleForUnchosenSnippetUnit(AnotherUnit)
                     })
+
                     //Update Choosen Unit
+                    //Find it if it exists in this snippetBar 
                     ActiveSnippetBarUnit=Array.from(AllsnippetBarUnit).find(item => item.id === data.id);
-                    ActiveSnippetBarUnit.style.setProperty('background-color','#1c2333');
-                    ActiveSnippetBarUnit.style.setProperty('color','#f5f9fc');
-                    ActiveSnippetBarUnit.style.setProperty('border-top','3px solid #ff00f7')
+                    
+                    //If not exits, create a new Unit and find it again
+                    if (!ActiveSnippetBarUnit){
+                        CreateSnippetsBarUnit(data);
+                        return UpdateSnippetBarUnit(data);
+                    }
+                    //else if exists update Css for easy to know which is chosen
+                    else {
+                        AllsnippetBarUnit.forEach(AnotherUnit =>{
+                            UpdateStyleForUnchosenSnippetUnit(AnotherUnit);
+                            AnotherUnit.setAttribute('isChosen', 'false');
+                        })
+                        UpdateStyleForChosenSnippetUnit(ActiveSnippetBarUnit)
+                        ActiveSnippetBarUnit.setAttribute('isChosen', 'true');
+                    } 
+                    
+                    //---------------------------------------------------------------
+                    //Style Css
+                    function UpdateStyleForChosenSnippetUnit(ActiveSnippetBarUnit){
+                        ActiveSnippetBarUnit.style.setProperty('background-color','#c2c8cc39');
+                        ActiveSnippetBarUnit.style.setProperty('border-top','3px solid #ff00f7');
+                    }
+                    function UpdateStyleForUnchosenSnippetUnit(AnotherUnit){
+                        AnotherUnit.style.setProperty('background-color','');
+                        AnotherUnit.style.setProperty('border-top','');
+                    }
                 }
                 function UpdateTabPanel(data){
                     //set up Index
@@ -1318,25 +1399,61 @@
                     //find the parent
                     const AlltabPanel = document.querySelectorAll(`[role=tabpanel]`);
 
-                    //Update Unchoosen panel
+                    //Find all Panel in same position
                     const AlltabPanelWithThisPosition = Array.from(AlltabPanel).filter(panel => 
                         panel.getAttribute('panelPosition') === WhichPanelPositionIsChoosen
-                    );        
-                    AlltabPanelWithThisPosition.forEach(panel =>{
-                        panel.style.setProperty("z-index",InActiveZIndex);
-                        panel.style.setProperty("opacity",0);
-                        panel.style.setProperty("visibility",'hidden');
-                    })
+                    );
 
-                    //Update Unchoosen panel 
-                    const ActiveTabPanel = Array.from(AlltabPanelWithThisPosition).find(item => item.id === data.id);
-                    ActiveTabPanel.style.setProperty("z-index",ActiveZIndex);
-                    ActiveTabPanel.style.setProperty("opacity",1);
-                    ActiveTabPanel.style.setProperty("visibility",'visible');           
+                    //find the ActivePanel and Update Chosen Panel
+                    let ActiveTabPanel = Array.from(AlltabPanelWithThisPosition).find(item => item.id === data.id);
+
+                    //If it exists, only update Css for Show visible
+                    if (ActiveTabPanel){
+                        //Update All Panel  
+                        AlltabPanelWithThisPosition.forEach(AnotherPanel =>{
+                            UpdateStyleForUnchosenPanel(AnotherPanel)
+                        })
+                        //Update Chosen Panel
+                        UpdateStyleForChosenPanel(ActiveTabPanel);
+                    } 
+                    else {
+                        console.error('Unable to find active panel');
+                    }
+                    
+                    //-----------------------------------------------------------------
+                    //Style CSS
+                    function UpdateStyleForChosenPanel(ActiveTabPanel){
+                        ActiveTabPanel.style.setProperty("z-index",ActiveZIndex);
+                        ActiveTabPanel.style.setProperty("opacity",1);
+                        ActiveTabPanel.style.setProperty("visibility",'visible');
+                    }
+                    function UpdateStyleForUnchosenPanel(AnotherPanel){
+                        AnotherPanel.style.setProperty("z-index",InActiveZIndex);
+                        AnotherPanel.style.setProperty("opacity",0);
+                        AnotherPanel.style.setProperty("visibility",'hidden');
+                    }
                 }
-                UpdateTabPanel(data);
-                UpdateSnippetBarUnit(data);
-                UpdateSideBarTree(data);
+                
+                //Update the Order
+                function UpdateUserChooseFileInOrder(data) {
+                    const x = FileData.findIndex(file => file.id === data.id);
+                    if (x == FileData.length - 1) {
+                        return -1
+                    }
+                    if (x !== -1) {
+                        // Remove the element at index `x`
+                        const [element] = FileData.splice(x, 1);
+                        // Add it to the end of the array
+                        FileData.push(element);
+                    }
+                }
+
+                if(data){
+                    UpdateUserChooseFileInOrder(data);
+                    UpdateSnippetBarUnit(data);
+                    UpdateTabPanel(data);         
+                    UpdateSideBarTree(data);
+                }
             }
 //----------------------------------------------------------------
             //Output
@@ -1569,6 +1686,7 @@
                     .then(data => {
                         const debugDuration = Date.now() - startTime;
                         console.log('Snippet saved successfully:', data);
+                        
                         if (data.output){
                             addToOutputDataHistory(true, data.output,debugDuration,data.created_at);
 
@@ -1685,7 +1803,8 @@
             });
             
             function AskAIDirectlyFromOutPut(created_at){
-                fetch(`/'{{username}}'/'{{project.title}}'/feedback/50/`, {
+                const url = `/${'{{username}}'}/${'{{project.title}}'}/feedback/`
+                fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1709,7 +1828,9 @@
                 });
             }
             // Function to send the selected feedback option to the backend
-    
+//------------------------------------------------------------------------------------------------
+            //Last Settings
+            UserChooseThisFile(MainFileData);
         });
 
 

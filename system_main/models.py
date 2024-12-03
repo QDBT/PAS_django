@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
+from django.utils.timezone import localtime
 from homepage.models import Project
 from django.db import migrations, models
 import uuid
@@ -34,16 +34,32 @@ class CodeSnippet(models.Model):
         super().save(*args, **kwargs)
 
 
-class CodeRecordAfterDebug(models.Model):
-    CodeSnippet=models.ForeignKey(CodeSnippet,on_delete=models.CASCADE, related_name='code_record')    
-    original_code=models.TextField()
-    output=models.TextField(null=True,blank=True)
-    error=models.TextField(null=True,blank=True)
-    feedback_without_code=models.TextField(null=True,blank=True)
-    feedback_only_code=models.TextField(null=True,blank=True)
-    feedback_all=models.TextField(null=True,blank=True)
+class DebugRecord(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='code_records')
+    file = models.ManyToManyField(CodeSnippet, related_name='file')  # Allow multiple snippets
+    main_file = models.ForeignKey(CodeSnippet, on_delete=models.SET_NULL, null=True, blank=True, related_name='main_file_debug_records')
+    output = models.TextField(null=True, blank=True)
+    error = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+       
+        file_names = ", ".join([file.file_name for file in self.file.all()])
+        return f'MainFile:{self.main_file}  with {file_names} (created_at: {self.created_at})'
+
+
+class AskAIRecord(models.Model):
+    #Information put into AI
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)   
+    file = models.ManyToManyField(CodeSnippet, blank=True) # Allow multiple snippets
+    system_message = models.TextField(null=True, blank=True)
+    user_message = models.TextField(null=True, blank=True)
+    
+    #Information after run AI
+    AI_answer = models.TextField(null=True, blank=True)
     token_input=models.SmallIntegerField(default = 0)
     token_respawn=models.SmallIntegerField(default = 0)
+    token_total = models.SmallIntegerField(default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -51,7 +67,7 @@ class CodeRecordAfterDebug(models.Model):
         return self.token_input + self.token_respawn
     
     def __str__(self):
-        return f'Record for {self.CodeSnippet.file_name} at {self.created_at}'
+        return f'Record AI create at {self.created_at}'
 # Import the signals module to connect the signals
 # the signals that automatically create a first snippet when the project is created
 import homepage.signals

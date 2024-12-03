@@ -1,6 +1,6 @@
 import django
 from django.conf import settings
-from .models import CodeSnippet,CodeRecordAfterDebug
+from .models import CodeSnippet,AskAIRecord
 import subprocess
 import difflib
 import sys
@@ -111,15 +111,15 @@ def debug_code_with_file(server_data,main_file):
 
 # Compare the instant code and the lastest Code Record
 def IsSameCode(snippet):
-    # CodeRecordAfterDebug if it exists(if the code debuged before),
-    if CodeRecordAfterDebug.objects.filter(CodeSnippet=snippet).exists:
-        lastest_code_record = CodeRecordAfterDebug.objects.filter(CodeSnippet=snippet).order_by('-created_at').first()
+    # AskAIRecord if it exists(if the code debuged before),
+    if AskAIRecord.objects.filter(CodeSnippet=snippet).exists:
+        lastest_code_record = AskAIRecord.objects.filter(CodeSnippet=snippet).order_by('-created_at').first()
         
-        #If the CodeRecordAfterDebug is exits ,checked the code is the same with the lastest CodeRecordAfterDebug
+        #If the AskAIRecord is exits ,checked the code is the same with the lastest AskAIRecord
         if lastest_code_record and lastest_code_record.original_code == snippet.code :
             #print("Block Debug because Same Code with the lastest")
             return False
-        #False if code different with lastest CodeRecordAfterDebug
+        #False if code different with lastest AskAIRecord
         else:
             #print("Different Code with the Lastest")
             return False
