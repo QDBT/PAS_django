@@ -118,18 +118,7 @@
         </div>
     </div>
     <script>
-    // Debug button functionality
     
-        function checkCodeMirrorValue() {
-        // Ensure CodeMirror instance is available
-        var codeMirrorInstance = document.querySelector('.CodeMirror');
-        if (codeMirrorInstance) {
-            var editor = codeMirrorInstance.CodeMirror;
-            console.log('CodeMirror Value:', editor.getValue());
-        } else {
-            console.log('No CodeMirror instance found');
-        }
-    }
 //----------------------------------------------------------------
     //  libraries
     function createUserIcon(Parent){
@@ -243,6 +232,9 @@
     <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
 
     <script>
+        // setup global
+        let FileData=[];
+
         document.addEventListener("DOMContentLoaded", function() {
 //-----------------------------------------------------------------------------------------------
             // Create Structure
@@ -944,7 +936,7 @@
 //-----------------------------------------------------------------------------------------------
             //Create new file
             //In Sidebar---------------------------------------------------
-            const FileData = [
+            FileData = [
                 {% for snippet in snippets %}
                     {
                         FileName: `{{ snippet.file_name|escapejs}}`,
@@ -961,7 +953,6 @@
 
             //MainFileData is the File would be debug, the rest of this is SubFile
             let MainFileData = FileData[0];
-            let ChosenFile = null;
 
             //Create The Option that which file will be debuged
 
@@ -1802,6 +1793,8 @@
                 document.getElementById('help-option').style.display = 'none';
             });
             
+            
+
             function AskAIDirectlyFromOutPut(created_at){
                 const url = `/${'{{username}}'}/${'{{project.title}}'}/feedback/`
                 fetch(url, {
@@ -1820,12 +1813,14 @@
                 })
                 .then(data=> {
                     console.log('Feedback option sent successfully:', data);
-                    displayFeedback(data.output)
+                    display=document.getElementById("feedback")
+                    display.innerHTML = data.output
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('An error occurred: ' + error.message);
                 });
+
             }
             // Function to send the selected feedback option to the backend
 //------------------------------------------------------------------------------------------------
@@ -1833,6 +1828,27 @@
             UserChooseThisFile(MainFileData);
         });
 
+
+        // Add beforeunload event listener
+        //Save the changed file
+        window.addEventListener('beforeunload', (event) => {
+            // Show a confirmation dialog
+            const message = "You have unsaved changes. Do you really want to leave?";
+            event.preventDefault(); // Necessary for some browsers
+            event.returnValue = message; // Show this message in the dialog
+
+            // Send data to the backend using sendBeacon
+            
+            const url = `/${'{{username}}'}/${'{{project.title}}'}/save/`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify( FileData )
+            }).catch((error) => console.error('Error sending data:', error));
+        });
 
     </script>
 <style>
