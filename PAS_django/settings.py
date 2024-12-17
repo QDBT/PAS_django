@@ -81,20 +81,20 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'pas_db',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pas_db',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
 
 # Use JAWSDB in production if available
 JAWSDB_URL = os.environ.get('JAWSDB_URL')
-DATABASES[{}]
+
 if JAWSDB_URL:
     DATABASES['default'] = dj_database_url.config(
         default=JAWSDB_URL,
