@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pas_db',
+        'NAME': 'yogd2ahqe28c7zzl',  # Correct database name
         'USER': 'mekpijj5eko1vpp5',
         'PASSWORD': 'a51ug83evmpres27',
         'HOST': 'etdq12exrvdjisg6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
