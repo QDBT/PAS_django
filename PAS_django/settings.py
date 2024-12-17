@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -91,23 +92,22 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 #     }
 # }
 
-# # Use JAWSDB in production if available
-# JAWSDB_URL = os.environ.get('JAWSDB_URL')
-
-# if JAWSDB_URL:
-#     DATABASES['default'] = dj_database_url.config(
-#         default=JAWSDB_URL,
-#         conn_max_age=600,   # Increase connection persistence
-#         ssl_require=True    # Enforce SSL (Heroku requires it for external DBs)
-#     )
-
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,  # Keep connections alive
-        ssl_require=True   # Enforce SSL
+# Use JAWSDB in production if available
+JAWSDB_URL = os.environ.get('JAWSDB_URL')
+DATABASES[{}]
+if JAWSDB_URL:
+    DATABASES['default'] = dj_database_url.config(
+        default=JAWSDB_URL,
+        conn_max_age=600,   # Increase connection persistence
+        ssl_require=True    # Enforce SSL (Heroku requires it for external DBs)
     )
-}
+
+# DATABASE_URL = os.environ['DATABASE_URL']
+
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+# DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 
 # # Add explicit OPTIONS for MySQL
 # DATABASES['default']['OPTIONS'] = {
