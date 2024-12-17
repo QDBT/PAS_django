@@ -84,13 +84,14 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yogd2ahqe28c7zzl',  # Correct database name
+        'NAME': 'yogd2ahqe28c7zzl',
         'USER': 'mekpijj5eko1vpp5',
         'PASSWORD': 'a51ug83evmpres27',
         'HOST': 'etdq12exrvdjisg6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
+
 
 # Use JAWSDB in production if available
 JAWSDB_URL = os.environ.get('JAWSDB_URL')
