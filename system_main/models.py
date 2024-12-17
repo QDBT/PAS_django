@@ -6,7 +6,7 @@ from django.db import migrations, models
 import uuid
 
 
-class CodeSnippet(models.Model):
+class File(models.Model):
     project =models.ForeignKey(Project,on_delete=models.CASCADE, related_name='snippets')
     file_name =models.CharField(max_length=255,blank=True)
     language = models.CharField(max_length=255, blank=True)  # Allow blank values
@@ -36,8 +36,8 @@ class CodeSnippet(models.Model):
 
 class DebugRecord(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='code_records')
-    file = models.ManyToManyField(CodeSnippet, related_name='file')  # Allow multiple snippets
-    main_file = models.ForeignKey(CodeSnippet, on_delete=models.SET_NULL, null=True, blank=True, related_name='main_file_debug_records')
+    file = models.ManyToManyField(File, related_name='file')  # Allow multiple snippets
+    main_file = models.ForeignKey(File, on_delete=models.SET_NULL, null=True, blank=True, related_name='main_file_debug_records')
     output = models.TextField(null=True, blank=True)
     error = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -50,7 +50,7 @@ class DebugRecord(models.Model):
 class AskAIRecord(models.Model):
     #Information put into AI
     project = models.ForeignKey(Project, on_delete=models.CASCADE)   
-    file = models.ManyToManyField(CodeSnippet, blank=True) # Allow multiple snippets
+    file = models.ManyToManyField(File, blank=True) # Allow multiple snippets
     system_message = models.TextField(null=True, blank=True)
     user_message = models.TextField(null=True, blank=True)
     

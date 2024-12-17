@@ -301,64 +301,7 @@
                 <div class="panelAskAIHeaderAndMainRiver"></div>
                 <div class="panelAskAIMain">
                     <div class="panelAskAIMainContent1">
-                        <div class="panelAskAIMainContent2">
-                            <div class="panelAskAIMainMessageAndUser">
-                                <div class="panelAskAIMainInformation">
-                                    <div class="panelAskAIMainInformation">
-                                        <div class="UserAvatarIcon1" style="--size: 24px;--ring-size: 1px;--ring-color: var(--outline-dimmer,#3C445C);--has-on-click-shadow: inset 0 0 0 var(--ring-size) var(--ring-color);--border-radius: var(--border-radius-round);">
-                                            <div class="UserAvatarIcon2">
-                                                <div class="UserAvatarIconName">YA</div>
-                                            </div>
-                                        </div>
-                                        <div class="SpanAndIconSpan">{{ project.user }}</div>
-                                    </div>
-                                    <span class="TimeAgo">
-                                        <span class="SpanAndIconInsideButtonSpan">Just now</span>
-                                    </span>
-                                </div>
-                                <div class="rendered-markdown css-0">
-                                    <div class="panelAskAIMainMessage">
-                                        <p>User Message Here</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panelAskAIMainMessageAndUser">
-                                <div class="panelAskAIMainInformation">
-                                    <div class="panelAskAIMainInformation">
-                                        <div class="Avatar"></div>
-                                        <span class="SpanAndIconSpan">AI</span>
-                                    </div>
-                                    <span class="resizer">
-                                        <div class="panelAskAIModel">
-                                            <span>Basic Model</span>
-                                        </div>
-                                    </span>
-                                    <div class="TimeAgo">
-                                        <span class="SpanAndIconInsideButtonSpan">Just Now</span>
-                                    </div>
-                                    <button type="button" class="panelAskAIMainButtonOption">
-                                        <span class="SpanInsideButtonAndOutSideSpan">
-                                            <span class="SpanAndIconInsideButtonSpan">Context</span>
-                                        </span>
-                                        <i class="fa-solid fa-angle-down Icon"></i>
-                                    </button>
-                                    <button type="button" class="panelAskAIMainButtonOption">
-                                        <div class="SpanAndIconInsideButton">
-                                            <i class="fa-solid fa-arrows-rotate"></i>
-                                            <span class="SpanInsideButtonAndOutSideSpan">
-                                                <span class="SpanAndIconInsideButtonSpan">Rerun</span>
-                                            </span>
-                                        </div>
-                                        <i class="fa-solid fa-angle-down Icon"></i>
-                                    </button>
-                                </div>
-                                <div class="rendered-markdown css-0">
-                                    <div class="panelAskAIMainMessage">
-                                        <pre id="feedback"></pre>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="panelAskAIMainContent2"></div>
                         <div class="resizer"></div>
                         <div class="panelAskAIMainContentScroll"></div>
                     </div>
@@ -367,33 +310,19 @@
                         <span class="SpanAndIconSpan">Scroll to lastest</span>
                     </button>
                 </div>
-                <div class="panelAskAIChatBox"></div>
+                <div class="panelAskAIChatBox">
+                    <div class="panelAskAIChatBox1">
+                        <div class="panelAskAIChatBoxTop"></div>
+                        <div class="panelAskAIChatBoxMiddle">
+                            <textarea placeholder="Ask AI ......" class="panelAskAIChatBoxMessage"></textarea>
+                        </div>
+                        <div class="panelAskAIChatBoxBottom"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- Panel 2 (FeedBack) -->
-<div id="panel-2" class="panel resizable">
-    <div id="feedback-container">
-        <div>
-            <h3>Feedback</h3>
-            <div class="feedback-options">
-                <a id="without-code" class="feedback-option">Without Code</a>
-                <a id="only-code" class="feedback-option">Only Code</a>
-
-            <div id="please-help"></div>
-            <div id="do-it-myself"></div>
-            </div>
-        </div>
-        <div>
-            <pre id="feedback"></pre>
-        </div>
-    </div>
-</div>
-<!-- Divider for resizing -->
-
 
 <style>
     
@@ -1897,6 +1826,110 @@
         -webkit-box-align: center;
         align-items: center;
     }
+    .panelAskAIUserAskFile1{
+        max-width: 100%;
+        display:flex;
+    }
+    .panelAskAIUserAskFile2{
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 8px;
+        display: flex;
+    }
+    .panelAskAIUserAskFileUnit{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        box-sizing: border-box;
+        display: flex;
+        flex-basis: auto;
+        flex-direction: column;
+        flex-shrink: 0;
+        outline: none;
+        min-height: 0px;
+        min-width: 0px;
+        border-image: initial;
+        background: transparent;
+        color: inherit;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        font-optical-sizing: inherit;
+        font-size-adjust: inherit;
+        font-kerning: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        line-height: normal;
+        app-region: no-drag;
+        user-select: none;
+        transition-property: background-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        border-radius:4px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--interactive-border,#3C445C);
+        height: 64px;
+        width: 98px;
+        position: relative;
+    }
+    .panelAskAIUserAskFileUnit:hover{
+        background-color: var(--interactive-background--hover,#445064);
+        cursor:pointer;
+        transition-duration: 0ms;
+    }
+    .panelAskAIUserAskFileUnit1{
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        flex-direction: column;
+        justify-content: start;
+        align-items: stretch;
+        gap: 0;
+        box-sizing: border-box;
+        outline: none;
+        border-width: 0;
+        border-style: solid;
+        min-width: 0;
+        min-height: 0;
+        --useView--gap: 0;
+        --useView--justify: start;
+        --useView--align: stretch;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+    }
+    .panelAskAIUserAskFileUnit2{
+        padding-left: 8px;
+        padding-right: 8px;
+        -webkit-box-align: center;
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        flex-direction: column;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        gap:4px;
+    }
+    .panelAskAIUserAskFileUnitName{
+        overflow-wrap: break-word;
+        font-size: 14px;
+        line-height: 1.6;
+        font-weight: var(--fontWeight);
+        color: var(--color,#C2C8CC);
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        -webkit-box-align: center;
+        align-items: center;
+        flex-direction: row;
+    }
     /**/
     .panelAskAIMainMessage{
         word-break: break-word;
@@ -2116,6 +2149,7 @@
         font-weight: var(--fontWeight);
         color: var(--color);
     }
+
     .panelAskAIMainContentScroll{
         -webkit-box-align: stretch;
         align-items: stretch;
@@ -2221,6 +2255,161 @@
         padding-right: 8px;
         padding-bottom: 8px;
         justify-self: end;
+    }
+    .panelAskAIChatBox1{
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        flex-direction: column;
+        justify-content: start;
+        align-items: stretch;
+        gap: 0;
+        box-sizing: border-box;
+        outline: none;
+        border-width: 0;
+        border-style: solid;
+        min-width: 0;
+        min-height: 0;
+        --useView--gap: 0;
+        --useView--justify: start;
+        --useView--align: stretch;
+        transition-property: border-color, box-shadow;
+        transition-duration: 120ms;
+        transition-timing-function: ease-out;
+        border-radius: 4px;
+        background-color: var(--interactive-background,#2B3245);
+        position: relative;
+        padding: 4px 4px;
+        column-gap: 4px;
+        row-gap: 4px;
+        border: 1px solid var(--outline-dimmest,#2B3245);
+    }
+    .panelAskAIChatBox1:hover{
+        border-color:#3C445C;
+        cursor:text;
+    }
+    .panelAskAIChatBoxTop{
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        flex-direction: column;
+        justify-content: start;
+        align-items: stretch;
+        gap: 0;
+        box-sizing: border-box;
+        outline: none;
+        border-width: 0;
+        border-style: solid;
+        min-width: 0;
+        min-height: 0;
+        --useView--gap: 0;
+        --useView--justify: start;
+        --useView--align: stretch;
+        position: absolute;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        border-bottom-color: var(--outline-dimmer,#3C445C);
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+    }
+    .panelAskAIChatBoxMiddle{
+        display: flex;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        min-height:74px;
+    }
+    .panelAskAIChatBoxMessage{
+        position: relative !important;
+        box-sizing: border-box;
+        display: flex !important;
+        flex-direction: column;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        background-color: #2b2b3b; /* Textarea background (dark shade) */
+        color: #ffffff; /* Text color */
+        border: 1px solid #3a3a4b; /* Border color */
+        border-radius: 8px; /* Rounded corners */
+        font-size: 14px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 10px; /* Inner spacing */
+        resize: none; 
+        outline: none; /* Removes the default focus outline */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        min-height: 40px; /* Minimum height */
+        max-height: 400px; /* Maximum height */
+        overflow-y: auto; /* Scroll when content exceeds max-height */
+    }
+    .panelAskAIChatBoxMessage:focus{
+        border: 1px solid #6c63ff; /* Light purple focus border */
+        box-shadow: 0 0 5px #6c63ff;
+    }
+    .panelAskAIChatBoxMessage::selection {
+        background-color: #1e90ff; /* Blue highlight */
+        color: #ffffff;
+    }
+    .panelAskAIChatBoxBottom{
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        justify-content: start;
+        align-items: end;
+        gap: 8px;
+        box-sizing: border-box;
+        outline: none;
+        border-width: 0;
+        border-style: solid;
+        min-width: 0;
+        min-height: 0;
+        --useView--gap: 0;
+        --useView--justify: start;
+        --useView--align: stretch;
+        flex-direction: row;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        height: 32px;
+    }
+    .panelAskAIChatBoxBottomLeft{
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 8px;
+        box-sizing: border-box;
+        outline: none;
+        border-width: 0;
+        border-style: solid;
+        min-width: 0;
+        min-height: 0;
+        --useView--gap: 0;
+        --useView--justify: start;
+        --useView--align: stretch;
+        flex-direction: row;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        flex-shrink: 1;
+        cursor: text;
+    }
+    .panelAskAIChatBoxBottomRight{
+        display: flex;
+        flex-shrink: 0;
+        flex-basis: auto;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 8px;
+        box-sizing: border-box;
+        outline: none;
+        border-width: 0;
+        border-style: solid;
+        min-width: 0;
+        min-height: 0;
+        --useView--gap: 0;
+        --useView--justify: start;
+        --useView--align: stretch;
+        flex-direction: column;
     }
     /*----------------------------------------------------------------*/
 

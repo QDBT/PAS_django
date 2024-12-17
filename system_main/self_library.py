@@ -1,6 +1,6 @@
 import django
 from django.conf import settings
-from .models import CodeSnippet,AskAIRecord
+from .models import File,AskAIRecord
 import subprocess
 import difflib
 import sys
@@ -57,7 +57,7 @@ def debug_code_with_file(server_data,main_file):
 
     # Separate main file and library files
     # Filter out the main_file
-    print ("den day")
+
     lib_file = [file for file in server_data if file['id'] != main_file['id']]
     try:
         # Create a temporary directory to store files
@@ -79,13 +79,13 @@ def debug_code_with_file(server_data,main_file):
              # List and display the contents of temp_dir
             files_in_temp_dir = os.listdir(temp_dir)
             print("Contents of temporary directory:")
-
             for file_name in files_in_temp_dir:
                 file_path = os.path.join(temp_dir, file_name)
                 # Read the file content to print the code
                 with open(file_path, "r") as f:
                     file_code = f.read()
                     print(f"File: {file_name}\nCode:\n{file_code}\n")
+
             # Run the main file using subprocess
             process = subprocess.run(
                 [main_file['Language'], main_file_path],
@@ -108,26 +108,6 @@ def debug_code_with_file(server_data,main_file):
         print(f"An error occurred: {e}")
         return "", str(e)
 
-
-# Compare the instant code and the lastest Code Record
-def IsSameCode(snippet):
-    # AskAIRecord if it exists(if the code debuged before),
-    if AskAIRecord.objects.filter(CodeSnippet=snippet).exists:
-        lastest_code_record = AskAIRecord.objects.filter(CodeSnippet=snippet).order_by('-created_at').first()
-        
-        #If the AskAIRecord is exits ,checked the code is the same with the lastest AskAIRecord
-        if lastest_code_record and lastest_code_record.original_code == snippet.code :
-            #print("Block Debug because Same Code with the lastest")
-            return False
-        #False if code different with lastest AskAIRecord
-        else:
-            #print("Different Code with the Lastest")
-            return False
-    #False if the lastest Record not exits(This is the first code)
-    else:
-        #print("The First code")
-        return False
-    
 
 # Compare the code by User with the code by ChatGPT
 def compare_code(original_code,compare_code):

@@ -290,7 +290,7 @@
 
                 const panelNameWord = document.createElement('div');
                 panelNameWord.classList.add('panelNameWord');
-                panelNameWord.textContent = data.Language || 'Python';
+                panelNameWord.textContent = data.FileName ;
                 nameButton.appendChild(panelNameWord);
 
                 // Add the panelNameRight
@@ -952,7 +952,8 @@
             });
 
             //MainFileData is the File would be debug, the rest of this is SubFile
-            let MainFileData = FileData[0];
+            let MainFileData = FileData[FileData.length - 1];
+             
 
             //Create The Option that which file will be debuged
 
@@ -966,6 +967,11 @@
                 option.textContent = file.FileName;
 
                 parent.appendChild(option);
+                if (!MainFileData) {
+                    MainFileData = file; // Initialize MainFileData with the first file
+                    parent.value = file.FileName; // Select the first option in the dropdown
+                    console.log('Initial main file set:', MainFileData);
+                }
                 // Add an event listener to the <select> to handle selection changes
                 parent.addEventListener('change', (event) => {
                     const selectedFileName = event.target.value; // Get selected option's value
@@ -977,8 +983,7 @@
                 });
             }
             FileData.forEach((file) => CreateTopBarSelectMainFileOption(file));
-            
-            
+
             //Update First time
             function CreateSidebarTree(data,index){
                 console.log(data);
@@ -992,14 +997,14 @@
                 treeItem.className = 'SideBarFilesTreeItems';
                 treeItem.style.setProperty('--rowHeight', `${rowHeight}px`);
                 treeItem.style.setProperty('--rowY', `${rowY}px`);
-                treeItem.addEventListener('click',(event)=>{
-                    UserChooseThisFile(data);
-                })
 
                 // Create the inner structure
                 const treeItemInner = document.createElement('div');
                 treeItemInner.title = data.FileName;
                 treeItemInner.className = 'SideBarFilesTreeItems1';
+                treeItemInner.addEventListener('click',(event)=>{
+                    UserChooseThisFile(data);
+                })
 
                 // Create the file icon container
                 const iconContainer = document.createElement('div');
@@ -1021,19 +1026,38 @@
                 treeItemInner.appendChild(iconContainer);
                 treeItemInner.appendChild(fileNameDiv);
 
-                // Create the menu button
-                const menuButton = document.createElement('button');
-                menuButton.title = 'menu';
-                menuButton.className = 'SideBarFilesMenuButton';
+                // Create the delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.title = 'Delete';
+                deleteButton.className = 'SideBarFilesDeleteButton';
+                deleteButton.addEventListener('click',(event) =>{
 
-                // Add the menu button icon
-                const menuIcon = document.createElement('img');
-                menuIcon.className = 'Icon';
-                menuButton.appendChild(menuIcon);
+                    //if This is only one file left
+                    if (FileData.length == 1){
+                        console.log('Cant delete the last file')
+                        return -1;
+                    }
+                    else {
+                        const x = FileData.findIndex(file => file.id === data.id);
+                        console.log("x=",x);
+                        //if User Choose this file
+                        if (x == (FileData.length - 1)) {
+                            UserChooseThisFile(FileData[FileData.length - 2]);      
+                        }
+                        DeleteFile(data);
+                    }
+                });
+                
 
-                // Append the inner div and menu button to the tree item
+                // Add the deleteu button icon
+                const deleteIcon = document.createElement('i');
+                deleteIcon.className = 'Icon fa-solid fa-trash';
+                deleteIcon.style.setProperty('color', ' rgb(129 73 73)');
+                deleteButton.appendChild(deleteIcon);
+
+                // Append the inner div and delete button to the tree item
                 treeItem.appendChild(treeItemInner);
-                treeItem.appendChild(menuButton);
+                treeItem.appendChild(deleteButton);
 
                 // Append the tree item to the container
                 SideBarTreeContainer.appendChild(treeItem);
@@ -1436,6 +1460,7 @@
                         const [element] = FileData.splice(x, 1);
                         // Add it to the end of the array
                         FileData.push(element);
+                        console.log(FileData);
                     }
                 }
 
@@ -1531,6 +1556,7 @@
                 // Attach event listener to the Ask AI button
                 askAIButton.addEventListener("click", function() {
                     // Assuming we want to use 'only_code' as the feedback option when this button is clicked
+                    CreateUserAskAIUnit({'filedata':MainFileData});
                     AskAIDirectlyFromOutPut(created_at);
                 });
 
@@ -1606,7 +1632,10 @@
 
                 const outputContainer = document.createElement('div');
                 outputContainer.classList.add('output');
-                outputContainer.innerHTML = data.replace(/ /g, '&nbsp;').replace(/\n/g, '<br>');
+                outputContainer.innerHTML = data.replace(/ /g,'&nbsp;').replace(/\n/g,'<br>');
+                outputContainer.style.setProperty('line-height','normal');
+                
+                outputContainer.style.setProperty('font-family','monospace');
                 xtermScreen.appendChild(outputContainer);
                 terminal.appendChild(xtermScreen);
 
@@ -1759,7 +1788,277 @@
             
 //----------------------------------------------------------------    
             //FeedBack
+            function CreateUserAskAIUnit(params){
+                 // Initialize variables to default values
+                let filedata = null;
+                let UserMessage = null;
+                const WhenStarted = Date.now();
+
+                // Safely check if params exists and has a 'get' method
+                if (params && typeof params === 'object') {
+                    filedata = params['filedata'] || null;      // Use object property access
+                    UserMessage = params['UserMessage'] || null;
+                }
+
+                console.log('filedata:', filedata);
+                console.log('UserMessage:', UserMessage);
+
+                //find parent
+                const parent = document.querySelector(".panelAskAIMainContent2");
+
+                // Create the main container
+                const panelAskAIMainMessageAndUser = document.createElement('div');
+                panelAskAIMainMessageAndUser.className = 'panelAskAIMainMessageAndUser';
+
+                // Create the information container
+                const panelAskAIMainInformation = document.createElement('div');
+                panelAskAIMainInformation.className = 'panelAskAIMainInformation';
+
+                // Avatar container
+                const userAvatarIcon1 = document.createElement('div');
+                userAvatarIcon1.className = 'UserAvatarIcon1';
+                userAvatarIcon1.style.cssText = `
+                    --size: 24px;
+                    --ring-size: 1px;
+                    --ring-color: var(--outline-dimmer, #3C445C);
+                    --has-on-click-shadow: inset 0 0 0 var(--ring-size) var(--ring-color);
+                    --border-radius: var(--border-radius-round);
+                `;
+
+                // Nested Avatar container
+                const userAvatarIcon2 = document.createElement('div');
+                userAvatarIcon2.className = 'UserAvatarIcon2';
+
+                // User name inside avatar
+                const userAvatarIconName = document.createElement('div');
+                userAvatarIconName.className = 'UserAvatarIconName';
+                userAvatarIconName.textContent = '{{project.user}}'; // Replace with dynamic data
+
+                userAvatarIcon2.appendChild(userAvatarIconName);
+                userAvatarIcon1.appendChild(userAvatarIcon2);
+
+                // Span for user information
+                const spanAndIconSpan = document.createElement('div');
+                spanAndIconSpan.className = 'SpanAndIconSpan';
+                spanAndIconSpan.textContent = '{{project.user}}'; // Replace with dynamic data
+
+                // Add all to the information container
+                panelAskAIMainInformation.appendChild(userAvatarIcon1);
+                panelAskAIMainInformation.appendChild(spanAndIconSpan);
+
+                // TimeAgo span
+                const timeAgo = document.createElement('span');
+                timeAgo.classList.add('TimeAgo');
+
+                // 2. Add the initial "Just now" content
+                const timeSpan = document.createElement('span');
+                timeSpan.innerHTML = `<span>Just now</span>`;
+
+                // Append the initial timeSpan to the container
+                timeAgo.appendChild(timeSpan);
+                panelAskAIMainInformation.appendChild(timeAgo);
+
+                const TimeAgo = setInterval(() => {
+                    const elapsedTime = Date.now() - WhenStarted;
+                    const formattedTime = formatElapsedTime(elapsedTime);
+
+                    // Update the inner HTML of timeSpan
+                    timeSpan.innerHTML = `<span>${formattedTime}</span>`;
+                }, 60000); // Updates every minute
+                
+
+                // User File Container
+                const panelAskAIUserAskFile1 = document.createElement('div');
+                panelAskAIUserAskFile1.className = 'panelAskAIUserAskFile1';
+
+                const panelAskAIUserAskFile2 = document.createElement('div');
+                panelAskAIUserAskFile2.className = 'panelAskAIUserAskFile2';
+
+                panelAskAIUserAskFile1.appendChild(panelAskAIUserAskFile2);
+
+                // Rendered Markdown Container
+                const renderedMarkdown = document.createElement('div');
+                renderedMarkdown.className = 'rendered-markdown css-0';
+
+                const panelAskAIMainMessage = document.createElement('div');
+                panelAskAIMainMessage.className = 'panelAskAIMainMessage';
+
+                renderedMarkdown.appendChild(panelAskAIMainMessage);
+
+                // Append everything to the main container
+                panelAskAIMainMessageAndUser.appendChild(panelAskAIMainInformation);
+
+                if (filedata){
+                    panelAskAIMainMessageAndUser.appendChild(panelAskAIUserAskFile1);
+                    AskAIPanelFile(filedata);
+                }
+                function AskAIPanelFile(FileData){
+                    // Create the button element
+                    const button = document.createElement('button');
+                    button.classList.add('panelAskAIUserAskFileUnit');
+
+                    // Create the span element inside the button
+                    const span = document.createElement('span');
+                    span.classList.add('panelAskAIUserAskFileUnit1');
+
+                    // Append the span to the button
+                    button.appendChild(span);
+
+                    // Create the div inside the span
+                    const divInsideSpan = document.createElement('div');
+                    divInsideSpan.classList.add('panelAskAIUserAskFileUnit2');
+
+                    // Append this div to the span
+                    span.appendChild(divInsideSpan);
+
+                    // Create the img element
+                    const img = document.createElement('img');
+                    img.classList.add('Icon');
+                    img.style.setProperty('--size', '20px');
+                    img.style.setProperty('--rotate', '0deg');
+                    img.style.width = '20px';
+                    img.style.height = '20px';
+                    img.src = "{% static 'images/Python.jpg' %}";
+
+                    // Append the img to the inner div
+                    divInsideSpan.appendChild(img);
+
+                    // Create the span for the file unit name
+                    const spanFileUnitName = document.createElement('span');
+                    spanFileUnitName.classList.add('panelAskAIUserAskFileUnitName');
+                    spanFileUnitName.innerHTML = FileData.FileName
+                    // Append this span to the inner div
+                    divInsideSpan.appendChild(spanFileUnitName);
+
+                    // Append the entire structure to the document body (or any other container)
+                
+                    panelAskAIUserAskFile2.appendChild(button);
+                }
+                
+                if (UserMessage){
+                    panelAskAIMainMessageAndUser.appendChild(renderedMarkdown);
+                    AskAIMainMessage(UserMessage)                
+                }
+
+                function AskAIMainMessage(UserMessage){
+                    if (UserMessage){                            
+                        const p = document.createElement('p');
+                        p.innerHTML =`<p> ${UserMessage} <p>`;
+
+                        panelAskAIMainMessage.appendChild(p)
+                        
+                        const url = `/${'{{username}}'}/${'{{project.title}}'}/feedback/`
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({ 'UserMessage': UserMessage })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.text().then(text => { throw new Error(text) });
+                            }
+                            return response.json();
+                        })
+                        .then(data=> {
+                            console.log('Feedback option sent successfully:', data);
+                            CreateAIAnswer(data.output)
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred: ' + error.message);
+                        });
+                    }
+                }
+                
+                // Append to the body or any desired parent
+                parent.appendChild(panelAskAIMainMessageAndUser);
+            }
+
+            function CreateAIAnswer(AI_answer){
+                //find parent 
+
+                const parent = document.querySelector(".panelAskAIMainContent2")
+
+                // Create the main container
+                const panelAskAIMainMessageAndUser = document.createElement('div');
+                panelAskAIMainMessageAndUser.className = 'panelAskAIMainMessageAndUser';
+
+                // 1. Create the main information container
+                const panelAskAIMainInformation = document.createElement('div');
+                panelAskAIMainInformation.className = 'panelAskAIMainInformation';
+
+                // Nested information container
+                const nestedInformation = document.createElement('div');
+                nestedInformation.className = 'panelAskAIMainInformation';
+
+                // Avatar container
+                const avatar = document.createElement('div');
+                avatar.className = 'Avatar';
+
+                // FontAwesome icon inside Avatar
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-brain Icon';
+                icon.style.color = '#cf73e8';
+
+                // Append the icon to the Avatar container
+                avatar.appendChild(icon);
+
+                // AI Label
+                const aiLabel = document.createElement('span');
+                aiLabel.className = 'SpanAndIconSpan';
+                aiLabel.textContent = 'AI';
+
+                // Append Avatar and AI Label to the nested container
+                nestedInformation.appendChild(avatar);
+                nestedInformation.appendChild(aiLabel);
+
+                // 2. Add the "resizer" and model section
+                const resizer = document.createElement('span');
+                resizer.className = 'resizer';
+
+                const panelAskAIModel = document.createElement('div');
+                panelAskAIModel.className = 'panelAskAIModel';
+
+                const modelText = document.createElement('span');
+                modelText.textContent = 'Basic Model';
+
+                // Append modelText to panelAskAIModel and resizer
+                panelAskAIModel.appendChild(modelText);
+                resizer.appendChild(panelAskAIModel);
+
+                // Append everything to the main information container
+                panelAskAIMainInformation.appendChild(nestedInformation);
+                panelAskAIMainInformation.appendChild(resizer);
+
+                // 3. Create the rendered-markdown section
+                const renderedMarkdown = document.createElement('div');
+                renderedMarkdown.className = 'rendered-markdown css-0';
+
+                const panelAskAIMainMessage = document.createElement('div');
+                panelAskAIMainMessage.className = 'panelAskAIMainMessage';
+
+                // Add the pre block for feedback
+                const preElement = document.createElement('pre');
+                preElement.id = 'feedback';
+                preElement.innerHTML = AI_answer
+                
+                // Append pre block to message container
+                panelAskAIMainMessage.appendChild(preElement);
+                renderedMarkdown.appendChild(panelAskAIMainMessage);
+
+                // 4. Append everything to the main container
+                panelAskAIMainMessageAndUser.appendChild(panelAskAIMainInformation);
+                panelAskAIMainMessageAndUser.appendChild(renderedMarkdown);
+
+                // Append the entire structure to the body or a specific container
+                parent.appendChild(panelAskAIMainMessageAndUser);
+            }
+            
             const panelAIStyle = document.querySelector('.panelAskAIMain');
+            
             function updatePanelAIStyle(){
                 panelAIStyle.style.setAttribute("--flexDirection","column");
                 panelAIStyle.style.setProperty("--overflowY","auto");
@@ -1775,26 +2074,7 @@
                 panelAIStyle.style.setProperty("--padding","0");
                 panelAIStyle.style.setProperty("--scrollHeight","28px");
             }
-
-            var onlyCodeOption = document.getElementById("only-code");
-            var withoutCodeOption = document.getElementById("without-code");
-            var feedback = document.getElementById("feedback");
             
-            //The Option will appear after debug
-            //FeedBack will appear if the option been clicked
-             // Handle the help option click
-             document.getElementById('please-help').addEventListener('click', function() {
-                document.getElementById('feedback-container').style.display = 'block';
-                document.getElementById('help-option').style.display = 'none';
-            });
-            
-            // Handle the do it myself click
-            document.getElementById('do-it-myself').addEventListener('click', function() {
-                document.getElementById('help-option').style.display = 'none';
-            });
-            
-            
-
             function AskAIDirectlyFromOutPut(created_at){
                 const url = `/${'{{username}}'}/${'{{project.title}}'}/feedback/`
                 fetch(url, {
@@ -1813,8 +2093,7 @@
                 })
                 .then(data=> {
                     console.log('Feedback option sent successfully:', data);
-                    display=document.getElementById("feedback")
-                    display.innerHTML = data.output
+                    CreateAIAnswer(data.output)
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -1822,10 +2101,47 @@
                 });
 
             }
+            
+            const ChatBox = document.querySelector(".panelAskAIChatBoxMessage")
+            ChatBox.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && !event.shiftKey) { // Check if Enter is pressed
+                    event.preventDefault(); // Prevent default new line behavior
+                    const UserMessage = event.target.value.trim(); // Get the input value and trim whitespace
+                    if (UserMessage) {
+                        CreateUserAskAIUnit({'UserMessage':UserMessage}); // Display the message
+                        event.target.value = ''; // Clear the input box
+                    }
+                }
+            });
+
+            
             // Function to send the selected feedback option to the backend
+//------------------------------------------------------------------------------------------------
+
+            //Another function
+            function DeleteFile(data){
+                const elements = document.querySelectorAll(`[id="${data.id}"]`);
+                elements.forEach(element =>{
+                    element.remove();
+                });
+                const file= FileData.find(file => file.id === data.id);
+                FileData = FileData.filter(file => file.id !== data.id);;
+                const url = `/${'{{username}}'}/${'{{project.title}}'}/delete_file/`
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ file })
+                })
+            }
+
+            
 //------------------------------------------------------------------------------------------------
             //Last Settings
             UserChooseThisFile(MainFileData);
+
         });
 
 
@@ -1846,7 +2162,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify( FileData )
+                body: JSON.stringify( {FileData} )
             }).catch((error) => console.error('Error sending data:', error));
         });
 
@@ -2652,7 +2968,7 @@
         color: var(--statusColor,#C2C8CC);
     }
 
-    .SideBarFilesMenuButton{
+    .SideBarFilesDeleteButton{
         box-sizing: border-box;
         flex-basis: auto;
         flex-direction: column;
@@ -2685,7 +3001,7 @@
         cursor: pointer;
         transition-property: background-color, box-shadow;
         transition-timing-function: ease-out;
-        display: var(--contextMenuButtonDisplay,none);
+        display: var(--contextMenuButtonDisplay,flex);
         border-radius: 0 var(--borderRadius,4px) var(--borderRadius,4px) 0;
         transition-duration: 0ms;
     }

@@ -6,4 +6,5 @@ urlpatterns = [
     path('code_debug/', views.code_debug, name='code_debug'),
     path('feedback/',views.feedback,name='feedback'),
     path('save/', views.save, name='save'),
+    path('delete_file/', views.delete_file, name='delete_file'),
 ]
