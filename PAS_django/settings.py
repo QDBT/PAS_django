@@ -80,27 +80,40 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-JAWSDB_URL = os.getenv('JAWSDB_URL', default=None)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'pas_db',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 
+# # Use JAWSDB in production if available
+# JAWSDB_URL = os.environ.get('JAWSDB_URL')
 
-if JAWSDB_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('JAWSDB_URL')
-        )
-    }
-else:
-    DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pas_db',
-        'USER': 'root',
-        'PASSWORD':'root',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
-    }
+# if JAWSDB_URL:
+#     DATABASES['default'] = dj_database_url.config(
+#         default=JAWSDB_URL,
+#         conn_max_age=600,   # Increase connection persistence
+#         ssl_require=True    # Enforce SSL (Heroku requires it for external DBs)
+#     )
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('JAWSDB_URL'),
+        conn_max_age=600,  # Persistent connections
+        ssl_require=True   # Enforce SSL connection
+    )
 }
 
+# Add explicit OPTIONS for MySQL
+DATABASES['default']['OPTIONS'] = {
+    'ssl': {'ca': 'rds-combined-ca-bundle.pem'},  # AWS SSL CA bundle
+    'connect_timeout': 30,  # Increase connection timeout to 30 seconds
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
