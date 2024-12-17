@@ -104,16 +104,16 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,  # Persistent connections
-        ssl_require=True   # Enforce SSL connection
+        conn_max_age=600,  # Keep connections alive
+        ssl_require=True   # Enforce SSL
     )
 }
 
-# Add explicit OPTIONS for MySQL
-DATABASES['default']['OPTIONS'] = {
-    'ssl': {'ca': 'rds-combined-ca-bundle.pem'},  # AWS SSL CA bundle
-    'connect_timeout': 30,  # Increase connection timeout to 30 seconds
-}
+# # Add explicit OPTIONS for MySQL
+# DATABASES['default']['OPTIONS'] = {
+#     'ssl': {'ca': 'rds-combined-ca-bundle.pem'},  # AWS SSL CA bundle
+#     'connect_timeout': 30,  # Increase connection timeout to 30 seconds
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
