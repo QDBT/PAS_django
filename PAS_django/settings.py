@@ -84,21 +84,27 @@ WSGI_APPLICATION = 'PAS_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yogd2ahqe28c7zzl',
-        'USER': 'mekpijj5eko1vpp5',
-        'PASSWORD': 'a51ug83evmpres27',
-        'HOST': 'etdq12exrvdjisg6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        'NAME': 'mcobkra8syvsb6gf',
+        'USER': 'ksv056vsl2bmiz2x',
+        'PASSWORD': 'lkx4gpm8hubec9ey',
+        'HOST': 's9xpbd61ok2i7drv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
 
-
 # Use JAWSDB in production if available
-JAWSDB_URL = os.environ.get('JAWSDB_URL')
+JAWSDB_TEAL_URL = os.environ.get('JAWSDB_TEAL_URL')
 
-if JAWSDB_URL:
+# if JAWSDB_URL:
+#     DATABASES['default'] = dj_database_url.config(
+#         default=JAWSDB_URL,
+#         conn_max_age=600,   # Increase connection persistence
+#         ssl_require=True    # Enforce SSL (Heroku requires it for external DBs)
+#     )
+
+if JAWSDB_TEAL_URL:
     DATABASES['default'] = dj_database_url.config(
-        default=JAWSDB_URL,
+        default=JAWSDB_TEAL_URL,
         conn_max_age=600,   # Increase connection persistence
         ssl_require=True    # Enforce SSL (Heroku requires it for external DBs)
     )
