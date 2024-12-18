@@ -89,6 +89,11 @@ DATABASES = {
         'PASSWORD': 'lkx4gpm8hubec9ey',
         'HOST': 's9xpbd61ok2i7drv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
+        'OPTIONS': {
+            'ssl': {
+                'ca': os.path.join(BASE_DIR, 'global-bundle.pem')  # Path to SSL cert
+            }
+        },
     }
 }
 
@@ -105,12 +110,12 @@ JAWSDB_TEAL_URL = os.environ.get('JAWSDB_TEAL_URL')
 if JAWSDB_TEAL_URL:
     DATABASES['default'] = dj_database_url.config(
         default=JAWSDB_TEAL_URL,
-        conn_max_age=600,   # Increase connection persistence
-        # Enforce SSL (Heroku requires it for external DBs)
+        conn_max_age=600
     )
-    # Add SSL enforcement separately
     DATABASES['default']['OPTIONS'] = {
-        'ssl': {'ca': os.path.join(BASE_DIR, 'global-bundle.pem')}
+        'ssl': {
+            'ca': os.path.join(BASE_DIR, 'global-bundle.pem')
+        }
     }
 # DATABASE_URL = os.environ['DATABASE_URL']
 
