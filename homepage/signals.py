@@ -7,5 +7,4 @@ from system_main.models import File
 @receiver(post_save, sender=Project)
 def create_first_snippet(sender, instance, created, **kwargs):
     if created and not File.objects.filter(project=instance).exists():
-        File.objects.create(project=instance, file_name=f'{instance.title}.{instance.language}', code='')
-
+        file = File.objects.create(project=instance, file_name=f'{instance.title}.{instance.language}', code='#Coding here')

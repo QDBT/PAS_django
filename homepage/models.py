@@ -24,7 +24,7 @@ class Project(models.Model):
             base_title = self.title
             counter = 1
             #set up the different title 1 if the same title project exits 
-            while Project.objects.filter(title=self.title).exists():
+            while Project.objects.filter(user=self.user,title=self.title).exists():
                 self.title = f"{base_title}({counter})"
                 counter += 1
         super(Project, self).save(*args, **kwargs)
