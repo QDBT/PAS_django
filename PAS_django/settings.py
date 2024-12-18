@@ -106,9 +106,12 @@ if JAWSDB_TEAL_URL:
     DATABASES['default'] = dj_database_url.config(
         default=JAWSDB_TEAL_URL,
         conn_max_age=600,   # Increase connection persistence
-        ssl_require=True    # Enforce SSL (Heroku requires it for external DBs)
+        # Enforce SSL (Heroku requires it for external DBs)
     )
-
+    # Add SSL enforcement separately
+    DATABASES['default']['OPTIONS'] = {
+        'ssl': {'ca': '/path/to/ca-cert.pem'}
+    }
 # DATABASE_URL = os.environ['DATABASE_URL']
 
 # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
