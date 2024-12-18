@@ -91,9 +91,9 @@ DATABASES = {
         'PORT': '3306',
         'OPTIONS': {
             'ssl': {
-                'ca': os.path.join(BASE_DIR, 'global-bundle.pem')  # Path to SSL cert
+                'ca': os.path.join(BASE_DIR, 'global-bundle.pem')
             }
-        },
+        }
     }
 }
 
