@@ -92,7 +92,7 @@ def debug_code_with_file(server_data,main_file):
 
             # Run the main file using subprocess
             process = subprocess.run(
-                [main_file['Language'], main_file_path],
+                ['python', main_file_path],
                 text=True,
                 capture_output=True,
                 timeout=20  # Limit execution time
