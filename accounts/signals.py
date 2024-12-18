@@ -26,7 +26,7 @@ def guess_the_number_simulated():
 
     for guess in simulated_guesses:
         attempts += 1
-        print(f"Attempt {attempts}: Guessing {guess}...")
+        print(f"Attempt : Guessing ...")
 
         # Check the guess
         if guess < number_to_guess:
@@ -34,7 +34,7 @@ def guess_the_number_simulated():
         elif guess > number_to_guess:
             print("Too high!")
         else:
-            print(f"Congratulations! The number was {number_to_guess}. You guessed it in {attempts} attempts.")
+            print(f"Congratulations! The number was . You guessed it in  attempts.")
             guessed_correctly = True
             break
 
