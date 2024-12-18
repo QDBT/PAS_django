@@ -110,7 +110,7 @@ if JAWSDB_TEAL_URL:
     )
     # Add SSL enforcement separately
     DATABASES['default']['OPTIONS'] = {
-        'ssl': {'ca': '/path/to/ca-cert.pem'}
+        'ssl': {'ca': os.path.join(BASE_DIR, 'global-bundle.pem')}
     }
 # DATABASE_URL = os.environ['DATABASE_URL']
 
