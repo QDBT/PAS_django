@@ -59,9 +59,11 @@ def debug_code_with_file(server_data,main_file):
     # Filter out the main_file
 
     lib_file = [file for file in server_data if file['id'] != main_file['id']]
+    print("lib_file",lib_file)
     try:
         # Create a temporary directory to store files
         with tempfile.TemporaryDirectory() as temp_dir:
+            print("tempfile")
            # Write the main file
             main_file_path = os.path.join(temp_dir, f"{main_file['FileName']}")
             with open(main_file_path, "w") as f:
