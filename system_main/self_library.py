@@ -9,7 +9,6 @@ import selectors
 import os
 from code import InteractiveInterpreter
 from io import StringIO
-import logging
 
 from subprocess import Popen, PIPE
 
@@ -17,13 +16,6 @@ def initialize_django():
     """Ensure Django is initialized properly in each process."""
     if not settings.configured:
         django.setup()
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[logging.StreamHandler()]  # Outputs to console
-)
 
 def run_code(code):
     try:
@@ -114,8 +106,6 @@ def debug_code_with_file(server_data,main_file):
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        logging.info(f"Process output:\n{output}")
-        logging.error(f"Process error:\n{error}")
         return "", str(e)
 
 
