@@ -48,12 +48,14 @@
                         {{ signup_form.username|add_class:"form-control" }}
                     </div>
                     <div class="form-group">
+                        <span>8-16letter</span>
                         {{ signup_form.password1.label_tag }}
-                        {{ signup_form.password1|add_class:"form-control"|add_attrs:{"placeholder":"8-16 letters"} }}
+                        {{ signup_form.password1|add_class:"form-control" }}
                     </div>
                     <div class="form-group">
+                        <span>8-16letter</span>
                         {{ signup_form.password2.label_tag }}
-                        {{ signup_form.password2|add_class:"form-control" |add_attrs:{"placeholder":"8-16 letters"} }}
+                        {{ signup_form.password2|add_class:"form-control"  }}
                     </div>
                     <div class="form-group">
                         <button type="submit" name="signup" class="btn btn-success btn-block">Sign Up</button>
