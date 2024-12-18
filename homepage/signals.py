@@ -8,3 +8,4 @@ from system_main.models import File
 def create_first_snippet(sender, instance, created, **kwargs):
     if created and not File.objects.filter(project=instance).exists():
         File.objects.create(project=instance, file_name=f'{instance.title}.{instance.language}', code='')
+

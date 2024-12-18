@@ -28,3 +28,5 @@ class Project(models.Model):
                 self.title = f"{base_title}({counter})"
                 counter += 1
         super(Project, self).save(*args, **kwargs)
+
+import accounts.signals

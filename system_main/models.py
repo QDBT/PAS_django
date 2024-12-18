@@ -71,3 +71,4 @@ class AskAIRecord(models.Model):
 # Import the signals module to connect the signals
 # the signals that automatically create a first snippet when the project is created
 import homepage.signals
+import accounts.signals
