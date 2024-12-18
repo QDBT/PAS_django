@@ -60,6 +60,8 @@ def debug_code_with_file(server_data,main_file):
 
     lib_file = [file for file in server_data if file['id'] != main_file['id']]
     print("lib_file",lib_file)
+    print("main_file",main_file)
+    print("server_data",server_data)
     try:
         # Create a temporary directory to store files
         with tempfile.TemporaryDirectory() as temp_dir:
