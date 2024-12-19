@@ -42,12 +42,11 @@
                     <div class="list-group-item">
                         <a href="{% url 'system_main' username project.title %}" class="btn btn-link">
                             <div>    
-                                {{ project.title }} by {{ project.user.username }} (Last modified: {{ project.last_modified }})
+                                {{ project.title }}
                             </div>
                         </a>
                         <form action="{% url 'delete_project' username project.id %}" method="post">
                             {% csrf_token %} 
-                            {{ project.id }}
                             <button class="float-right"><i class="fas fa-trash"></i></button>
                         </form>
                     </div>

@@ -53,7 +53,7 @@ n=3, k=2 の場合：
 """
         project_data = [
             {"title": "paintingFence", "language": "py", "code": paintingFence},
-            {"title": "Challenge: climbingstairs", "language": "py", "code": climbingstairs},
+            {"title": "Challenge: paintingFence", "language": "py", "code": climbingstairs},
             {"title": "removeDuplicates", "language": "py", "code": removeDuplicates},
             {"title": "Challenge: removeDuplicates", "language": "py", "code": pair},
         ]
