@@ -952,7 +952,16 @@
             });
 
             //MainFileData is the File would be debug, the rest of this is SubFile
-            let MainFileData = FileData[FileData.length - 1];
+            let MainFileData;
+
+            // Check if the last file in FileData has the name "Introduction"
+            if (FileData[FileData.length - 1].FileName === "Introduction") {
+                // If true, assign the second-to-last file as MainFileData
+                MainFileData = FileData[FileData.length - 2];
+            } else {
+                // Otherwise, assign the last file as MainFileData
+                MainFileData = FileData[FileData.length - 1];
+            }
              
 
             //Create The Option that which file will be debuged
