@@ -51,50 +51,16 @@ n=3, k=2 の場合：
 出力:[1, 1, 2, 2, 3, 3, 3, 3]
 処理後の配列: 「1」を1つ削除します(ペアを作れないため)。
 """
-        # Create a Project instance for the user if necessary
-        project1= Project.objects.get_or_create(
-            user=instance,
-            defaults={'title': 'paintingFence', 'language': 'py'}
-        )
-        
-        # Create a File instance associated with the new Project
-        File.objects.create(
-            project=project1,
-            file_name='Introduction',
-            code=paintingFence
-        )
+        project_data = [
+            {"title": "paintingFence", "language": "py", "code": paintingFence},
+            {"title": "Challenge: climbingstairs", "language": "py", "code": climbingstairs},
+            {"title": "removeDuplicates", "language": "py", "code": removeDuplicates},
+            {"title": "Challenge: removeDuplicates", "language": "py", "code": pair},
+        ]
 
-        project2= Project.objects.get_or_create(
-            user=instance,
-            defaults={'title': 'Challenge: climbingstairs', 'language': 'py'}
-        )
-        
-        # Create a File instance associated with the new Project
-        File.objects.create(
-            project=project2,
-            file_name='Introduction',
-            code=climbingstairs
-        )
-
-        project3= Project.objects.get_or_create(
-            user=instance,
-            defaults={'title': 'removeDuplicates', 'language': 'py'}
-        )
-
-        File.objects.create(
-            project=project3,
-            file_name='Introduction',
-            code=removeDuplicates
-        )
-        
-        project4= Project.objects.get_or_create(
-            user=instance,
-            defaults={'title': 'Challenge: removeDuplicates', 'language': 'py'}
-        )
-
-        File.objects.create(
-            project=project4,
-            file_name='Introduction',
-            code=pair
-        )
+        for project in project_data:
+            # Create each project
+            new_project = Project.objects.create(user=instance, title=project["title"], language=project["language"])
+            # Create the associated file
+            File.objects.create(project=new_project, file_name='Introduction', code=project["code"])
     
