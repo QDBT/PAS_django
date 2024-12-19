@@ -52,48 +52,48 @@ n=3, k=2 の場合：
 処理後の配列: 「1」を1つ削除します(ペアを作れないため)。
 """
         # Create a Project instance for the user if necessary
-        project= Project.objects.get_or_create(
+        project1= Project.objects.get_or_create(
             user=instance,
             defaults={'title': 'paintingFence', 'language': 'py'}
         )
         
         # Create a File instance associated with the new Project
         File.objects.create(
-            project=project,
+            project=project1,
             file_name='Introduction',
             code=paintingFence
         )
 
-        project= Project.objects.get_or_create(
+        project2= Project.objects.get_or_create(
             user=instance,
             defaults={'title': 'Challenge: climbingstairs', 'language': 'py'}
         )
         
         # Create a File instance associated with the new Project
         File.objects.create(
-            project=project,
+            project=project2,
             file_name='Introduction',
             code=climbingstairs
         )
 
-        project= Project.objects.get_or_create(
+        project3= Project.objects.get_or_create(
             user=instance,
             defaults={'title': 'removeDuplicates', 'language': 'py'}
         )
 
         File.objects.create(
-            project=project,
+            project=project3,
             file_name='Introduction',
             code=removeDuplicates
         )
         
-        project= Project.objects.get_or_create(
+        project4= Project.objects.get_or_create(
             user=instance,
             defaults={'title': 'Challenge: removeDuplicates', 'language': 'py'}
         )
 
         File.objects.create(
-            project=project,
+            project=project4,
             file_name='Introduction',
             code=pair
         )
