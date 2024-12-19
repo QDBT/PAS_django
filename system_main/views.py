@@ -152,9 +152,10 @@ def feedback(request, username, project_title):
     if ask_target is not None:     
         #update all file
         for file in ask_target.file.all():
-            filename=file.file_name
-            filecode=file.code
-            user_message.append(f"file_name: {filename}, code: {filecode}")
+            if file.file_name != "Introduction":
+                filename=file.file_name
+                filecode=file.code
+                user_message.append(f"file_name: {filename}, code: {filecode}")
 
         #append to API know which was debug
         if ask_target.main_file:

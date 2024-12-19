@@ -15,7 +15,7 @@ class File(models.Model):
 
         
     def __str__(self):
-        return f'{self.file_name}'
+        return f'{self.project.user.username}: {self.file_name}'
         
     def save(self, *args, **kwargs):
         # If the language is blank, inherit it from the project
