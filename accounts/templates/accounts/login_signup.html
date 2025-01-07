@@ -48,15 +48,21 @@
                         {{ signup_form.username|add_class:"form-control" }}
                     </div>
                     <div class="form-group">
-                        <span>8-16letter</span>
                         {{ signup_form.password1.label_tag }}
                         {{ signup_form.password1|add_class:"form-control" }}
                     </div>
-                    <div class="form-group">
-                        <span>8-16letter</span>
+                    <div class="form-group"> 
                         {{ signup_form.password2.label_tag }}
                         {{ signup_form.password2|add_class:"form-control"  }}
                     </div>
+                    <br>
+                    Your password can’t be too similar to your other personal information.
+                    <br>
+                    Your password must contain at least 8 characters.
+                    <br>
+                    Your password can’t be a commonly used password.
+                    <br>
+                    Your password can’t be entirely numeric.
                     <div class="form-group">
                         <button type="submit" name="signup" class="btn btn-success btn-block">Sign Up</button>
                     </div>
