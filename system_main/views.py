@@ -13,10 +13,6 @@ import sys
 import json
 from django.utils.dateformat import format
 
-## This is a global variable
-
-#CanAskAI is the variable to setup permission to ask AI (run OpenAI_API())
-#CanAskAI and it's options will be actived after debug the different code, and deactive after used all of that options
     
 # Require username, project_title to connect to this views
 
@@ -145,10 +141,7 @@ def feedback(request, username, project_title):
 
     give_to_API=[]
     user_message=[]
-    #CanAskAI is the permission to run the API
-    #CanAskAI always actives and only deactives when both options (without_code and only_code) are choosen before
-    #It is for block multiple same feedback if the originalCode is unchanged or the same option
-    #So it can reduced input token
+
     if ask_target is not None:     
         #update all file
         for file in ask_target.file.all():
